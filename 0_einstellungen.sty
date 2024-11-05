@@ -1,0 +1,77 @@
+%% PAKETE
+%\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb}
+\usepackage{setspace}
+\usepackage{mathtools}
+\usepackage{breqn}
+\usepackage{dsfont,bbm} %indikatorfunktion
+%\usepackage[a4paper, total={13cm,23cm}]{geometry} &Hiermit kannst du das genaue Format der Seiten ändern
+\usepackage{blindtext}
+\usepackage{bookmark}
+\usepackage[shortlabels]{enumitem}
+\usepackage{chngcntr}
+\usepackage{relsize}
+%\usepackage{framed} %damit man Rahmen um Definitionen usw machen kann
+%\usepackage[thmmarks,framed,thref,hyperref,amsmath,amsthm]{ntheorem} %You can't use amsthm and ntheorem in the same document
+\usepackage[thref,hyperref,amsmath,amsthm,thmmarks]{ntheorem} %You can't use amsthm and ntheorem in the same document
+%\renewcommand{\qedsymbol}{$\blacksquare$}
+\usepackage{graphicx}
+\usepackage{import}
+\usepackage{color}   %May be necessary if you want to color links
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true, %set true if you want colored links
+    linktoc=all,     %set to all if you want both sections and subsections linked
+    linkcolor=blue,  %choose some color if you want links to stand out
+    urlcolor=blue
+    }
+
+%% IMPORT
+
+
+% Grafiken
+\graphicspath{ {./bilder/} } % \includegraphics[scale= je nach Bedarf ]{ “Name der Datei ohne Endungen wie .jpg usw” }
+
+
+
+%% TEXT GESTALTUNG
+\linespread{1.1} %Zeilenabstand ist hiermit auf 1.2 gestellt.
+%\raggedright % Dieser Befehl bindet den Text nach links, so wie flushleft nur für das ganze Dokument.
+%\setlength{\parindent}{0pt} %bei neuem Absatz nicht einrücken
+\setlength{\parskip}{0.4em} %Ein bisschen Platz nach Absatz
+
+
+
+
+%% UMGEBUNGEN [Theoreme, Definitionen, ... ]
+%das hier sind Standard Umgebungen die du manuell Nummerieren kannst, falls du dich 1 zu 1 an das Skript halten möchtest
+
+% Hier findest du standard umgebungen für Theoreme, Definitionen usw.
+\theoremstyle{plain}\newtheorem{theorem}{Theorem}
+\theoremstyle{plain}\newtheorem*{theorem_unnumbered}{Theorem}
+\theoremstyle{plain}\newtheorem{proposition}{Proposition}
+\theoremstyle{plain}\newtheorem{lemma}{Lemma}
+\theoremstyle{plain}\newtheorem{corollary}{Corollary}
+\theoremstyle{definition}\newtheorem{definition}{Definition}
+\theoremstyle{remark}\newtheorem{remark}{Remark}
+\theoremstyle{definition}\newtheorem{example}{Example}
+\theoremstyle{definition}\newtheorem{supplement}{Supplement}
+% Du kannst auch noch früher definierte Theoreme, Definitionen usw finden in dem einstellungs-file was du bei deinen standard Dokumenten als Vorlage nutzt.
+
+
+
+
+%% KAPITEL, SECTIONS
+%% HINWEIS 1: Wenn du numberwithin anwendest um zB dafür zu sorgen dass subsections innerhalb von kapiteln und nicht innerhalb von sections nummeriert werden, dann musst du ERST numberwithin anwenden, und kannst erst danach im Code das Erscheinungsbild des Counters ändern, also zB wenn du willst dass die subsections innerhalb jeder section von vorne nach dem Schema a) .. b) .. c) usw abgezählt werden
+
+% HINWEIS 2: Wenn du numberwithin nutzt zB \numberwithin{definition}{chapter} dann kriegst du im Kapitel 2 als erste Definition eine Nummer der Form 2.1, 2.2, usw.
+
+% Nummerierung der Chapter und Sections wird verschönert
+%\renewcommand\thechapter{\Alph{chapter}} 
+%\renewcommand\thesection{\arabic{section}}
+%\renewcommand\theequation{\arabic{equation}}
+%\numberwithin{subsection}{section}
+% \renewcommand\thesubsection{\alph{subsection}}
+\numberwithin{equation}{chapter} % Mit diesem command werden Gleichungen einfach abgezählt über das Skript hinweg, indem man "\numberwithin{equation}{section}" aktiviert kann man sie auch nach sections innerhalb jedes Kapitels nummerieren lassen. Das sieht dann etwa so aus section 1 -> (1.1),(1.2), section 2 -> (2.1),(2.2),(2.3)...
+

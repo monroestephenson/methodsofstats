@@ -1,0 +1,831 @@
+% Für Hausaufgaben article, für Skripte report
+% \documentclass[open=any, 11pt,paper=A4,headings=big,titlepage = firstiscover]{scrreprt}
+\documentclass[open=any, 11pt,paper=A4]{scrreprt}
+
+
+\KOMAoptions{}
+
+
+  
+%\usepackage[colorinlistoftodos]{todonotes}
+\usepackage[
+backend=biber,
+style=alphabetic, % Label wird verschönert
+sorting=ynt,
+backrefstyle=two % sortiert nach year, name und dann title
+]{biblatex}
+\usepackage[textsize=tiny,linecolor=black,backgroundcolor=white]{todonotes}
+\usepackage{0_einstellungen}
+\addbibresource{0_bibliography.bib} %Imports bibliography file
+\usepackage[font=footnotesize]{caption}
+\usepackage{wrapfig}
+\usepackage{lmodern}
+\usepackage{xcolor}
+\usepackage{pdfpages,datetime}
+
+
+% \author{Said Kassner}
+% \title{Lecture Notes}
+
+% MAKROS
+%%%%%%%%%%%%%%%%%
+\input{0_macros} 
+%%%%%%%%%%%%%%%%%
+
+% In den folgenden drei Zeilen sorgst du dafür dass es kein Problem mehr damit gibt dass du auf der Titelseite \sc benutzt
+\makeatletter
+\DeclareOldFontCommand{\sc}{\normalfont\scshape}{\@nomath\sc}
+\makeatother
+\makeatletter
+\DeclareOldFontCommand{\it}{\normalfont\itshape}{\@nomath\it}
+\makeatother
+
+%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%
+
+
+\begin{document}
+% \includepdf{0_title.pdf}
+\input{0_titlepage} % Kann man auch mit include machen, so war es ursprünglich
+%\newpage\null\thispagestyle{empty}\newpage % leere Seite nach dem Titelblatt
+
+
+
+\tableofcontents % Inhaltsverzeichnis direkt nach der Title Page
+\thispagestyle{empty}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% REWORKED CODE
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Intro and Disclaimer}\label{ch:intro}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+These lecture notes are based on the material presented by Professor Wang during class and are written by students. They may contain errors or omissions. Please refer to the in-person lectures and the literature on Moodle for accurate and authoritative information. 
+If you find an error or want to help, please send an email to:
+\begin{center}
+    \href{mailto:said.kassner@student.hu-berlin.de}{said.kassner@student.hu-berlin.de}
+\end{center}
+
+\begin{center}
+    \href{mailto:stephensonmonroe@gmail.com}{stephensonmonroe@gmail.com}
+\end{center}
+
+\begin{center}
+    \href{mailto:salihiad@hu-berlin.de}{salihiad@hu-berlin.de}
+\end{center}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Basic Statistical Concepts}\label{ch:intro}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section*{Lecture 1}
+Here is the literature that the class is based on.
+
+\textbf{Literature:}
+\begin{itemize}
+    \item WS 19/20 R. Altmeyer \textit{"Gliederung Methoden der Statistik"}
+    \item L. Wasserman, \textit{All of Statistics}
+    \item M. Trabs, K. Krenz, M. Jirak and M. Reiss. \textit{Methoden der Statistik.}
+    \item Hastie, Tibshirani, et al., \textit{Elements of Statistical Learning}
+\end{itemize}
+
+Let’s start with a (simplest possible) example:
+
+\begin{example}[Polling]\label{ex:polling}
+Consider a poll with two answers A and B (representing political parties).
+\begin{itemize}
+    \item \( N \) = total number of votes
+    \item \( M \) = total number of votes supporting party A
+\end{itemize}
+\end{example}
+
+\textbf{Poll Definitions:}
+\begin{itemize}
+    \item \( n \) = size of the poll
+    \item \( x = (x_1, ..., x_n) \) = responses, where:
+    \[
+    x_i =
+    \begin{cases} 
+    0 & \text{if the i\text{-}th person supports B} \\
+    1 & \text{if the i\text{-}th person supports A}
+    \end{cases}
+    \]
+\end{itemize}
+
+\textbf{Additional Assumptions:}
+\begin{itemize}
+    \item \( n \)-times, we select a person randomly from the set \( \{1, ..., N\} \), and record their (truthful) response.
+    \item Every asked person responds (i.e., no selection bias).
+    \item People can be asked repeatedly.
+\end{itemize}
+
+\textbf{Aim of the Poll:} The aim of the poll is to estimate the fraction of party A supporters. This can be written as:
+
+\[
+\theta = \frac{M}{N} \in [0, 1]
+\]
+
+An intuitive estimate of \( \theta \) is:
+
+\[
+\hat{\theta} = \frac{1}{n} \sum_{i=1}^{n} x_i
+\]
+
+\textbf{Question:} Is this a good (or best possible) estimator? What properties does it have?
+
+To answer this, we formalize some statistical notions.
+
+\begin{definition}[Sample space]\label{def:samplespace}
+A \textit{sample space} is a measurable space \((\mathcal{X}, \mathcal{F})\), i.e., a set \(\mathcal{X}\) with a \(\sigma\)-algebra \(\mathcal{F}\), in which our statistical observations take values.
+\end{definition}
+
+\begin{definition}[Statistical model]\label{def:statmodel}
+Let \((\mathcal{X}, \mathcal{F})\) be some sample space and let \(\Theta\) be a set, which we call the \textit{parameter space}. A \textit{statistical model} is a family of probability measures \(\{P_\theta : \theta \in \Theta\}\) on \((\mathcal{X}, \mathcal{F})\).
+\end{definition}
+
+\begin{remark}
+Often, \((\mathcal{X}, \mathcal{F})\) is a "product space." For example, in Example \ref{ex:polling}, \(\mathcal{X} = \{0, 1\}^n\), and each \(P_\theta\) is a product distribution, i.e., \(x_1, \dots, x_n\) are independent, identically distributed. Then we say \(\{P_\theta : \theta \in \Theta\}\) is an \textit{iid statistical model}.
+\end{remark}
+
+\begin{remark}[Back to Example \ref{ex:polling}]
+Here:
+\begin{itemize}
+    \item \(\mathcal{X} = \{0, 1\}^n\)
+    \item \(\Theta = [0, 1]\)
+    \item \(\mathcal{F} = \mathcal{P}(\{0, 1\}^n)\)
+    \item \(P_\theta = (\text{Bernoulli}(\theta))^{\otimes n}\)
+\end{itemize}
+\end{remark}
+
+\begin{remark}
+If every person could only be asked once, we would have \( P_\theta = \text{Hypergeometric}(N, M, n) \), which "converges" to the Bernoulli model as \( N, M \to \infty \). 
+We might have to discretize \(\Theta\) and take \( \theta = \frac{M}{N} \). 
+(Exercise: Think about it!)
+\end{remark}
+
+\chapter{Parameter Estimation}
+Assume that \( \Theta \subseteq \mathbb{R}^p \), for \( p \geq 1 \). This is the setting of parametric statistics. 
+[Assume \(\Theta\) is measurable.]
+
+\begin{definition}[Estimator]\label{def:estimator}
+An estimator for \( \theta \in \Theta \) is any measurable function:
+\[
+\hat{\theta}: (\mathcal{X}, \mathcal{F}) \to \Theta.
+\]
+Any function that, based on some data \( x \in \mathcal{X} \), outputs a guess / estimate \( \hat{\theta}(x) \in \Theta \).
+\end{definition}
+
+
+\section*{Lecture 2}
+
+\textbf{Last time:} Statistical model = family of probability measures on $(\mathcal{X}, \mathcal{F})$ indexed by $\theta \in \Theta$. 
+
+\textbf{Sample space:} $(\mathcal{X}, \mathcal{F})$
+
+\textbf{Estimator:} = measurable function $(\mathcal{X}, \mathcal{F}) \to \Theta$
+
+Now, what are some desirable properties we would like to have?
+
+\begin{definition}[Unbiased estimator]\label{def:unbiased}
+Let $\Theta = \mathbb{R}^p$ (measurable), $p \geq 1$. An estimator $\hat{\theta}$ is unbiased if 
+\[
+    \mathbb{E}_{\theta}[\hat{\theta}] = \mathbb{E}_{\mathbb{P}_\theta}[\hat{\theta}] = \theta, \text{ for all } \theta \in \Theta.
+\]
+Where $\mathbb{E}_{\theta}[\cdot] = \mathbb{E}_{\mathbb{P}_\theta}[\cdot]$ denotes expectation under the law $\mathbb{P}_\theta$.
+\end{definition}
+
+
+In more explicit terms:
+\[
+    \mathbb{E}_{x \sim \mathbb{P}_\theta}[\hat{\theta}(x)] = \theta \quad \forall \theta
+\]
+
+\begin{remark}[Unbiasedness]\label{rem:unbiasedness}
+Unbiasedness means "no systematic errors." However, we'd also like a "good" $\hat{\theta}$ to be concentrated around the data-generating parameter.
+\end{remark}
+
+\begin{definition}[Consistent estimator]\label{def:consistent}
+Let $(\mathbb{P}_{\theta}^n)_{\theta \in \Theta}$ be a sequence of statistical models ($n \geq 1$), on the same parameter space $\Theta$ not depending on $n \geq 1$.
+
+Let $\hat{\theta}_n$ be a sequence of estimators. Then $\hat{\theta}_n$ is called consistent if for every $\theta \in \Theta$,
+\[
+    \hat{\theta}_n \xrightarrow{\mathbb{P}_\theta^n} \theta
+\]
+or explicitly, for every $\epsilon > 0$,
+\[
+    \lim_{n \to \infty} \mathbb{P}^n_\theta (|\hat{\theta}_n - \theta| > \epsilon) = 0.
+\]
+\end{definition}
+
+\textbf{Back to Example \ref{ex:polling}:}
+\begin{itemize}
+    \item $X_i = \{0, 1\}^n$
+    \item $\Theta = [0, 1]$
+    \item $\mathbb{P}_\theta^n = \text{Bernoulli}(\theta)^{\otimes n}$
+    \item $\hat{\theta}_n = \frac{1}{n} \sum_{i=1}^{n} X_i$
+\end{itemize}
+
+\textbf{Unbiasedness:} \\
+Let $\theta \in \Theta$, then
+\[
+    \mathbb{E}_\theta \left[ \frac{1}{n} \sum_{i=1}^{n} X_i \right] = \frac{1}{n} \sum_{i=1}^{n} \mathbb{E}_\theta [X_i] = \frac{1}{n} \sum_{i=1}^{n} \theta = \theta.
+\]
+Thus, $\mathbb{E}_\theta [\hat{\theta}_n] = \theta$.
+
+\textbf{Consistency:}
+\begin{itemize}
+    \item We could use the Weak Law of Large Numbers (WLLN).
+    \item Alternatively,
+\[
+    \text{Var}_\theta(\hat{\theta}_n) = \frac{1}{n^2} \sum_{i=1}^{n} \text{Var}_\theta (X_i) = \frac{1}{n^2} \sum_{i=1}^{n} \theta (1-\theta) = \frac{\theta(1-\theta)}{n}
+\]
+which tends to zero as $n \to \infty$.
+\end{itemize}
+
+It follows: For every $\epsilon > 0$,
+\[
+    \mathbb{P}^n_\theta(|\hat{\theta}_n - \theta| > \epsilon) = \mathbb{P}^n_\theta(|\hat{\theta}_n - \mathbb{E}[\hat{\theta}_n]| > \epsilon)
+\]
+By Markov's inequality:
+\[
+    \mathbb{P}^n_\theta(|\hat{\theta}_n - \mathbb{E}[\hat{\theta}_n]| > \epsilon) \leq \frac{\mathbb{E}_\theta \left[ (\hat{\theta}_n - \mathbb{E}[\hat{\theta}_n])^2 \right]}{\epsilon^2} = \frac{\text{Var}_\theta (\hat{\theta}_n)}{\epsilon^2} = \frac{\theta(1-\theta)}{n \epsilon^2}
+\]
+which tends to zero as $n \to \infty$. Thus,
+\[
+    (\hat{\theta}_n : n \geq 1) \text{ is consistent. } \quad \square
+\]
+
+\section{Maximum Likelihood Principle}
+
+Is there another way to motivate $\hat{\theta}_n = \frac{1}{n} \sum_{i=1}^{n} X_i$? Yes, it turns out it is the maximum likelihood estimator, i.e.,
+\[
+    \text{MLE} = \text{"parameter which assigns the highest probability to the observed data."}
+\]
+
+\textbf{In our example}, each $\mathbb{P}_\theta^n$ has a probability density (likelihood)
+\[
+    \mathbb{P}_\theta^n(x) = \prod_{i=1}^{n} \mathbb{P}_\theta(x_i) = \prod_{i=1}^{n} \theta^{x_i} (1-\theta)^{1-x_i}
+\]
+\[
+    = \theta^{\sum_{i=1}^{n} x_i} (1-\theta)^{n-\sum_{i=1}^{n} x_i}.
+\]
+
+Fixing $x \in \{0,1\}^{n}$ and maximizing in $\theta \in [0,1]$ gives the following:
+
+\begin{itemize}
+    \item If $\sum_{i=1}^{n} x_i = 0$, then $\hat{\theta}_n = 0$ is the maximizer.
+    \item If $\sum_{i=1}^{n} x_i = n$, then $\hat{\theta}_n = 1$ is the maximizer.
+    \item If $\hat{\theta}_n \in \{1, \ldots, n-1\}$, then writing $S_n = \sum_{i=1}^{n} x_i$ gives:
+\end{itemize}
+
+\[
+    \frac{\partial}{\partial \theta} \mathbb{P}_\theta^n(x) = S_n \theta^{S_n-1} (1-\theta)^{n-S_n-1} - (n-S_n)\theta^{S_n} (1-\theta)^{n-S_n-1} = 0
+\]
+\[
+    \Leftrightarrow S_n (1 - \theta) - \theta (n - S_n)
+\]
+\[
+    \Leftrightarrow \theta = \frac{S_n}{n}.
+    \quad \square
+\]
+
+\begin{definition}[Dominated statistical model \& MLE]\label{def:dominatedmodel}
+A model $(\mathbb{P}_\theta^n)_{\theta \in \Theta}$ is called dominated if there exists a measure $\mu$ on $(\mathcal{X}, \mathcal{F})$ such that for every $\theta \in \Theta$, $\mathbb{P}_\theta \ll \mu$ or equivalently (by Radon-Nikodym), for all $\theta \in \Theta$, there is a probability density $\frac{\mathrm{d} \mathbb{P}_\theta}{\mathrm{d}\mu}$ of $\mathbb{P}_\theta$ with respect to $\mu$.
+
+The MLE is defined as any $\hat{\theta} \in \Theta$ that maximizes the function
+\[
+    \theta \mapsto \frac{\mathrm{d} \mathbb{P}_\theta}{\mathrm{d}\mu}(x) = \mathbb{P}_\theta(x).
+\]
+\end{definition}
+
+\begin{remark}[Caveats]\label{rem:caveats}
+\begin{itemize}
+    \item MLE might not be unique.
+    \item MLE might not exist.
+    \item It's not always clear that some selection $\hat{\theta}(x) \in \arg \max_{\theta} \mathbb{P}_\theta(x)$ is a measurable function of $x \in \mathcal{X}$. However, there are measurable selection theorems that permit a measurable choice of $\hat{\theta}$ under very general conditions.
+\end{itemize}
+\end{remark}
+
+\begin{remark}\label{rem:mu}
+In all the models we study, we will work with the Lebesgue measure (for continuous data) or the counting measure (for discrete data).
+\end{remark}
+
+\begin{example}[Normal model]\label{ex:normalmodel}
+Consider random samples $X_1, \dots, X_n \sim N(\mu, \sigma^2)$ for some unknown $\mu \in \mathbb{R}$, $\sigma^2 > 0$, and let $\lambda$ denote the Lebesgue measure on $\mathbb{R}^n$.
+
+\[
+    \theta = (\mu, \sigma^2) \in \mathbb{R} \times (0, \infty).
+\]
+Then the likelihood is:
+\[
+    L(\mu, \sigma^2 \mid x) = \prod_{i=1}^{n} \frac{1}{\sqrt{2 \pi \sigma^2}} \exp \left( - \frac{1}{2} \left( \frac{X_i - \mu}{\sigma} \right)^2 \right)
+\]
+\[
+    = (2 \pi \sigma^2)^{-n/2} \exp \left( - \frac{1}{2 \sigma^2} \norm{X-\mu\cdot 1_n}^2 \right),
+\]
+where by $1_n$ we denote the vector of ones of dimension $n$.
+
+Here, the MLE is given as:
+\[
+    \hat{\mu} = \frac{1}{n} \sum_{i=1}^{n} X_i \quad \text{[Sample mean]}, \quad \hat{\sigma}^2 = \frac{1}{n} \sum_{i=1}^{n} (X_i - \hat{\mu})^2 \quad  \text{[Sample variance]}.
+\]
+\[
+    \mathbb{E}_\theta[\hat{\mu}] = \mu, \quad \mathbb{E}_\theta[\hat{\sigma}^2] = \frac{n-1}{n} \sigma^2, \quad \text{so } \hat{\sigma}^2 \text{ is biased.}
+\]
+\[
+    \Rightarrow \text{MLE is not always unbiased, and not always a "good" method.}
+\]
+
+\end{example}
+
+\section{Bayesian method}
+
+\paragraph{Motivation}
+In Bayesian statistics, a key element is the prior distribution, which we denote by $\pi$, reflecting our "beliefs" about the parameter $\theta \in \Theta$ before observing data ($\pi$ is a probability measure on $\Theta$).
+
+A prior $\pi$, together with a model $(P_\theta : \theta \in \Theta)$, gives rise to a joint probability distribution for the pair $(\theta, x) \in \Theta \times \mathcal{X}$.
+
+The Bayesian approach bases statistical inference on the posterior distribution of $\theta$ conditioned on $x$.
+
+\textbf{Joint probability:}
+\[
+    (\theta, x) \mapsto \pi(\theta) P_\theta(x)
+\]
+\hspace{4cm} \text{conditional distribution of } $x \mid \theta$
+
+\textbf{Posterior:}
+\[
+    \pi(\theta \mid x) = \frac{\pi(\theta) P_\theta(x)}{\int_{\Theta} \pi(\theta) P_\theta(x) \, d\theta}
+\]
+
+\begin{remark}
+Bayesian methods automatically generate "error bars" because the posterior is not an estimator but a whole probability distribution.
+\end{remark}
+
+
+
+\section*{Lecture 3}
+
+\begin{definition}[Prior, Posterior, Bayes' Rule]\label{def:prior, posterior, bayes rule}
+Let $\mathcal{F}_\Theta$ be a $\sigma$-algebra on $\Theta$, and suppose 
+\[
+\left\{ P_\theta : \theta \in \Theta \right\}
+\]
+is a dominated statistical model with densities $p_\theta(x)$, and assume that 
+\[
+(\theta, x) \mapsto p_\theta(x)
+\]
+is "jointly measurable" (i.e., w.r.t. $\sigma(\mathcal{F}_\Theta \times \mathcal{F})$).
+
+Let $\Pi$ be a prior distribution on $\Theta$, with density $\pi(\theta)$ w.r.t. measure $\nu(\cdot)$. Then, define the posterior density
+\[
+\pi(\theta \mid x) := \frac{p_\theta(x) \pi(\theta)}{\int_\Theta p_{\tilde{\theta}}(x) \, d\Pi(\tilde{\theta})}.
+\]
+\end{definition}
+
+The corresponding probability measure $\Pi(\cdot \mid x)$ is called the posterior distribution:
+\[
+\Pi(B \mid x) = \int_B \pi(\theta \mid x) \, d\nu(\theta), \quad B \in \mathcal{F}_\Theta.
+\]
+\[
+= \frac{\int_B p_\theta(x) \, \pi(\theta) \, d\nu(\theta)}{\int_\Theta p_{\tilde{\theta}}(x) \, d\Pi(\tilde{\theta})},
+\]
+\[
+= \frac{\int_B p_\theta(x) \, d\Pi(\theta)}{\int_\Theta p_{\tilde{\theta}}(x) \, d\Pi(\tilde{\theta})},
+\]
+
+\begin{remark}
+Think of $\Theta \subseteq \mathbb{R}^p$, $\nu(\cdot)$ as a Lebesgue measure, $\pi(\cdot)$ as a Lebesgue density.
+
+\textbf{Exception:} $\Theta = \{0,1\}$ in hypothesis testing. Then, we'd take $\nu(\cdot)$ to be the counting measure.
+\end{remark}
+
+From the posterior, we can derive several estimators:
+\begin{itemize}
+    \item \textbf{Maximum-a-posterior (MAP) estimator:}
+    \[
+    \hat{\theta}_{\text{MAP}}(x) = \underset{\theta \in \Theta}{\text{argmax}} \, \pi(\theta \mid x).
+    \]
+    \item \textbf{Posterior mean:} Say \( \Theta \subseteq \mathbb{R}^p \) convex
+    \[
+    \hat{\theta}(x) = \int_\Theta \theta \, \pi(\theta \mid x) \, d\nu(\theta) \in \mathbb{R}^p.
+    \]
+\end{itemize}
+
+\textbf{Back to Example 1.1:}  
+\textit{Binomial model:} $\mathcal{X} = \{0, 1, \dots, n\}$,  
+$p_\theta = \text{Bin}(n, \theta)$,  
+$\theta \in \Theta = [0,1]$.  
+
+\textit{Prior (uniform):} $\Pi = \text{Unif}(0,1)$.
+
+We know: 
+\[
+\hat{\theta}_{\text{MAP}} = \hat{\theta}_{\text{MLE}} \quad \text{(for the uniform prior)},
+\]
+\[
+\hat{\theta}_{\text{MAP}} = \frac{X}{n}.
+\]
+
+\begin{itemize}
+    \item \textbf{Posterior mean}:
+    \[
+    \pi(\theta | x) = \frac{p_\theta(x)}
+    {\int p_{\tilde{\theta}}(x) d\tilde{\theta}} \propto  \binom{n}{k} \theta^{x}(1-\theta)^{n-x}.
+    \]
+    
+    \item \textbf{Binomial distribution}:
+    \[
+    \text{Bin}(n, p)(k) = \binom{n}{k} p^k (1-p)^{n-k},
+    \]
+    where \( k \in \{0, \ldots, n\} \) is the number of successes, and \( p \) is the probability of success, and $n$ would be interpreted as the "number of coin flips".
+\end{itemize}
+
+\[
+\pi(\theta | x) \propto \theta^x (1-\theta)^{n-x}.
+\]
+and 
+
+\[ \int_0^1 \pi(\theta \mid x) d\nu  =1\]
+
+We conclude that \( \pi(\theta | x) \) is a \textbf{Beta-distribution} on \( [0,1] \),
+\[
+\text{Beta}(x+1, n-x+1).
+\]
+
+The mean is given by:
+\[
+\hat{\theta} = \frac{x+1}{n+2}.
+\]
+
+\begin{remark}[Beta distribution]
+The Beta distribution is defined as:
+\[
+\text{Beta}(a, b), \quad a,b \geq 0.
+\]
+The probability density function of the Beta distribution is given by:
+\[
+P_{\text{Beta}(a,b)}(x) = x^{a}(1-x)^{b}.
+\]
+\end{remark}
+
+\begin{definition}[Conjugate Bayesian models]
+Let \((P_\theta : \theta \in \Theta)\) be a statistical model. Then, some family \(\mathcal{D}\) of p.m.s on \(\Theta\) is called \textit{conjugate} if
+\[
+\Pi \in \mathcal{D} \implies \Pi(\cdot | x) \in \mathcal{D} \quad \text{for all } x \in \mathcal{X}.
+\]
+\end{definition}
+
+\noindent \textbf{Examples:}
+\begin{itemize}
+    \item \((\text{Bin}(n, \theta)) : \theta \in [0,1], \quad \mathcal{D} = \text{Beta}(a,b), \ a,b \geq 0.\)
+    \item \((\mathcal{N}(\mu, \sigma^2)) : \mu \in \mathbb{R}, \quad \mathcal{D} = \left\{\mathcal{N}\left(\mu, n^2\right), \mu \in \mathbb{R}, n^2 > 0 \right\}, \ \sigma^2 \)\text{ known}.
+\end{itemize}
+
+
+\chapter{Decision Theory}
+
+Here suppose that \(\Theta \subseteq \mathbb{R}^p\).
+\begin{definition}[Loss function]
+A function \(\ell : \Theta \times \mathbb{R}^p \to [0, \infty)\) is a \textit{loss function} if for every \(\theta \in \Theta\), \(\ell(\theta, \cdot)\) is measurable. Given some estimator \(\hat{\theta}\), the expected loss is
+\[
+\mathcal{R}(\theta, \hat{\theta}) = \mathbb{E}_\theta \left[\ell(\theta, \hat{\theta})\right].
+\]
+\end{definition}
+
+\noindent \textbf{Example:} Take \(\ell(\theta, \hat{\theta}) = \| \theta - \hat{\theta} \|^2_{\mathbb{R}^p}.\) Then,
+\[
+\mathcal{R}(\theta, \hat{\theta}) = \mathbb{E}_\theta \left[\|\theta - \hat{\theta}\|^2_{\mathbb{R}^p} \right]
+\]
+is the mean squared error (MSE).
+
+\begin{proposition}[Bias-Variance Decomposition]
+    Let $\hat{\theta} \in L^2(\mathbb{P}_\theta)$. Then it holds that:
+    \[
+    R(\hat{\theta}, \theta) = (\mathbb{E}_\theta[\hat{\theta}] - \theta)^2 + \operatorname{Var}_\theta(\hat{\theta}).
+    \]
+\end{proposition}
+
+\begin{proof}
+    We have
+    \[
+    R(\hat{\theta}, \theta) = \mathbb{E}_\theta[(\hat{\theta} - \mathbb{E}_\theta[\hat{\theta}] + \mathbb{E}_\theta[\hat{\theta}] - \theta)^2]
+    \]
+    Expanding the squared term:
+    \[
+    = \mathbb{E}_\theta[(\hat{\theta} - \mathbb{E}_\theta[\hat{\theta}])^2] + (\mathbb{E}_\theta[\hat{\theta}] - \theta)^2 + 2\mathbb{E}_\theta[(\hat{\theta} - \mathbb{E}_\theta[\hat{\theta}])(\mathbb{E}_\theta[\hat{\theta}] - \theta)].
+    \]
+    Since $\mathbb{E}_\theta[\hat{\theta} - \mathbb{E}_\theta[\hat{\theta}]] = 0$, the last term vanishes, leaving us with:
+    \[
+    R(\hat{\theta}, \theta) = \operatorname{Var}_\theta(\hat{\theta}) + (\mathbb{E}_\theta[\hat{\theta}] - \theta)^2.
+    \]
+\end{proof}
+
+\begin{definition}[Minimax Risk]
+    Given an estimator $\hat{\theta}$ in a model $(\mathbb{P}_\theta : \theta \in \Theta)$, the maximal risk of $\hat{\theta}$ is
+    \[
+    \sup_{\theta \in \Theta} R(\theta, \hat{\theta}).
+    \]
+    The minimax risk of a model $(\mathbb{P}_\theta : \theta \in \Theta)$ is given as
+    \[
+    \inf_{\hat{\theta}} \sup_{\theta \in \Theta} R(\theta, \hat{\theta}),
+    \]
+    where the infimum is taken over all estimators. An estimator is called minimax if
+    \[
+    \sup_{\theta \in \Theta} R(\theta, \hat{\theta}) = \inf_{\hat{\theta}} \sup_{\theta \in \Theta} R(\theta, \hat{\theta}).
+    \]
+\end{definition}
+
+\begin{definition}[Bayes Risk]
+    Given a prior $\pi$ on $\Theta$, the $\pi$-Bayes risk of a decision rule $\delta$ for the loss function $L$ is defined as
+    \[
+    R_\Pi(\delta) = \mathbb{E}_\Pi [R(\delta, \theta)] = \int_{\Theta} R(\delta, \theta) \pi(\theta) d\theta = \int_{\Theta} \int_{\mathcal{X}} L(\delta(x), \theta) \pi(\theta) p_\theta(x) dx d\theta.
+    \]
+    A $\Pi$-Bayes decision rule $\hat\theta_\Pi$ is any decision rule that minimizes $R_\Pi(\hat\theta)$.
+\end{definition}
+
+\textcolor{red}{SW: $\ell$ instead of $L$ below, $p_{\theta}(x)$ instaed of  $f(x, \theta)$ }
+\textcolor{green}{Note: Has been corrected. }
+
+\begin{definition}[Posterior Risk]
+    For a Bayesian model, the posterior risk $R_{\Pi}$ is defined as the average loss under the posterior distribution for some observation $x \in \mathcal{X}$:
+    \[
+    R_{\Pi(\cdot|x)}(\delta) = \mathbb{E}_\Pi[\ell(\delta(x), \theta) | x].
+    \]
+    Here, the notation $\mathbb E_\Pi[\cdot|x]$ stands for the expectation under the posterior distribution.
+\end{definition}
+
+\begin{proposition}[Bayes Risk and Posterior Risk]
+    An estimator $\delta$ that minimizes the $\Pi$-posterior risk $R_{\Pi}$ also minimizes the $\pi$-Bayes risk $R_\pi$.
+\end{proposition}
+
+\begin{proof}
+    The $\pi$-Bayes risk can be rewritten as
+\begin{align*}
+    R_\pi(\delta) &= \int_{\Theta} \mathbb{E}_\theta[\ell(\delta(X), \theta)] \pi(\theta) d\theta\\
+    &= \int_{\Theta} \int_{\mathcal{X}} \ell(\delta(x), \theta) \pi(\theta) p_{\theta}(x) dx d\theta\\
+    &= \int_{\mathcal{X}} \int_{\Theta} \ell(\delta(x), \theta) \frac{p_{\theta}(x) \pi(\theta)}{\int_{\Theta} p_{\theta'}(x) \pi(\theta') d\theta'} \times \underbrace{\int_{\Theta} p_{\theta'}(x) \pi(\theta') d\theta'}_{=: n(x) \geq 0} dx d\theta\\
+    &= \int_{\mathcal{X}} \mathbb{E}_{\Pi}[\ell(\delta(x), \theta) | x] n(x) dx.
+\end{align*}
+    [Notation $n(x)$ motivated by the word `normalising constant'].
+
+    
+    Let $\delta_\Pi$ be a decision rule that minimizes the posterior risk, i.e., such that for all $x \in \mathcal{X}$,
+    \[
+    \mathbb{E}_{\Pi}[\ell(\delta_\Pi(x), \theta) | x] \leq \mathbb{E}_{\Pi}[\ell(\delta(x), \theta) | x].
+    \]
+    Multiplying by $m(x) \geq 0$ and integrating on both sides over $\mathcal{X}$ yields the desired result.
+\end{proof}
+
+\begin{example}
+    For the quadratic risk with the squared-loss, the posterior risk is minimized by taking $\delta(X) = \mathbb{E}_{\Pi}[\theta | X]$, by minimizing the quadratic function in $\delta$. Other losses will give other ways to minimize the posterior risk, and other Bayes decision rules.
+\end{example}
+
+\begin{proposition}
+Let \((\mathcal{X}, \mathcal{F}, (\mathbb{P}_{\theta})_{\theta \in \Theta})\) be a statistical model and let \(\hat{\theta}\) be an estimator. Then we have
+\[
+\sup_{\theta \in \Theta} R(\hat{\theta}, \theta) = \sup_{\Pi} \int_{\Theta} R(\hat{\theta}, \theta) \, \Pi(d\theta),
+\]
+where the supremum is taken over all prior distributions \(\Pi\).
+\end{proposition}
+
+\begin{proof}
+Obviously, we have 
+\[
+\int_{\Theta} R(\hat{\theta}, \theta) \, \Pi(d\theta) \leq \sup_{\theta \in \Theta} R(\hat{\theta}, \theta).
+\]
+On the other hand, by using the prior distributions \(\delta_{\theta}\) (Dirac measure on \(\theta \in \Theta\)), we obtain
+\[
+\sup_{\Pi} \int_{\Theta} R(\hat{\theta}, \theta) \, \Pi(d\theta) \geq \int_{\Theta} R(\hat{\theta}, \theta) \, \delta_{\theta}(d\theta) = R(\hat{\theta}, \theta).
+\]
+\end{proof}
+
+[Note: In the following we use the notation $\delta$ for decision rules while on the blackboard we used $\hat{\theta}$ or $\tilde{\theta}$. If you want to adjust this please contact me so that I can give you access.]
+
+\begin{proposition}
+Let \(\pi\) be a prior on \(\Theta\) such that
+\[
+R_{\pi}(\delta_{\pi}) = \sup_{\theta \in \Theta} R(\delta_{\pi}, \theta),
+\]
+where \(\delta_{\pi}\) is a \(\pi\)-Bayes rule. Then it holds that
+\begin{enumerate}
+    \item The rule \(\delta_{\pi}\) is minimax.
+    \item If \(\delta_{\pi}\) is unique Bayes, then it is unique minimax.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof} Let \(\delta\) be any decision rule. Then
+\[
+\sup_{\theta \in \Theta} R(\delta, \theta) \geq \mathbb{E}_{\pi}[R(\delta, \theta)],
+\]
+\[
+\int_{\Theta} R(\delta, \theta) \pi(\theta) \, d\theta \geq \mathbb{E}_{\pi}[R(\delta, \theta)],
+\]
+\[
+\int_{\Theta} R(\delta, \theta) \pi(\theta) \, d\theta = R_{\pi}(\delta_{\pi}) = \sup_{\theta \in \Theta} R(\delta_{\pi}, \theta).
+\]
+Taking the infimum over \(\delta\) gives the result.
+
+2. If \(\delta_{\pi}\) is unique Bayes, the second inequality is strict for any \(\delta' \neq \delta_{\pi}\).
+\end{proof}
+
+\begin{corollary}
+If a (unique) Bayes rule \(\delta_{\pi}\) has constant risk in \(\theta\), then it is (unique) minimax.
+\end{corollary}
+
+\begin{proof}
+If a Bayes rule \(\delta_{\pi}\) has constant risk, then
+\[
+R_{\pi}(\delta_{\pi}) = \mathbb{E}_{\pi}[R(\delta_{\pi}, \theta)] = \sup_{\theta \in \Theta} R(\delta_{\pi}, \theta),
+\]
+where \(R(\delta_{\pi}, \theta)\) is constant in \(\theta\). Uniqueness of the Bayes rule implies uniqueness of the minimax rule, as in part 2 of the former proposition.
+\end{proof}
+
+\begin{example}
+Hence, if the maximal risk of a Bayes rule \(\delta_{\pi}\) equals the Bayes risk, then \(\pi\) is least favorable, and the corresponding Bayes rule is minimax.
+\begin{itemize}
+    \item In a \(\text{Bin}(n, \theta)\) model, let \(\pi_{a,b}\) be a \(\text{Beta}(a, b)\) prior on \(\theta \in [0,1]\). Then the unique Bayes rule for \(\pi_{a,b}\) over the quadratic risk is the posterior mean \(\delta_{a,b} = \bar{\theta}_{a,b}\). Trying to solve the equation
+    \[
+    R(\delta_{a,b}, \theta) = \text{const.} \quad \forall \theta \in [0,1]
+    \]
+    we can find a prior \(\pi_{a^*, b^*}\) and a corresponding Bayes rule \(\delta_{\pi_{a^*, b^*}}\) of constant risk. It is therefore unique minimax, and different from the MLE (see Examples sheet).
+    
+    \item In a \(\mathcal{N}(\theta, 1)\) model, \(\bar{X}_n\) is minimax, as proved later.
+\end{itemize}
+\end{example}
+
+\section{Another optimality concept: Admissibility}
+
+\begin{definition}
+A decision rule \(\delta\) is \emph{inadmissible} if there exists \(\delta'\) such that
+\[
+R(\delta', \theta) \leq R(\delta, \theta) \quad \forall \theta \in \Theta \quad \text{and} \quad R(\delta', \theta) < R(\delta, \theta) \quad \text{for some } \theta \in \Theta.
+\]
+\end{definition}
+
+\begin{remark}
+\begin{itemize}
+    \item The intuition is that there is no reason to choose an inadmissible estimator or decision rule: it would always be better to choose another estimator that dominates it.
+    \item Admissibility is not the only criterion to evaluate an estimator: In most cases, a constant estimator will be admissible for the quadratic risk, but it is often not reasonable.
+\end{itemize}
+\end{remark}
+
+\begin{proposition}
+\begin{enumerate}
+    \item A unique Bayes rule is admissible.
+    \item If \(\delta\) is admissible and has constant risk, then it is minimax.
+\end{enumerate}
+\end{proposition}
+
+Proof may be done in the Examples sheet.
+
+\begin{definition}
+For a vector \(X \in \mathbb{R}^p\), the \emph{James–Stein estimator} is defined as
+\[
+\delta^{JS}(X) = \left(1 - \frac{p - 2}{\|X\|^2}\right) X.
+\]
+\end{definition}
+
+In a Gaussian model \(X \sim \mathcal{N}(\theta, I_p)\) for \(\theta \in \mathbb{R}^p\) (with a single observation, to simplify notation), the risk of the MLE is given by
+\[
+R(\hat{\theta}_{\text{MLE}}, \theta) = \mathbb{E}_{\theta}[\|X - \theta\|^2] = \sum_{j=1}^p \mathbb{E}_{\theta}[(X_j - \theta_j)^2] = p.
+\]
+
+For \( X \sim \mathcal{N}(\theta, I_p) \) with \( p \geq 3 \), the risk of the James–Stein estimator satisfies for all \( \theta \in \mathbb{R}^p \)
+\[
+R(\delta^{JS}, \theta) < p.
+\]
+
+\chapter{Confidence Sets}
+
+\begin{definition}[Confidence Set]
+Let \((\mathcal{X}, \mathcal{F}, (\mathbb{P}_{\theta})_{\theta \in \Theta})\) be a statistical model. For a given \(\alpha \in [0,1]\), consider sets \( C_{1-\alpha}(x) \subseteq \Theta \) for each \( x \in \mathcal{X} \). Then \( C_{1-\alpha}(x) \) is called a random confidence set at level \( 1 - \alpha \) (or with coverage probability \( 1 - \alpha \)) if
+\[
+\forall \theta \in \Theta : \mathbb{P}_{\theta}(\theta \in C_{1-\alpha}) = \mathbb{P}_{\theta}( \{ x \in \mathcal{X} : \theta \in C_{1-\alpha}(x) \}) \geq 1 - \alpha.
+\]
+\end{definition}
+
+Note: The following example was only started in Lecture 4 and may be fully covered in Lecture 5.
+
+\begin{example}
+Consider the statistical model \((\{0,1\}^n, \mathcal{P}(\{0,1\}^n), (\mathbb{P}_p)_{p \in [0,1]})\) with \(\mathbb{P}_p = \text{Ber}(p)^{\otimes n}\) and independent observations \(X_k \sim \text{Ber}(p)\), \( k \in \{0, \ldots, n\}\). We are looking for a confidence interval \( C_{1-\alpha} \) around \( \hat{p} = \overline{X}_n = \frac{1}{n} \sum_{k=1}^n X_k \), i.e.,
+\[
+C_{1-\alpha} = [\overline{X}_n - a, \overline{X}_n + b] \quad \left(C_{1-\alpha}(x) = [\overline{X}_n(x) - a(x), \overline{X}_n(x) + b(x)] \right)
+\]
+should satisfy (where \(a\) and \(b\) might be random) that
+\[
+1 - \alpha \leq \mathbb{P}_p \left( p \in C_{1-\alpha} \right) = \mathbb{P}_p \left( \overline{X}_n - a \leq p \leq \overline{X}_n + b \right) = \mathbb{P}_p \left(-b \leq \overline{X}_n - p \leq a \right).
+\]
+
+Let \(t \mapsto F_p^n(t) := \mathbb{P}_p \left( \overline{X}_n - p \leq t \right)\) be the distribution function. Then,
+\[
+\mathbb{P}_p \left(-b \leq \overline{X}_n - p \leq a \right) = \mathbb{P}_p \left( \overline{X}_n - p \leq a \right) - \mathbb{P}_p \left( \overline{X}_n - p < -b \right)
+\]
+\[
+= F_p^n(a) - F_p^n(-b) + R_n,
+\]
+where \( R_n = \mathbb{P}_p \left( \overline{X}_n - p = -b \right) \). Choose \(a, b\) as quantiles of \(\mathbb{P}_p^n\), i.e., \(a = \left(F_p^n\right)^{-1}(1 - \alpha / 2)\) and \( -b = \left(F_p^n\right)^{-1}(\alpha / 2)\) (with quantile function \(t \mapsto \left(F_p^n\right)^{-1}(t) := \inf \{t \in \mathbb{R} : F_p^n(t) \geq t \}\)).
+
+However, \(F_p^n\) and thus \(a, b\) are unknown. Consider two possibilities:
+
+Normal Approximation: It holds that \( \mathbb{E}_p^n[X_k] = p \), \( \sigma := \text{Var}_p^n(X_k) = p(1 - p) \). By the central limit theorem, we have
+\[
+\frac{\sqrt{n}}{\sigma} \left( \overline{X}_n - p \right) = \frac{1}{\sqrt{n}} \sum_{k=1}^n \frac{X_k - p}{\sigma} \xrightarrow{d} N(0,1), \quad n \to \infty.
+\]
+
+For \( Z \sim N(0,1) \), it holds that
+\[
+F_p^n(a) = \mathbb{P}_p^n \left( \overline{X}_n - p \leq a \right) = \mathbb{P}_p^n \left( \frac{\sqrt{n}}{\sigma} \left( \overline{X}_n - p \right) \leq \frac{\sqrt{n}}{\sigma} a \right) \approx \mathbb{P}(|Z| \leq \frac{\sqrt{n}}{\sigma} a)
+\]
+\[
+= \Phi \left( \frac{\sqrt{n}}{\sigma} a \right) = \Phi(z_\beta)
+\]
+for \( a := \frac{\sigma}{\sqrt{n}} z_\beta \) (where \( z_\beta \) is the \( \beta \)-quantile of the \( N(0,1) \)-distribution, i.e., \( \Phi(z_\beta) = \beta \)). In particular, \( R_n = o(1) \) (i.e., \( R_n \to 0 \) as \( n \to \infty \)). For \( a = b \) (since the \( N(0,1) \)-distribution is symmetric) and because \( \Phi(-x) = 1 - \Phi(x) \), it follows that
+\[
+\mathbb{P}_p^n(p \in C_{1-\alpha}) = F_p^n(a) - F_p^n(-a) + R_n \approx \Phi(z_\beta) - (1 - \Phi(z_\beta)) + o(1) = 2 \Phi(z_\beta) - 1 + o(1).
+\]
+
+For \( \beta = 1 - \alpha/2 \), \( C_{1-\alpha} \) is an asymptotically correct confidence interval. However, \( p \) and therefore \( \sigma \) and \( a \) are unknown. Solutions:
+
+\begin{itemize}
+    \item Estimate \( \sigma = p(1 - p) \leq 1/4 \) to widen the confidence interval.
+    
+    \item For the empirical variance \( \hat{\sigma}^2 = \frac{1}{n} \sum_{k=1}^n (X_k - \overline{X}_n)^2 \), we have \( \hat{\sigma}^2 \to \sigma^2 \) almost surely (by the law of large numbers). Using Slutsky’s lemma (Lemma: For random variables \( (X_n, Y_n)_{n \geq 1} \) with \( X_n \xrightarrow{d} X \), \( Y_n \xrightarrow{p} c \in \mathbb{R} \) (where \( c \) is deterministic), it holds that \( X_n + Y_n \xrightarrow{d} X + c \) and \( X_n \cdot Y_n \xrightarrow{d} c \cdot X \)), it follows that
+    \[
+    \frac{\sqrt{n}}{\hat{\sigma}} \left( \overline{X}_n - p \right) = \frac{\sigma}{\hat{\sigma}} \cdot \frac{\sqrt{n}}{\sigma} \left( \overline{X}_n - p \right) \xrightarrow{d} N(0,1), \quad n \to \infty.
+    \]
+\end{itemize}
+
+From this, we derive \( a = \frac{\hat{\sigma}}{\sqrt{n}} z_{1 - \alpha / 2} \) (randomly chosen).
+
+\[
+\mathbb{P}_p^n(p \in C_{1 - \alpha}) = \mathbb{P}_p^n \left( |\overline{X}_n - p| \leq a \right) = \mathbb{P}_p^n \left( \left| \frac{\sqrt{n}}{\hat{\sigma}} (\overline{X}_n - p) \right| \leq z_{1 - \alpha / 2} \right)
+\]
+\[
+\approx \mathbb{P}(|Z| \leq z_{1 - \alpha / 2}) = 2 \Phi(z_{1 - \alpha / 2}) - 1 = 1 - \alpha.
+\]
+\end{example}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\iffalse
+
+
+\appendix
+
+\numberwithin{definition}{section}
+\numberwithin{theorem}{section}
+\numberwithin{proposition}{section}
+\numberwithin{lemma}{section}
+\numberwithin{corollary}{section}
+\numberwithin{remark}{section}
+\numberwithin{example}{section}
+\numberwithin{supplement}{section}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Appendix to the chapters} \label{ch:appendix}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introducing the problem}\label{sec: appendix to chap 1}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+.....
+
+\fi 
+
+\medskip
+\printbibliography[heading=bibintoc,title={References}] % you can change the title however you want
+\end{document}
