@@ -716,7 +716,7 @@ Let \((\mathcal{X}, \mathcal{F}, (\mathbb{P}_{\theta})_{\theta \in \Theta})\) be
 \]
 \end{definition}
 
-Note: The following example was only started in Lecture 4 and may be fully covered in Lecture 5.
+\textbf{Note:} The following example was only started in Lecture 4 and may be fully covered in Lecture 5.
 
 \begin{example}
 Consider the statistical model \((\{0,1\}^n, \mathcal{P}(\{0,1\}^n), (\mathbb{P}_p)_{p \in [0,1]})\) with \(\mathbb{P}_p = \text{Ber}(p)^{\otimes n}\) and independent observations \(X_k \sim \text{Ber}(p)\), \( k \in \{0, \ldots, n\}\). We are looking for a confidence interval \( C_{1-\alpha} \) around \( \hat{p} = \overline{X}_n = \frac{1}{n} \sum_{k=1}^n X_k \), i.e.,
@@ -739,7 +739,7 @@ where \( R_n = \mathbb{P}_p \left( \overline{X}_n - p = -b \right) \). Choose \(
 
 However, \(F_p^n\) and thus \(a, b\) are unknown. Consider two possibilities:
 
-Normal Approximation: It holds that \( \mathbb{E}_p^n[X_k] = p \), \( \sigma := \text{Var}_p^n(X_k) = p(1 - p) \). By the central limit theorem, we have
+\paragraph{Normal Approximation.} It holds that \( \mathbb{E}_p^n[X_k] = p \), \( \sigma := \text{Var}_p^n(X_k) = p(1 - p) \). By the central limit theorem, we have
 \[
 \frac{\sqrt{n}}{\sigma} \left( \overline{X}_n - p \right) = \frac{1}{\sqrt{n}} \sum_{k=1}^n \frac{X_k - p}{\sigma} \xrightarrow{d} N(0,1), \quad n \to \infty.
 \]
@@ -776,6 +776,114 @@ From this, we derive \( a = \frac{\hat{\sigma}}{\sqrt{n}} z_{1 - \alpha / 2} \) 
 \approx \mathbb{P}(|Z| \leq z_{1 - \alpha / 2}) = 2 \Phi(z_{1 - \alpha / 2}) - 1 = 1 - \alpha.
 \]
 \end{example}
+
+\section{Hypothesis Testing}
+
+\subsection{Basic Definitions}
+Let \( (P_\theta : \theta \in \Theta) \) be a statistical model, and let \(\Theta = \Theta_0 \cup \Theta_1\) be a partition:
+\begin{itemize}
+    \item A \textbf{statistical test} is a measurable function of the data \( \varphi : (\mathcal{X}, \mathcal{F}) \to [0,1] \).
+    \item If \( \varphi(x) \in \{0,1\} \) for all \( x \in \mathcal{X} \), then \( \varphi \) is a \textbf{non-randomized test}; otherwise, it is \textbf{randomized}.
+    \item \( H_0 : \theta \in \Theta_0 \) is the \textbf{null hypothesis}.
+    \item \( H_1 : \theta \in \Theta_1 \) is the \textbf{alternative hypothesis}.
+    \item The map \( \theta \to \beta_\varphi (\theta) = P_\theta (\varphi = 1) \) is called the \textbf{power function} of a test \( \varphi \).
+\end{itemize}
+
+\subsection{Type I and Type II Errors}
+\begin{itemize}
+    \item For \(\theta \in \Theta_0\), \( \beta_\varphi(\theta) \) represents the \textbf{Type I error} (wrongly rejecting the null).
+    \item For \(\theta \in \Theta_1\), \(1 - \beta_\varphi(\theta)\) represents the \textbf{Type II error} (failing to reject the alternative when it is true).
+\end{itemize}
+
+\[
+1 \quad \quad \beta_\varphi(\theta) \quad 0 \quad \quad \Theta_0 \quad \quad \Theta_1 \quad \quad \Theta
+\]
+
+\textbf{Note:}
+\[
+1 - P_\theta (\varphi = 1) = P_\theta (\varphi = 0) = P_\theta \text{ (wrongly accepting the null)}
+\]
+
+\subsection{Level and Uniformly Most Powerful Tests}
+\begin{definition}[Level]
+A test \( \varphi : \mathcal{X} \to [0,1] \) has \textbf{level} \( \alpha \in [0,1] \) if
+\[
+\sup_{\theta \in \Theta_0} \beta_\varphi (\theta) \leq \alpha.
+\]
+\end{definition}
+
+\begin{definition}[Uniformly Most Powerful Test]
+Given a level \( \alpha \in (0,1) \), \( \varphi : \mathcal{X} \to [0,1] \) is called \textbf{uniformly most powerful (UMP)} if, for every other test \( \varphi' \) of level \( \alpha \) and all \( \theta \in \Theta_1 \),
+\[
+\beta_\varphi (\theta) \geq \beta_{\varphi'}(\theta).
+\]
+\end{definition}
+
+\subsection{The Neyman-Pearson Lemma}
+The Neyman-Pearson Lemma provides a basis for constructing the most powerful tests for simple hypotheses:
+\begin{theorem}[Neyman-Pearson Lemma]
+Let \( \Theta_0 = \{\theta_0\}\) and \( \Theta_1 = \{\theta_1\}\) be simple hypotheses:
+\begin{enumerate}
+    \item \textbf{Existence:} There exists a test \( \varphi \) and a constant \( k \in [0, \infty) \) such that \( P_{\theta_0} (\varphi = 1) = \alpha \), with
+    \[
+    \varphi(x) = 
+    \begin{cases}
+      1, & \text{if } \frac{p_{\theta_1}(x)}{p_{\theta_0}(x)} > k \\
+      0, & \text{if } \frac{p_{\theta_1}(x)}{p_{\theta_0}(x)} < k
+    \end{cases}
+    \]
+    Here, \( p_{\theta_1} \) and \( p_{\theta_0} \) are densities with respect to some dominated measure \( \mu \).
+    
+    \item \textbf{Sufficiency:} If \( \varphi \) satisfies \( P_{\theta_0} (\varphi = 1) = \alpha \) and the above form, then \( \varphi \) is a UMP level \( \alpha \) test.
+    
+    \item \textbf{Necessity:} If \( \varphi_k \) is UMP for level \( \alpha \), then it must be of the form shown above.
+\end{enumerate}
+\end{theorem}
+
+\subsection{Proof of the Neyman-Pearson Lemma}
+\begin{enumerate}
+    \item Define the likelihood ratio \( r(x) = \frac{p_{\theta_1}(x)}{p_{\theta_0}(x)} \in [0, \infty) \). Let \( F_0 \) be the CDF of \( r(x) \) under \( P_{\theta_0} \).
+    \[
+    F_0(t) = P_{\theta_0} (r(x) \leq t).
+    \]
+    Define \( \alpha(t) = 1 - F_0(t) = P_{\theta_0} (r(x) > t) \) and note:
+    \begin{itemize}
+        \item \( \alpha \) is right-continuous:
+        \[
+        \lim_{\epsilon \to 0} \alpha(t + \epsilon) = P_{\theta_0} (r(x) > t).
+        \]
+        \item \( \alpha \) is non-increasing.
+        \item \( \alpha \) has left limits.
+    \end{itemize}
+
+    \textbf{\( \alpha \) is cadlag:} It is continuous from the right and has a left limit.
+
+    \[
+    \text{There exists } k \in [0, \infty) \text{ such that }
+    \alpha \leq \alpha(k^-) \quad \text{and} \quad \alpha \geq \alpha(k).
+    \]
+
+    We define the test
+    \[
+    \varphi(x) = 
+    \begin{cases} 
+      1 & \text{if } r(x) > k, \\
+      \gamma & \text{if } r(x) = k, \\
+      0 & \text{if } r(x) < k.
+    \end{cases}
+    \]
+    
+    Set \(\gamma = \frac{\alpha - \alpha(k)}{\alpha(k^-) - \alpha(k)}\).
+
+    The level of \( \varphi \) is
+    \[
+    E_{\theta_0} [\varphi(x)] = P_{\theta_0} (\varphi(x) = 1).
+    \]
+    \[
+    = P_{\theta_0} (r(x) > k) + P_{\theta_0} (r(x) = k) \cdot \gamma = \alpha.
+    \]
+\end{enumerate}
+
 
 
 
