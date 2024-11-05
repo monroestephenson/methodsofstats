@@ -1,0 +1,234 @@
+\documentclass{article}
+\usepackage{amsmath, amssymb}
+
+\begin{document}
+
+We want to construct \( C(x) \) s.t. \( P_\theta (\theta \in C(x)) \geq 1 - \alpha, \, \forall \theta \in [0,1] \)
+
+\[
+x^{(1)} \quad \quad ( \quad ) \quad C(x^{(1)}) 
+\]
+\[
+x^{(k)} \quad \quad ( \quad ) \quad C(x^{(k)}) 
+\]
+\[
+\theta \rightarrow \quad \rightarrow \quad \rightarrow \quad \text{contains true param 3/4 times}
+\]
+
+\section*{Example cont.:}
+Best guess: \( C(x) = \left[ \frac{\bar{X}_n - a}{n}, \frac{\bar{X}_n + b}{n} \right] \)
+
+\[
+P_\theta^n (\theta \in C(x)) = P_\theta^n \left( \frac{\bar{X}_n}{n} - \theta \in [-b, a] \right)
+\]
+\[
+= F_\theta^n (a) - F_\theta^n (-b) + \rho_n
+\]
+where \( F_\theta^n: \mathbb{R} \to [0,1], F_\theta^n(t) = P_\theta^n \left( \frac{\bar{X}_n - \theta}{n} \leq t \right) \) is the CDF of \( \frac{\bar{X}_n - \theta}{n} \) under \( P_\theta \) and \( \rho_n = P_\theta^n \left( \frac{\bar{X}_n}{n} - \theta = -b \right) \).
+
+\subsection*{How to choose a and b:}
+\[
+\text{CDF} \quad \text{CDF} \quad \leftarrow \quad -b \quad a \rightarrow t
+\]
+We'd like to choose \( a = (F_\theta^n)^{-1} \left( 1 - \frac{\alpha}{2} \right) \) and \( b = (F_\theta^n)^{-1} \left( \frac{\alpha}{2} \right) \), where
+
+\[
+(F_\theta^n)^{-1} (p) := \inf \{t \in \mathbb{R} : F_\theta^n(t) \geq x \} \quad \text{(Quantile Function)}
+\]
+
+Let's use a normal approximation, for \( \sigma^2 = \theta(1 - \theta) \):
+\[
+\sqrt{n} \left( \frac{\bar{X}_n}{n} - \theta \right) = \frac{1}{\sqrt{n}} \sum_{k=1}^n \frac{X_k - \theta}{\sigma} \overset{d}{\to} \mathcal{N}(0,1) \quad \text{[CLT]}
+\]
+
+\( X_k \sim \text{Ber}(\theta) \)
+
+Then it follows that
+\[
+F_\theta^n(a_n) = P_\theta^n \left( \frac{\bar{X}_n}{n} - \theta \leq a_n \right)
+\]
+\[
+= P_\theta^n \left( \frac{\sqrt{n}}{\sigma} \left( \frac{\bar{X}_n - \theta}{n} \right) \leq \sqrt{n} a_n \right)
+\]
+\[
+= \Phi \left( \frac{\sqrt{n}}{\sigma} a_n \right),
+\]
+where the convergence is valid if \( a_n := \text{const.} \frac{1}{\sqrt{n}} \).
+
+Now, let us choose
+
+\[
+a := \frac{\sigma}{\sqrt{n}} z_{1 - \frac{\alpha}{2}}
+\]
+where \( z_{1 - \frac{\alpha}{2}} = \Phi^{-1} \left( 1 - \frac{\alpha}{2} \right) \) is the \( 1 - \frac{\alpha}{2} \) quantile of \( \mathcal{N}(0,1) \) and \( b = a \). Then
+
+\[
+C(x) = \left[ \frac{\bar{X}_n}{n} - \frac{\sigma}{\sqrt{n}} z_{1 - \frac{\alpha}{2}}, \frac{\bar{X}_n}{n} + \frac{\sigma}{\sqrt{n}} z_{1 - \frac{\alpha}{2}} \right]
+\]
+
+It follows
+\[
+P_\theta^n (\theta \in C(x)) = F_\theta^n (a_n) - F_\theta^n (b) + \rho_n = 1 - \frac{\alpha}{2} + o(1) + o(1)
+\]
+\[
+= 1 - \alpha + o(1) \text{ as } n \to \infty
+\]
+
+\[
+\Rightarrow \text{ Asymptotically valid confidence set}
+\]
+
+One more problem: \( \sigma \) depends on \( \theta \)
+\begin{itemize}
+    \item Upper bound: \( \sup_{\theta \in [0,1]} \theta(1 - \theta) = \frac{1}{4} \) (maximized at \( \theta = \frac{1}{2} \))
+    \item Empirical Variance: \( \hat{\sigma}^2 = \frac{1}{n} \sum_{i=1}^n (X_i - \frac{1}{n} \sum_{i=1}^n X_i)^2 \)
+\end{itemize}
+
+\[
+\frac{\hat{\sigma}^2}{\sigma^2} \overset{P_\theta}{\to} 1
+\]
+
+\subsection*{Slutsky's Theorem:}
+\[
+X_n \overset{d}{\to} X, \quad Y_n \overset{d}{\to} \text{const.} \Rightarrow X_n Y_n \overset{d}{\to} CX
+\]
+
+\[
+\text{Exercise: Use this to deduce that } a_n = \frac{\hat{\sigma}}{\sqrt{n}} z_{1 - \frac{\alpha}{2}} \text{ is also valid}
+\]
+
+\subsection*{Remark:}
+% \begin{itemize}
+%     \item Confidence sets have width \( o \left( \frac{1}{\sqrt{n}} \right) \)
+%     \item Many confidence sets rely on limiting distributions of derived quantities such as
+%     \[
+%     \frac{\sqrt{n}}{\hat{\sigma}} \left( \frac{\bar{X}_n}{n} - \theta \right)
+%     \]
+%     \item Non-asymptotic versions require refined probability inequalities, for e.g.:\[P \left( \frac{\bar{X}_n}{n} - E \left[ \frac{\bar{X}_n}{n} \right] \leq \epsilon \right) \quad \text{[Hoeffding's inequality]}
+% \end{itemize}
+\section*{Hypothesis Testing}
+
+\textbf{Definition:} Let \( (P_\theta : \theta \in \Theta) \) be a statistical model and let \( \Theta = \Theta_0 \cup \Theta_1 \) be a partition. Then:
+\begin{itemize}
+    \item A statistical test is a measurable function of the data \( \varphi : (\mathcal{X}, \mathcal{F}) \to [0,1] \)
+    \item If \( \forall x \in \mathcal{X}, \varphi(x) \in \{0,1\} \), then \( \varphi \) is a non-randomized test
+    \item Else \( \varphi \) is randomized
+\end{itemize}
+
+\subsection*{Definitions:}
+\begin{itemize}
+    \item \( H_0 : \theta \in \Theta_0 \) is called the null hypothesis
+    \item \( H_1 : \theta \in \Theta_1 \) is called the alternative hypothesis
+    \item The map \( \theta \to \beta_\varphi (\theta) = P_\theta [\varphi = 1] \) is called the power function of a test \( \varphi \)
+\end{itemize}
+
+\[
+1 \quad \quad \beta_\varphi(\theta) \quad 0 \quad \quad \Theta_0 \quad \quad \Theta_1 \quad \quad \Theta
+\]
+
+\begin{itemize}
+    \item For \( \theta \in \Theta_0 \), \( \beta_\varphi(\theta) \) is the type-I-error under \( \theta \) [Wrongly rejecting the null]
+    \item For \( \theta \in \Theta_1 \), \( 1 - \beta_\varphi(\theta) \) is the type-II-error
+\end{itemize}
+\textbf{Note:}
+\[
+1 - P_\theta (\varphi = 1) = P_\theta (\varphi = 0) = P_\theta \text{ (wrongly accepting the null)}
+\]
+
+\textbf{Definition: [Level]} \\
+\( \varphi : \mathcal{X} \to [0,1] \) has level \( \alpha \in [0,1] \) if
+\[
+\sup_{\theta \in \Theta_0} \beta_\varphi (\theta) \leq \alpha
+\]
+
+\textbf{Definition: [Uniformly most powerful test]} \\
+Given a level \( \alpha \in (0,1) \), \( \varphi : \mathcal{X} \to [0,1] \) is called UMP if for every other test \( \varphi' \) of level \( \alpha \) and all \( \theta \in \Theta_1 \),
+\[
+\beta_\varphi (\theta) \geq \beta_{\varphi'}(\theta)
+\]
+
+\[
+1 \quad \alpha \quad 0 \quad \quad \quad \beta_\varphi (\theta) \quad \quad \beta_{\varphi'}(\theta) \quad \quad \quad \Theta_0 \quad \quad \Theta_1
+\]
+
+\subsection*{Remark:}
+In general, it is very hard to find UMP tests. But: for simple hypotheses, i.e. \( \Theta_0 = \{\theta_0\}, \Theta_1 = \{\theta_1\} \), it is possible. Here, likelihood ratio tests are UMP.
+
+\subsection*{Theorem: [Neyman-Pearson Lemma]}
+Let \( \Theta_0 = \{\theta_0\}, \Theta_1 = \{\theta_1\} \) be simple:
+\begin{enumerate}
+    \item \textbf{Existence:} There exists a test \( \varphi \) and a constant \( k \in [0, \infty) \), s.t. \( P_{\theta_0} (\varphi = 1) = \alpha \), of the form
+    \[
+    \varphi(x) = 
+    \begin{cases}
+      1, & \text{if } \frac{p_{\theta_1}(x)}{p_{\theta_0}(x)} > k \\
+      0, & \text{if } \frac{p_{\theta_1}(x)}{p_{\theta_0}(x)} < k
+    \end{cases} \quad (*)
+    \]
+    Here \( p_{\theta_1}, p_{\theta_0} \) are densities w.r.t. some dominated measure \( \mu \), e.g. \( \mu = p_{\theta_0} + p_{\theta_1} \). Finite \( \Theta \) implies measure is always dominated (likelihood always exists).
+    
+    \item \textbf{Sufficiency:} If \( \varphi \) satisfies \( P_{\theta_0} (\varphi = 1) = \alpha \) and \( (*) \) then \( \varphi \) is a UMP level \( \alpha \) test.
+    
+    \item \textbf{Necessity:} If \( \varphi_k \) is UMP for level \( \alpha \), then it must be of the form \( (*) \), and it also satisfies \( P_{\theta_0} (\varphi_k = 1) = \alpha \), or else it must satisfy \( P_{\theta_1} (\varphi_k = 1) = 1 \).
+\end{enumerate}
+
+\subsection*{Proof:}
+\begin{enumerate}
+    \item Define \( r(x) = \frac{p_{\theta_1}(x)}{p_{\theta_0}(x)} \in [0, \infty) \cup \{\pm \infty\} \). Let \( F_0 \) be the CDF of \( r(x) \) under \( P_{\theta_0} \).
+    \[
+    F_0(t) = P_{\theta_0} (r(x) \leq t)
+    \]
+    Then define also \( \alpha(t) = 1 - F_0(t) = P_{\theta_0} (r(x) > t) \)
+    \begin{itemize}
+        \item \( \alpha \) is right-continuous:
+        \[
+        \lim_{\epsilon \to 0} \alpha(t + \epsilon) = \lim_{\epsilon \to 0} P_{\theta_0} (r(x) > t + \epsilon) = P_{\theta_0} (r(x) > t) = \alpha(t)
+        \]
+        \item \( \alpha \) is non-increasing
+        \item \( \alpha \) has left limits
+        \[
+        \lim_{\epsilon \to 0} \alpha(t - \epsilon) = P_{\theta_0} (r(x) > t - \epsilon) = \alpha(t^-)
+        \]
+    \end{itemize}
+
+    \textbf{\( \alpha \) is cadlag:}
+    \begin{itemize}
+        \item Continuous from the right
+        \item Limit from the left
+    \end{itemize}
+    \[
+    \text{There exists some } k \in [0, \infty) \text{ s.t. }
+    \alpha \leq \alpha(k^-) \quad \text{and} \quad \alpha \geq \alpha(k)
+    \]
+
+    We define our test
+    \[
+    \varphi(x) = 
+    \begin{cases} 
+      1 & \text{if } r(x) > k \\
+      \gamma & \text{if } r(x) = k \quad \text{[reject null w.p. } \gamma] \\
+      0 & \text{if } r(x) < k 
+    \end{cases}
+    \]
+    
+    We set
+    \[
+    \gamma = \frac{\alpha - \alpha(k)}{\alpha(k^-) - \alpha(k)}
+    \]
+
+    The level of \( \varphi \) is
+    \[
+    E_{\theta_0} [\varphi(x)] = P_{\theta_0} (\varphi(x) = 1)
+    \]
+    \[
+    = P_{\theta_0} (r(x) > k) + P_{\theta_0} (r(x) = k) \cdot \gamma
+    \]
+    \[
+    = \alpha(k) + \left[ \alpha(k^-) - \alpha(k) \right] \cdot \frac{\alpha - \alpha(k)}{\alpha(k^-) - \alpha(k)} = \alpha
+    \]
+    \[
+    \text{(randomizing the test)}
+    \]
+\end{enumerate}
+
+\end{document}
