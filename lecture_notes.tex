@@ -883,6 +883,225 @@ Let \( \Theta_0 = \{\theta_0\}\) and \( \Theta_1 = \{\theta_1\}\) be simple hypo
     = P_{\theta_0} (r(x) > k) + P_{\theta_0} (r(x) = k) \cdot \gamma = \alpha.
     \]
 \end{enumerate}
+\chapter{Lecture 6: Neyman-Pearson Lemma and Likelihood Ratio Tests}
+\section*{Neyman-Pearson Lemma}
+
+\subsection*{Power of a Test}
+The \textbf{power} of a test is defined as:
+\[
+E_{\theta_1}[\varphi] = P_{\theta_1}(\varphi = 1)
+\]
+
+\subsection*{Likelihood Ratio Test}
+The \textbf{likelihood ratio} is given by:
+\[
+\Lambda(x) = \frac{p_{\theta_1}(x)}{p_{\theta_0}(x)} = r(x)
+\]
+
+\subsection*{Likelihood Ratio (LR) Test}
+The LR test is defined as:
+\[
+\varphi(x) = 
+\begin{cases} 
+1 & \text{if } r(x) > k, \\
+\gamma & \text{if } r(x) = k, \\
+0 & \text{if } r(x) < k,
+\end{cases}
+\]
+where \( k \in [0, \infty) \) and \( \gamma \in [0, 1] \).
+
+\textbf{Note:} LR tests are Uniformly Most Powerful (UMP) for simple hypothesis testing:
+\begin{itemize}
+    \item Given a significance level \( \alpha \), if the LR test satisfies \( E_{\theta_0}[\varphi] = \alpha \), it controls the Type I error.
+    \item The LR test minimizes the Type II error:
+    \[
+    E_{\theta_1}[\varphi] \geq E_{\theta_1}[\varphi'] \quad \forall \varphi'
+    \]
+\end{itemize}
+
+\subsection*{Continuation of Proof (Part of UMP)}
+Let \( \varphi' \) be another level \( \alpha \) test such that \( E_{\theta_0}[\varphi'] \leq \alpha \).
+
+\textbf{Goal:} Show that \( E_{\theta_1}[\varphi] \geq E_{\theta_1}[\varphi'] \).
+
+Let \( \mu \) be the dominating measure. Consider:
+\[
+\int (\varphi(x) - \varphi'(x)) \left( p_{\theta_1}(x) - k p_{\theta_0}(x) \right) d\mu(x) = 0
+\]
+\textbf{Claim:} \( p \geq 0 \).
+
+\textbf{Observation:}
+\begin{itemize}
+    \item If \( p_{\theta_1}(x) - k p_{\theta_0}(x) > 0 \), then \( \frac{p_{\theta_1}(x)}{p_{\theta_0}(x)} > k \), implying \( \varphi(x) = 1 \).
+    \item If \( p_{\theta_1}(x) - k p_{\theta_0}(x) < 0 \), then \( \varphi(x) = 0 \).
+    \item If \( p_{\theta_1}(x) - k p_{\theta_0}(x) = 0 \), then the integrand is \( 0 \).
+\end{itemize}
+Thus, \( p = 0 \), leading to:
+\[
+\int (\varphi - \varphi') p_{\theta_1} \, d\mu = \int (\varphi - \varphi') p_{\theta_0} \, d\mu = k \left[ E_{\theta_0}[\varphi] - E_{\theta_0}[\varphi'] \right] \geq 0
+\]
+Therefore,
+\[
+E_{\theta_1}[\varphi] \geq E_{\theta_1}[\varphi']
+\]
+
+\subsection*{Part (3) UMP \(\Rightarrow\) LR}
+Assume \( \varphi^* \) is a UMP test with \( E_{\theta_0}[\varphi^*] = \alpha \). Let \( \varphi \) be the LR test satisfying \( E_{\theta_0}[\varphi] = \alpha \).
+
+\textbf{Goal:} Show that \( \varphi = \varphi^* \) almost everywhere except on \( \{ r(x) = k \} \).
+
+Define the sets:
+\[
+x^+ = \{ x : \varphi(x) > \varphi^*(x) \}, \quad 
+x^- = \{ x : \varphi(x) < \varphi^*(x) \}, \quad
+x^0 = \{ x : \varphi(x) = \varphi^*(x) \}
+\]
+\[
+\tilde{x} = (x^+ \cup x^-) \cap \{ x : p_{\theta_1}(x) \neq k p_{\theta_0}(x) \}
+\]
+It suffices to show \( \mu(\tilde{x}) = 0 \).
+
+On \( \tilde{x} \):
+\[
+(\varphi - \varphi^*) (p_{\theta_1} - k p_{\theta_0}) > 0
+\]
+If \( \mu(\tilde{x}) > 0 \), then:
+\[
+\int_{\mathcal{X}} (\varphi - \varphi^*)(p_{\theta_1} - k p_{\theta_0}) \, d\mu \geq 0
+\]
+\[
+\int_{\tilde{x}} (\varphi - \varphi^*)(p_{\theta_1} - k p_{\theta_0}) \, d\mu \geq 0
+\]
+However,
+\[
+E_{\theta_1}[\varphi] - E_{\theta_1}[\varphi^*] > k \left[ E_{\theta_0}[\varphi] - E_{\theta_0}[\varphi^*] \right] \geq 0
+\]
+This leads to a contradiction, implying \( \mu(\tilde{x}) = 0 \) and thus \( \varphi = \varphi^* \) almost everywhere.
+
+\subsection*{Example: Gaussian Location Model}
+Consider:
+\[
+X_1, \dots, X_n \overset{\text{iid}}{\sim} \mathcal{N}(\mu, \sigma^2)
+\]
+Testing:
+\[
+H_0 : \mu = \mu_0 \quad \text{vs.} \quad H_1 : \mu = \mu_1, \quad \mu_0 < \mu_1
+\]
+The likelihood ratio is:
+\[
+\frac{p_1(X_1, \dots, X_n)}{p_0(X_1, \dots, X_n)} = \exp \left( -\frac{1}{2\sigma^2} \sum_{i=1}^n (X_i - \mu_1)^2 + \frac{1}{2\sigma^2} \sum_{i=1}^n (X_i - \mu_0)^2 \right)
+\]
+Simplifying:
+\[
+= \exp \left( -\frac{n}{2\sigma^2} (\mu_1^2 - \mu_0^2) - \frac{2(\mu_1 - \mu_0)}{\sigma^2} \sum_{i=1}^n X_i \right) \geq K_\alpha
+\]
+This implies:
+\[
+\frac{1}{n} \sum_{i=1}^n X_i \geq K_\alpha, \quad \text{for some } K_\alpha \in \mathbb{R}
+\]
+To determine \( K_\alpha \):
+\[
+\bar{X}_n := \frac{1}{n} \sum X_i \overset{H_0}{\sim} \mathcal{N}\left(\mu_0, \frac{\sigma^2}{n}\right)
+\]
+Thus:
+\[
+P_{H_0} \left( \bar{X}_n \geq K_\alpha \right) = 1 - \Phi \left( \frac{\sqrt{n}}{\sigma} (K_\alpha - \mu_0) \right)
+\]
+Solving for \( K_\alpha \):
+\[
+K_\alpha = \mu_0 + \frac{\sigma}{\sqrt{n}} \Phi^{-1}(1 - \alpha)
+\]
+Therefore, the LR test is:
+\[
+\varphi(X_1, \dots, X_n) = 
+\begin{cases} 
+1 & \text{if } \bar{X}_n \geq \mu_0 + \frac{\sigma}{\sqrt{n}} \Phi^{-1}(1 - \alpha), \\
+0 & \text{otherwise}.
+\end{cases}
+\]
+
+\section*{Corollary}
+
+Consider simple hypothesis testing. Let \( \varphi \) be a UMP test at level \( \alpha \). Then:
+\[
+\alpha = E_{H_0}[\varphi] \leq E_{\theta_1}[\varphi]
+\]
+Suppose \( E_{\theta_1}[\varphi] = E_{\theta_1}[\varphi_0] \). Then \( \varphi_0 \) is also UMP, implying \( \varphi_0 \) is an LR test:
+\[
+\varphi_0 = 
+\begin{cases} 
+1 & \text{if } \frac{p_{\theta_1}}{p_{\theta_0}} \geq K \quad \text{a.s., for some } K, \\
+0 & \text{otherwise}.
+\end{cases}
+\]
+Since \( \varphi_0 \in \{\varphi, \beta\} \), it follows that \( p_{\theta_1} = K p_{\theta_0} \) almost surely.
+
+Moreover:
+\[
+\int p_{\theta_0} \, d\mu = K \int p_{\theta_0} \, d\mu = 1 \quad \Rightarrow \quad K = 1
+\]
+
+\subsection*{Correspondence Theorem}
+
+\textbf{Statement:} There is a correspondence between tests and confidence regions.
+
+\[
+\text{Tests} \quad \longleftrightarrow \quad \text{Confidence regions } C(x)
+\]
+with
+\[
+\Pr_{\theta}(\theta \in C(x)) \geq 1 - \alpha
+\]
+and
+\[
+\Pr_{\theta}(\phi_{\theta}(x) = 1) = \alpha
+\]
+
+\textbf{Theorem:} Let \( \{P_\theta : \theta \in \Theta\} \) be a statistical model and \( \alpha \in (0, 1) \).
+
+\begin{enumerate}
+    \item[(i)] If \( C = C(X) \) is a level-\(\alpha\) confidence set, then
+    \[
+    \phi_{\theta_0}(x) = \mathbb{I}\left\{ \theta_0 \notin C(x) \right\}
+    \]
+    is a level-\(\alpha\) test for \( H_0: \theta = \theta_0 \) vs. \( H_1: \theta \neq \theta_0 \).
+    
+    \item[(ii)] If \( \{\phi_{\theta} : \theta \in \Theta \} \) is a family of level-\(\alpha\) tests, then
+    \[
+    C(X) = \left\{ \theta \in \Theta : \phi_{\theta}(X) = 0 \right\}
+    \]
+    is a \( 1 - \alpha \) confidence set.
+\end{enumerate}
+
+\textbf{Proof:}
+\begin{enumerate}
+    \item[(i)] 
+    \[
+    \Pr_{\theta_0}(\phi_{\theta_0} = 1) = \Pr_{\theta_0}(\theta_0 \notin C(X)) \leq \alpha
+    \]
+    
+    \item[(ii)] 
+    \[
+    \Pr_{\theta}(\theta \notin C(X)) = \Pr_{\theta}(\phi_{\theta}(X) = 1) \leq \alpha
+    \]
+\end{enumerate}
+
+\section*{UMPT Tests in Models with Monotone Likelihoods}
+
+\textbf{Proposition:} Let \( \Theta \subseteq \mathbb{R} \). Consider testing:
+\[
+H_0 : \theta \leq \theta_0 \quad \text{vs.} \quad H_1 : \theta > \theta_0,
+\]
+for some \( \theta_0 \in \mathbb{R} \).
+
+Assume there exists a test statistic \( T : X \to \mathbb{R} \) and a function \( h : \mathbb{R} \times \Theta \times \Theta \to \mathbb{R} \) such that:
+\[
+\frac{P_{\theta}(X)}{P_{\tilde{\theta}}(X)} = h(T(X), \theta, \tilde{\theta})
+\]
+and for all \( \theta \geq \tilde{\theta} \), the function \( t \mapsto h(t, \theta, \tilde{\theta}) \) is monotone increasing.
+
+\textbf{Conclusion:} LR tests are also UMP for level \( \alpha \). Specifically, the LR test of \( H_0: \theta = \theta_0 \) against \( H_1: \theta = \theta_1 \) for any \( \theta_1 > \theta_0 \) will be UMP.
+
 
 
 

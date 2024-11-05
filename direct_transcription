@@ -1,7 +1,329 @@
 \documentclass{article}
-\usepackage{amsmath, amssymb}
+\usepackage{amsmath, amssymb, amsthm, geometry, fancyhdr}
+\usepackage{hyperref}
+
+% Page formatting
+\geometry{a4paper, margin=1in}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{Methods of Statistics Notes}
+\fancyhead[R]{WS 2024/2025}
+\fancyfoot[C]{\thepage}
+
+% Title, author, and date
+\title{Methods of Statistics Notes}
+\author{WS 2024/2025}
+\date{October 2024}
+
+% Theorem environments
+\newtheorem{theorem}{Theorem}
+\newtheorem{definition}{Definition}
+\newtheorem{remark}{Remark}
+\newtheorem{example}{Example}
+\newtheorem{corollary}{Corollary}
+\newtheorem{lemma}{Lemma}
 
 \begin{document}
+
+% Chapter 1: Basic Statistical Concepts
+\section{Basic Statistical Concepts}
+
+Consider a poll with two answers, A and B, regarding political parties. Let:
+\begin{itemize}
+    \item $N$: total number of voters,
+    \item $M$: number of voters supporting A,
+    \item $n$: size of the poll,
+    \item $X_1, X_2, \ldots, X_n$: responses,
+    \item Each $X_i \in \{0, 1\}$ if $X_i = 1$ supports A.
+\end{itemize}
+
+Additionally, assume:
+\begin{itemize}
+    \item We select $n$ individuals from $N$ at random and record their truthful reply,
+    \item Every person asked replies (no selection bias),
+    \item People can be asked repeatedly.
+\end{itemize}
+
+The aim of the poll is to estimate the fraction of party A supporters, say $\theta$.
+
+\begin{definition}[Estimator]
+An intuitive estimator is:
+\[
+\hat{\theta} = \frac{1}{n} \sum_{i=1}^n X_i
+\]
+\end{definition}
+
+This estimator will be analyzed in the following sections to determine whether it is unbiased, consistent, and optimal.
+
+
+
+% Chapter 2: Statistical Models
+\section{Statistical Models}
+
+Let $(X, \mathcal{F})$ be a measurable space, i.e., a set $X$ with a sigma-algebra $\mathcal{F}$, in which our statistical observations take values.
+
+\begin{definition}[Statistical Model]
+Let $(X, \mathcal{F})$ be some sample space. We call the parameter space $\Theta$. A statistical model is a family of probability measures $\{P_\theta\}_{\theta \in \Theta}$.
+\end{definition}
+
+\begin{remark}
+Often $(X, \mathcal{F})$ is a product space. For example, if $X_i \in \{0, 1\}$, each $P_\theta$ is a product distribution, i.e., $X_1, X_2, \ldots, X_n$ are independent and identically distributed (iid). Then we say $\{P_\theta : \theta \in \Theta\}$ is an iid statistical model.
+\end{remark}
+
+\begin{remark}
+If every person could only be asked once, we would have $P_\theta$ as a hypergeometric distribution, which converges to the Bernoulli model as $N, M \to \infty$.
+\end{remark}
+
+
+
+% Chapter 3: Parameter Estimation
+\section{Parameter Estimation}
+
+Assume $(\Omega, \mathcal{F}, P_\theta)$ is the setting of parametric statistics. Assume $\Theta$ is measurable.
+
+\begin{definition}[Estimator]
+An estimator for $\theta$ is any measurable function $\hat{\theta}: X \to \Theta$, i.e., any function that, based on some data $X$, outputs a guess $\hat{\theta}(X)$ for $\theta$.
+\end{definition}
+
+
+
+% Chapter 4: Unbiased and Consistent Estimators
+\section{Unbiased and Consistent Estimators}
+
+\subsection{Unbiased Estimator}
+\begin{definition}[Unbiased Estimator]
+Let $(\Omega, \mathcal{F}, P_\theta)$ be a measurable space. An estimator $\hat{\theta}$ is called unbiased if:
+\[
+\mathbb{E}[\hat{\theta}] = \theta \quad \forall \theta \in \Theta
+\]
+where $\mathbb{E}_{P_\theta}$ denotes expectation under the law $P_\theta$. In more explicit terms, unbiasedness means no systematic error.
+\end{definition}
+
+\begin{proof}
+For the Bernoulli model, we compute:
+\[
+\mathbb{E}[\hat{\theta}_n] = \mathbb{E}\left[\frac{1}{n} \sum_{i=1}^n X_i\right] = \frac{1}{n} \sum_{i=1}^n \mathbb{E}[X_i] = \frac{1}{n} \sum_{i=1}^n \theta = \theta
+\]
+Thus, $\hat{\theta}_n$ is an unbiased estimator of $\theta$.
+\end{proof}
+
+\subsection{Consistent Estimator}
+\begin{definition}[Consistent Estimator]
+Let $\{P_{\theta, n} : n \geq 1 \}$ be a sequence of statistical models on the same parameter space. Let $\hat{\theta}_n$ be a sequence of estimators. The sequence $\hat{\theta}_n$ is called consistent if for every $\theta \in \Theta$:
+\[
+\hat{\theta}_n \to \theta \quad \text{in probability as} \ n \to \infty
+\]
+or equivalently:
+\[
+P_{\theta}\left(\lim_{n \to \infty} \hat{\theta}_n = \theta \right) = 1
+\]
+\end{definition}
+
+\begin{proof}
+For the Bernoulli model:
+\[
+\hat{\theta}_n = \frac{1}{n} \sum_{i=1}^n X_i
+\]
+We know $\mathbb{E}[\hat{\theta}_n] = \theta$ and $\text{Var}(\hat{\theta}_n) = \frac{\theta(1-\theta)}{n}$. Using Chebyshev’s inequality, for any $\epsilon > 0$:
+\[
+P\left( |\hat{\theta}_n - \theta| > \epsilon \right) \leq \frac{\text{Var}(\hat{\theta}_n)}{\epsilon^2} = \frac{\theta(1-\theta)}{n \epsilon^2}
+\]
+As $n \to \infty$, this probability tends to 0, proving that $\hat{\theta}_n$ is consistent.
+\end{proof}
+
+
+
+% Chapter 5: Maximum Likelihood Estimation (MLE)
+\section{Maximum Likelihood Estimation (MLE)}
+
+\begin{definition}[Maximum Likelihood Estimator]
+The maximum likelihood estimator (MLE) is the parameter that maximizes the likelihood function:
+\[
+L(\theta) = \prod_{i=1}^n P_\theta(X_i)
+\]
+\end{definition}
+
+\subsection{Proof: MLE for Bernoulli Model}
+\begin{proof}
+For the Bernoulli model, $P_\theta(X_i) = \theta^{X_i}(1 - \theta)^{1 - X_i}$, so the likelihood function is:
+\[
+L(\theta) = \prod_{i=1}^n \theta^{X_i} (1 - \theta)^{1 - X_i} = \theta^{\sum X_i} (1 - \theta)^{n - \sum X_i}
+\]
+Taking the logarithm:
+\[
+\log L(\theta) = \sum X_i \log \theta + (n - \sum X_i) \log (1 - \theta)
+\]
+Setting the derivative with respect to $\theta$ equal to 0 gives:
+\[
+\frac{d}{d\theta} \log L(\theta) = \frac{\sum X_i}{\theta} - \frac{n - \sum X_i}{1 - \theta} = 0
+\]
+Solving for $\theta$, we get:
+\[
+\hat{\theta}_n = \frac{1}{n} \sum_{i=1}^n X_i
+\]
+which is the MLE.
+\end{proof}
+
+
+
+% Chapter 6: Bayesian Methods
+\section{Bayesian Methods}
+
+\begin{definition}[Posterior Distribution in Bayesian Inference]
+In Bayesian statistics, a key element is the prior distribution, denoted by $\pi(\theta)$, which reflects our beliefs about the parameter $\theta$ before observing data. The posterior distribution is given by:
+\[
+\pi(\theta | X) \propto P_\theta(X) \pi(\theta)
+\]
+\end{definition}
+
+\subsection{Example: Posterior for Bernoulli Model}
+\begin{example}
+Suppose we have a Beta prior for $\theta$, $\pi(\theta) \sim \text{Beta}(\alpha, \beta)$, and observe $X_1, \ldots, X_n$ as Bernoulli trials. The likelihood is:
+\[
+P(X | \theta) = \theta^{\sum X_i} (1 - \theta)^{n - \sum X_i}
+\]
+The posterior is proportional to the product of the prior and likelihood:
+\[
+\pi(\theta | X) \propto \theta^{\sum X_i + \alpha - 1} (1 - \theta)^{n - \sum X_i + \beta - 1}
+\]
+Thus, $\pi(\theta | X) \sim \text{Beta}(\sum X_i + \alpha, n - \sum X_i + \beta)$.
+\end{example}
+
+\section*{Notes on Bayes and Posterior}
+
+\textbf{Posterior} \( = \) prior \( \times \) likelihood
+
+\textbf{Normalizing Constant}
+
+\[ \int \text{Posterior} \, \text{dx} = 1 \]
+
+So,
+
+\[
+\int \text{Posterior} \, \text{dx} = 1
+\]
+
+\textbf{Prior} \( \to \) Posterior via Bayes.
+
+Let \( \mathcal{F}_0 \) be a \(\sigma\)-algebra on \( \Omega \) and suppose \( (\Omega, \mathcal{F}_0, P_{\theta}) \) is a dominated statistical model with densities \( p(x | \theta) \). Assume
+
+\[
+x, \theta \in \Omega \quad \Rightarrow \quad p(x | \theta)
+\]
+
+is jointly measurable with respect to \( \mathcal{F}_0 \times \mathcal{F}_1 \).
+
+Let \(\pi\) be a prior distribution on \(\Omega\) with density \( \pi(\theta) \) with respect to measure \( \nu \). Define posterior density
+
+\[
+\pi(\theta | x) = \frac{p(x | \theta) \pi(\theta)}{\int p(x | \theta) \pi(\theta) \, d\theta}
+\]
+
+The corresponding probability measure is called the \textbf{posterior distribution}.
+
+Think of \( p(x | \theta) \) as a Lebesgue measure. Let \( \nu \) be a Lebesgue density.
+
+\textbf{Exception}: If \(\Omega = \{0, 1\}\), then we take \(\nu\) to be the counting measure.
+
+From the posterior, we can derive several estimators. For example, \( E[\theta | X = x] \) is convex:
+
+\[
+\int \theta p(x | \theta) \, d\theta = E[\theta | X = x]
+\]
+
+\textbf{Example:} Binomial model \( X | \theta \sim \text{Binomial}(n, \theta) \) with prior \( \theta \sim \text{Unif}(0,1) \).
+
+For a uniform prior, we know the MAP and MLE.
+
+Posterior mean:
+
+\[
+\theta_{\text{MAP}} = \frac{k+1}{n+2}
+\]
+
+In the case of coin flips, \( X \sim \text{Binomial}(n, \theta) \), where \( k \) is the number of heads, we conclude \( \theta | X \sim \text{Beta}(k+1, n-k+1) \).
+
+\[
+\theta | X \sim \text{Beta}(k+1, n-k+1)
+\]
+
+\textbf{Conjugate Bayes Models}: Let \( P_{\theta} \in \mathcal{P} \) be a statistical model. Then some family of priors is called \textbf{conjugate} if
+
+\[
+P_{\theta} \in \mathcal{P} \Rightarrow \theta | X \in \mathcal{P}
+\]
+
+for all \( X \in \mathcal{X} \), where \( \mathcal{X} \) is the sample space.
+
+\[
+\theta | X \sim \text{Beta}(a, b), \quad X \sim \text{Bernoulli}(p)
+\]
+
+\section*{Loss Functions and Risk}
+
+\textbf{Loss Function}: A function \( L: \Theta \times \mathcal{X} \to [0, \infty) \) is a basis function if for every \( \theta \in \Theta \), \( L(\theta, \cdot) \) is measurable.
+
+Given an estimator \( \delta \), the expected loss is
+
+\[
+R(\theta, \delta) = E_{\theta}[L(\theta, \delta)]
+\]
+
+\textbf{Mean Squared Error (MSE)}:
+
+\[
+L(x, y) = (x - y)^2 \Rightarrow R(\theta, \delta) = E_{\theta}[(\delta - \theta)^2]
+\]
+
+\textbf{Bias-Variance Decomposition}:
+
+\[
+L(x, y) = (x - y)^2
+\]
+
+Proof: Let \( \delta(x) = E[\theta | X = x] \).
+
+\[
+R(\theta, \delta) = E_{\theta}[(\delta(X) - \theta)^2]
+\]
+
+Bias-variance decomposition:
+
+\[
+E[(\delta(X) - \theta)^2] = \text{Var}(\delta(X)) + (\text{Bias})^2
+\]
+
+\section*{Minimax and Bayes Risk}
+
+\textbf{Minimax Risk}: Given an estimator \( \delta \) in a model \( P_{\theta} \in \mathcal{P} \), the maximal risk of it is
+
+\[
+\sup_{\theta \in \Theta} R(\theta, \delta)
+\]
+
+The minimax of a model \( P_{\theta} \) is given as \( \inf_{\delta} \sup_{\theta} R(\theta, \delta) \), where the inf is over all estimators.
+
+An estimator is called minimax if
+
+\[
+\sup_{\theta} R(\theta, \delta) = \inf_{\delta} \sup_{\theta} R(\theta, \delta)
+\]
+
+\textbf{Bayes Risk}: Given an estimator \( \delta \) and prior \( \pi \) on \( \Theta \), the Bayes risk of \( \delta \) is defined as
+
+\[
+R_{\pi}(\delta) = \int R(\theta, \delta) \, d\pi(\theta)
+\]
+
+The posterior risk of an estimator \( \delta(X) \) is defined by
+
+\[
+R(\delta | X = x) = E[L(\theta, \delta(X)) | X = x]
+\]
+
+Suppose \( \delta^* \) is an estimator that minimizes the posterior risk, \( \delta^*(x) = E[\theta | X = x] \). Then it also minimizes the Bayes risk.
+
+If \( L(x, y) = (x - y)^2 \), the Bayes optimal estimator \( \delta(x) \) is the posterior mean.
 
 We want to construct \( C(x) \) s.t. \( P_\theta (\theta \in C(x)) \geq 1 - \alpha, \, \forall \theta \in [0,1] \)
 

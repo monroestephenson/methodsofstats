@@ -1,0 +1,18 @@
+\contentsline {chapter}{\numberline {1}Intro and Disclaimer}{3}{chapter.1}%
+\contentsline {chapter}{\numberline {2}Basic Statistical Concepts}{4}{chapter.2}%
+\contentsline {chapter}{\numberline {3}Parameter Estimation}{6}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Maximum Likelihood Principle}{8}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Bayesian method}{9}{section.3.2}%
+\contentsline {paragraph}{\nonumberline Motivation}{9}{paragraph*.5}%
+\contentsline {chapter}{\numberline {4}Decision Theory}{13}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Another optimality concept: Admissibility}{16}{section.4.1}%
+\contentsline {chapter}{\numberline {5}Confidence Sets}{18}{chapter.5}%
+\contentsline {paragraph}{\nonumberline Normal Approximation.}{19}{paragraph*.8}%
+\contentsline {section}{\numberline {5.1}Hypothesis Testing}{20}{section.5.1}%
+\contentsline {subsection}{\numberline {5.1.1}Basic Definitions}{20}{subsection.5.1.1}%
+\contentsline {subsection}{\numberline {5.1.2}Type I and Type II Errors}{20}{subsection.5.1.2}%
+\contentsline {subsection}{\numberline {5.1.3}Level and Uniformly Most Powerful Tests}{20}{subsection.5.1.3}%
+\contentsline {subsection}{\numberline {5.1.4}The Neyman-Pearson Lemma}{21}{subsection.5.1.4}%
+\contentsline {subsection}{\numberline {5.1.5}Proof of the Neyman-Pearson Lemma}{21}{subsection.5.1.5}%
+\contentsline {chapter}{\numberline {6}Lecture 6: Neyman-Pearson Lemma and Likelihood Ratio Tests}{23}{chapter.6}%
+\providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 
