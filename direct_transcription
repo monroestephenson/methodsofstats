@@ -230,5 +230,178 @@ Let \( \Theta_0 = \{\theta_0\}, \Theta_1 = \{\theta_1\} \) be simple:
     \text{(randomizing the test)}
     \]
 \end{enumerate}
+\section*{Lecture 6}
+
+\subsection*{Neyman-Pearson}
+\textbf{Power of a test}:
+\[
+E_{\theta_1}[\varphi] = P_{\theta_1}(\varphi = 1)
+\]
+
+\textbf{Likelihood ratio test}:
+\[
+\frac{p_{\theta_1}(x)}{p_{\theta_0}(x)} = r(x)
+\]
+
+\subsection*{LR test}
+\[
+\varphi(x) = 
+\begin{cases} 
+1 & \text{if } r(x) > k \\
+\gamma & \text{if } r(x) = k \\
+0 & \text{if } r(x) < k 
+\end{cases}
+\]
+for some \( k \in [0, \infty) \), \( \gamma \in [0, 1] \).
+
+\textbf{Note:} LR tests are UMP for simple hypothesis testing:
+\begin{itemize}
+    \item Given some \( \alpha \), if LR satisfies \( E_{\theta_0}[\varphi] = \alpha \), it represents a Type I error.
+    \item \( \varphi \) minimizes the Type II error
+    \[
+    E_{\theta_1}[\varphi] \geq E_{\theta_1}[\varphi'] \quad \forall \varphi'
+    \]
+\end{itemize}
+
+\subsection*{Cont. of proof (part of UMP)}
+Let \( \varphi' \) be another level \( \alpha \) test, \( E_{\theta_0}[\varphi'] \leq \alpha \).
+
+Goal: \( E_{\theta_1}[\varphi] \geq E_{\theta_1}[\varphi'] \). Let \( \mu \) be the dominating measure.
+
+Consider
+\[
+\int (\varphi(x) - \varphi'(x)) (p_{\theta_1}(x) - k p_{\theta_0}(x)) \, d\mu(x) = 0
+\]
+Claim: \( p \geq 0 \).
+
+Observe:
+\begin{itemize}
+    \item If \( p_{\theta_1}(x) - k p_{\theta_0}(x) > 0 \Rightarrow \frac{p_{\theta_1}(x)}{p_{\theta_0}(x)} > k \Rightarrow \varphi(x) = 1 \).
+    \item If \( p_{\theta_1}(x) - k p_{\theta_0}(x) < 0 \Rightarrow \varphi(x) = 0 \).
+    \item If \( p_{\theta_1}(x) - k p_{\theta_0}(x) = 0 \Rightarrow \text{integrand} = 0 \).
+\end{itemize}
+
+\[
+\Rightarrow p = 0
+\]
+
+\[
+\Rightarrow \int (\varphi - \varphi') p_{\theta_1} \, d\mu = \int (\varphi - \varphi') p_{\theta_0} \, d\mu = k \left[ E_{\theta_0}[\varphi] - E_{\theta_0}[\varphi'] \right] \geq 0
+\]
+
+\[
+\Rightarrow E_{\theta_1}[\varphi] \geq E_{\theta_1}[\varphi']
+\]
+
+\textbf{Part (3) UMP} \( \Rightarrow \text{(LR)} \): Take \( \varphi^* \) a UMP test, \( E_{\theta_0}[\varphi^*] = \alpha \), and let \( \varphi \) be the LR test with \( E_{\theta_0}[\varphi] = \alpha \) with (*).
+
+Goal: \( \varphi = \varphi^* \) a.e. except on \( \{ r(x) = k \} \).
+
+Define
+\[
+x^+ = \{ x : \varphi(x) > \varphi^*(x) \}
+\]
+\[
+x^- = \{ x : \varphi(x) < \varphi^*(x) \}
+\]
+\[
+x^0 = \{ x : \varphi(x) = \varphi^*(x) \}
+\]
+
+\[
+\tilde{x} = (x^+ \cup x^-) \cap \{ x : p_{\theta_1}(x) \neq k p_{\theta_0}(x) \}
+\]
+
+It suffices to show \( \mu(\tilde{x}) = 0 \).
+
+Like before, we have
+\[
+(\varphi - \varphi^*) (p_{\theta_1} - k p_{\theta_0}) > 0 \text{ on } \tilde{x}
+\]
+Thus if \( \mu(\tilde{x}) > 0 \),
+\[
+\int_\mathcal{X} (\varphi - \varphi^*)(p_{\theta_1} - k p_{\theta_0}) \, d\mu \geq 0
+\]
+\[
+\int_{\tilde{x}} (\varphi - \varphi^*)(p_{\theta_1} - k p_{\theta_0}) \, d\mu \geq 0
+\]
+
+But also
+\[
+E_{\theta_1}[\varphi] - E_{\theta_1}[\varphi^*] > k \left[ E_{\theta_0}[\varphi] - E_{\theta_0}[\varphi^*] \right] \geq 0
+\]
+
+\[
+\Rightarrow \text{Cannot be } \varphi^* \text{ is UMP.}
+\]
+
+\subsection*{Example (Gaussian Location Model)}
+\[
+X_1, \dots, X_n \overset{\text{iid}}{\sim} \mathcal{N}(\mu, \sigma^2)
+\]
+
+\[
+H_0 : \mu = \mu_0, \quad H_1 : \mu = \mu_1, \quad \mu_0 < \mu_1
+\]
+
+Then:
+\[
+\frac{p_1(X_1, \dots, X_n)}{p_0(X_1, \dots, X_n)} = \exp \left( -\frac{1}{2\sigma^2} \sum_{i=1}^n (X_i - \mu_1)^2 + \frac{1}{2\sigma^2} \sum_{i=1}^n (X_i - \mu_0)^2 \right)
+\]
+\[
+= \exp \left( -\frac{1}{2\sigma^2} \sum_{i=1}^n (\mu_1^2 - \mu_0^2) - \frac{2(\mu_1 - \mu_0)}{\sigma^2} \sum_{i=1}^n X_i \right)
+\]
+\[
+= \exp \left( -\frac{n}{2\sigma^2} (\mu_1^2 - \mu_0^2) - \frac{2(\mu_1 - \mu_0)}{\sigma^2} \sum_{i=1}^n X_i \right) \geq K_\alpha
+\]
+
+\[
+\Rightarrow \frac{1}{n} \sum_{i=1}^n X_i \geq K_\alpha, \text{ some } K_\alpha \in \mathbb{R}
+\]
+
+To determine \( K_\alpha \):
+\[
+\bar{X}_n := \frac{1}{n} \sum X_i \overset{H_0}{\sim} \mathcal{N}(\mu_0, \sigma^2/n)
+\]
+
+\[
+\Rightarrow \mathbb{L} = P_{H_0} \left( \bar{X}_n \geq K_\alpha \right) = 1 - P_{H_0} \left( \bar{X}_n < K_\alpha \right)
+\]
+\[
+= 1 - \Phi \left( \frac{\sqrt{n}}{\sigma} (K_\alpha - \mu_0) \right) \quad \text{(CDF for } \mathcal{N}(0, 1))
+\]
+\[
+\Rightarrow \text{solving for } K_\alpha \text{ gives }
+K_\alpha = \mu_0 + \frac{\sigma}{\sqrt{n}} \Phi^{-1}(1 - \alpha),
+\]
+\[
+\varphi(X_1, \dots, X_n) = 
+\begin{cases} 
+1 & \text{if } \bar{X}_n \geq \mu_0 + \frac{\sigma}{\sqrt{n}} \Phi^{-1}(1 - \alpha) \\
+0 & \text{else}
+\end{cases}
+\]
+
+\subsection*{Corollary}
+Consider simple hypothesis testing. Let \( \varphi \) be UMP, for level \( \alpha \). Then,
+\[
+\alpha = E_{H_0}[\varphi_0] = E_{\theta_0}[\varphi_0] \leq E_{\theta_1}[\varphi]
+\]
+Suppose \( E_{\theta_1}[\varphi] = E_{\theta_1}[\varphi_0] \) then \( \varphi_0 \) is also UMP, \( \Rightarrow \varphi_0 \) is an LR test.
+
+\[
+\varphi_0 = 
+\begin{cases} 
+1 & \text{if } \frac{p_{\theta_1}}{p_{\theta_0}} \geq K \quad \text{a.s., some } K \\
+0 & \text{if } \frac{p_{\theta_1}}{p_{\theta_0}}
+\end{cases}
+\]
+
+Also since \( \varphi_0 \in \{\varphi, \beta\} \) we conclude that \( p_{\theta_1} = K p_{\theta_0} \text{ a.s.} \)
+
+But
+\[
+L = \int p_{\theta_0} \, d\mu = K \int p_{\theta_0} \, d\mu = 1 \Rightarrow K = 1
+\]
 
 \end{document}
