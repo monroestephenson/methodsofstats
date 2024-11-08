@@ -858,5 +858,28 @@ for all $u\in U$.
         $$\implies \hat{\beta}=(X_\Sigma^T X_\Sigma)^{-1}X_\Sigma^T \Sigma^{-1/2}Y$$
     \end{proof}
 \end{lemma}
-
+\begin{remark}
+    \begin{enumerate}
+        \item If $p>n$, then $(X_\Sigma^T X_\Sigma)^{-1}$ does not exist and the LSE is not unique. 
+        $$\left\{ \beta \cdot ||\Sigma^{-1/2}Y - X_\Sigma \beta ||^2 =0\right\}$$ is a $p-n$ dim subspace and each solution interpolates the data
+    \end{enumerate}
+\end{remark}
+\begin{theorem}{Optimality of the LSE, Gauss-Markov Theorem}
+    Consider an ordinary linear model for $\sigma>0$, then 
+    \begin{enumerate}
+        \item The least squares estimator $\hat{\beta}= (X^TX)^{-1}X^T Y$ is linear and the unbiased parameter for the parameter $\beta$.
+        \item For the desired parameter $\alpha =\langle \beta, v\rangle$ for $v \in \mathbb{R}$, the estimator $\hat{\alpha} =\langle \hat{\beta}, v\rangle$ is the best linear unbiased estimator (BLUE), 
+        meaning that $\hat{\alpha}$ has the optimal value within the class of linear unbiased estimators for $\alpha$
+        \item $\hat{\sigma}^2 = \frac{||Y- X\hat{\beta}||^2}{n-p}$ is an unbiased estimator of $\sigma^2$
+    \end{enumerate}
+    \begin{proof}
+        $$\hat{\beta}(y+\tilde{y})= \hat{\beta}(y)+\hat{\beta}(\tilde{y}) \text{for }y, \tilde{y}\in \mathbb{R}^n$$
+        \begin{align}
+            E[\hat{\beta}]&=(X^TX)^{-1}X^T E[Y]\\
+            &=(X^TX)^{-1}X^T E[X\beta +\varepsilon]\\
+            &= (X^TX)^{-1}(X^TX) \beta \\
+            &=\beta
+        \end{align}
+    \end{proof}
+\end{theorem}
 \end{document}
