@@ -725,5 +725,88 @@ But
 \[
 L = \int p_{\theta_0} \, d\mu = K \int p_{\theta_0} \, d\mu = 1 \Rightarrow K = 1
 \]
+\textbf{Correspondance theorem}
 
+\textrm{Tests} \quad \longleftrightarrow \quad \textrm{Confidence regions } C(x)
+
+\Pr_{\theta}(\theta \in C(x)) \geq 1 - \alpha
+
+\textrm{If } \Pr_{\theta}(\phi_{\theta} = 1) = \alpha
+\textbf{Theorem:} \quad \textrm{Let } (P_\theta : \theta \in \Theta) \textrm{ be a SM, } \alpha \in (0, 1)
+
+\begin{enumerate}
+    \item[(i)] \textrm{Let } C = C(X) \textrm{ be a level-}\alpha \textrm{ conf set then}
+    
+    \[
+    \phi_{\theta_0}(x) = 1 \left\{ \theta_0 \notin C(x) \right\}
+    \]
+
+    \textrm{is a level-}\alpha \textrm{ test of } \theta = \theta_0 \textrm{ vs. } \theta \neq \theta_0
+    
+    \item[(ii)] \textrm{Suppose } \{\phi_{\theta_0} : \theta_0 \in \Theta \} \textrm{ is a family of level-}\alpha \textrm{ tests, then}
+    
+    \[
+    C(X) = \{ \theta \in \Theta : \phi_{\theta}(X) = 0 \}
+    \]
+
+    \textrm{is a } 1 - \alpha \textrm{ conf set}
+\end{enumerate}
+
+\textrm{Proof:}
+
+\begin{enumerate}
+    \item[(i)] \quad \Pr_{\theta_0}(\phi_{\theta_0} = 1) = \Pr_{\theta_0}(\theta_0 \notin C(X)) = \alpha
+\end{enumerate}
+\begin{enumerate}
+    \item[(ii)] \quad \Pr_{\theta}(\theta \notin C(X))
+    
+    = \Pr_{\theta}(\theta \notin C(X))
+    
+    = \Pr_{\theta}(\theta \notin \{ \tilde{\theta} \in \Theta : \phi_{\tilde{\theta}}(X) = 0 \})
+    
+    = \Pr_{\theta}(\phi_{\theta}(X) = 1) \leq \alpha
+\end{enumerate}
+
+\textbf{UMPT Tests in Models with Monotone Likelihoods}
+
+\textbf{Prop:} \quad \textrm{Let } \Theta \subseteq \mathbb{R}. \textrm{ Consider testing } H_0 : \theta \leq \theta_0 \textrm{ vs. } H_1 : \theta > \theta_0, \textrm{ for some } \theta_0 \in \mathbb{R}.
+
+\textrm{Assume } \exists \textrm{ some } T : X \to \mathbb{R} \textrm{ (test statistic) and some function }
+
+h : \mathbb{R} \times \Theta \times \Theta \textrm{ such that}
+
+\[
+\frac{P_{\theta}(X)}{P_{\tilde{\theta}}(X)} = h(T(X), \theta, \tilde{\theta})
+\]
+
+\textrm{and for all } \theta \geq \tilde{\theta}, \; t \mapsto h(t, \theta, \tilde{\theta}) \textrm{ is monotone increasing}
+
+
+\newpage
+
+The most simple model for the relationship betweem $Y_i$
+ and $X_i$ assumes a linear relationship $$Y_i = aX_i+b+\varepsilon_+i$$ for $i=1, \hdots, n.$
+ where $\varepsilon_i$ is centered i.e. $E(\varepsilon) =0$ and $\operatorname{Var}(\varepsilon)=\sigma^2$. 
+ Suppose $\varepsilon\sim N (0, \sigma^2)$ with $\sigma$ known.
+ The statistical model is given by 
+ $$(\mathbb{R}, B(\mathbb{R}), (\bigotimes_{i=1}^n N(ax_i+b, \sigma^2))_{(a,b)\in\mathbb{R}^2})$$
+ The likelihood within the statistical model is given by
+ $$L((a,b)y)=\prod_{i=1}^n (2 \pi \sigma^2)^{-n/2}\text{exp}\left( -\frac{1}{2\sigma^2}\sum_{i=1}^n (y-ax_i+b)^2\right)$$
+ $$=(2 \pi \sigma^2)^{-n/2}\text{extp}\left( -\frac{1}{2\sigma^2}\sum_{i=1}^n (y-ax_i+b)^2\right)$$
+ MLE will satisfy the optimization problem 
+ $$(\hat{a},\hat{b})= \text{argmin}_{(a,b)\in \mathbb{R}^2}\sum_{i=1}^n(y_i -(ax_i-b))^2$$
+ Provvided that $x_i\neq x_j$, for $i\neq j$, the least squares problem has solution and a minimum at  (Gauss, 1801)
+ $$(\hat{a},\hat{b})= \left(\frac{\frac{1}{n-1}\sum_{i=1}^{n}(x_i-\bar{x})(y_i-\bar{y})}{\frac{1}{n-1}\sum_{i=1}^{n}(x_i-\bar{x})}, \bar{y}-\hat{a}\bar{x}\right)$$
+ \begin{definition}{Linear Model}
+    A random vector $Y=(Y_0,\hdots, Y_n)^T \in \mathbb{R}^n$ stems from a linear model if there exists a parameter $\beta \in \mathbb{R}^n$ and a matrix $X\in \mathbb{R}^{n\times p}$ and a random vector $\varepsilon \in \mathbb{R}^n$ such that 
+    $$Y = X \beta + \epsilon$$
+    \begin{enumerate}
+        \item A linear model is called regular if \begin{enumerate}
+            \item $p\le n$ (parameter size is smaller than sample size)
+            \item $X$ has full rank, $rank(X) =p \le n$ (design with full rank)
+            \item E(\varepsilon)=0 (noise is controlled)
+        \end{enumerate}
+    \end{enumerate}
+ \end{definition}
+ 
 \end{document}
