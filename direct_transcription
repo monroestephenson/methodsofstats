@@ -880,6 +880,22 @@ for all $u\in U$.
             &= (X^TX)^{-1}(X^TX) \beta \\
             &=\beta
         \end{align}
+        Suppose that $\tilde{\alpha}$ is some other linear unbiased estimator of $\alpha$. Since the estimator is linear, there exists some element $w$ such that $\tilde{\alpha}=\langle y, w\rangle$
+        $$\langle \beta, v \rangle = \alpha = E[\tilde{\alpha}]=E[\langle y, w\rangle] = \langle X\beta, w\rangle = \langle \beta, X^Tw\rangle$$
+        This implies that $v=X^T w$, therefore we have, 
+        \begin{align}
+            \text{Var}&= \text{Var}(\langle x\beta , w\rangle+\langle \varepsilon, w\rangle)\\
+            &= \text{Var}(\langle \varepsilon, w\rangle)+ E\left[\left(\sum_{i=1}^{n}\varepsilon w\right)^2\right]\\
+            &=\sigma^2 \sum_{i=1}^{p} w_i^2 =\sigma^2 ||w||^2
+        \end{align}
+        \begin{align}
+            \text{Var}(\hat{\alpha})&= E[\langle \hat{\beta}-\beta , v\rangle^2]\\
+            &=E[\langle (X^T X)^{-1}X^T \beta +(X^T X)^{-1}X^T \varepsilon -\beta, v\rangle^2 ]\\
+            &=E[\langle (X^T X)^{-1}X^T \varepsilon, v\rangle^2]\\
+            &= \sigma^2 ||X(X^T X)^{-1} v||^2 =\sigma^2 ||X(X^T X)^{-1} X^T w||^2\\
+            &=\sigma^2||\Pi_u w||^2
+        \end{align}
+        Thus, $\text{Var}(\hat{\alpha})\le \text{Var}\tilde{\alpha}$
     \end{proof}
 \end{theorem}
 \end{document}
