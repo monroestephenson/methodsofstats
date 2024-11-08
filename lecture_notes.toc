@@ -15,4 +15,16 @@
 \contentsline {subsection}{\numberline {5.1.4}The Neyman-Pearson Lemma}{21}{subsection.5.1.4}%
 \contentsline {subsection}{\numberline {5.1.5}Proof of the Neyman-Pearson Lemma}{21}{subsection.5.1.5}%
 \contentsline {chapter}{\numberline {6}Lecture 6: Neyman-Pearson Lemma and Likelihood Ratio Tests}{23}{chapter.6}%
+\contentsline {chapter}{\numberline {7}Linear Models}{28}{chapter.7}%
+\contentsline {section}{\numberline {7.1}Introduction to Linear Regression Models}{28}{section.7.1}%
+\contentsline {section}{\numberline {7.2}Simple Linear Regression Model}{28}{section.7.2}%
+\contentsline {subsection}{\numberline {7.2.1}Statistical Model}{28}{subsection.7.2.1}%
+\contentsline {subsection}{\numberline {7.2.2}Likelihood Function}{29}{subsection.7.2.2}%
+\contentsline {subsection}{\numberline {7.2.3}Maximum Likelihood Estimation (MLE)}{29}{subsection.7.2.3}%
+\contentsline {section}{\numberline {7.3}General Linear Models}{30}{section.7.3}%
+\contentsline {section}{\numberline {7.4}Least Squares Estimation}{31}{section.7.4}%
+\contentsline {subsection}{\numberline {7.4.1}Geometric Interpretation}{31}{subsection.7.4.1}%
+\contentsline {section}{\numberline {7.5}Representation for the Least Squares Estimator}{32}{section.7.5}%
+\contentsline {section}{\numberline {7.6}Optimality of the Least Squares Estimator}{32}{section.7.6}%
+\contentsline {section}{\numberline {7.7}Conclusion}{35}{section.7.7}%
 \providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 

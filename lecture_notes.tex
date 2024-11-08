@@ -1102,6 +1102,311 @@ and for all \( \theta \geq \tilde{\theta} \), the function \( t \mapsto h(t, \th
 
 \textbf{Conclusion:} LR tests are also UMP for level \( \alpha \). Specifically, the LR test of \( H_0: \theta = \theta_0 \) against \( H_1: \theta = \theta_1 \) for any \( \theta_1 > \theta_0 \) will be UMP.
 
+\chapter{Linear Models}
+
+\section{Introduction to Linear Regression Models}
+
+Linear regression models are fundamental tools in statistical analysis, enabling us to understand and quantify the relationship between a dependent variable and one or more independent variables. In this lecture, we will explore the simplest form of linear regression, discuss the statistical framework underpinning it, and delve into key estimation techniques and their optimality properties.
+
+\section{Simple Linear Regression Model}
+
+Consider the simplest scenario where we model the relationship between a dependent variable \( Y_i \) and an independent variable \( X_i \) using a linear relationship:
+
+\begin{equation}
+    Y_i = aX_i + b + \varepsilon_i
+    \label{eq:simple_linear_model}
+\end{equation}
+
+for \( i = 1, \ldots, n \), where:
+\begin{itemize}
+    \item \( a \) and \( b \) are unknown parameters representing the slope and intercept, respectively.
+    \item \( \varepsilon_i \) is the error term, assumed to be centered, i.e., \( E(\varepsilon_i) = 0 \), and having constant variance \( \operatorname{Var}(\varepsilon_i) = \sigma^2 \).
+\end{itemize}
+
+We further assume that the error terms are normally distributed, \( \varepsilon_i \sim N(0, \sigma^2) \), with \( \sigma \) known.
+
+\subsection{Statistical Model}
+
+The statistical model can be formally defined as:
+
+\[
+(\mathbb{R}, \mathcal{B}(\mathbb{R}), \left(\bigotimes_{i=1}^n N(aX_i + b, \sigma^2)\right)_{(a,b) \in \mathbb{R}^2})
+\]
+
+Here:
+\begin{itemize}
+    \item \( \mathbb{R} \) denotes the real line.
+    \item \( \mathcal{B}(\mathbb{R}) \) is the Borel sigma-algebra on \( \mathbb{R} \).
+    \item \( \bigotimes_{i=1}^n N(aX_i + b, \sigma^2) \) represents the product measure of the normal distributions for each observation.
+\end{itemize}
+
+\subsection{Likelihood Function}
+
+Within this statistical model, the likelihood function is given by:
+
+\[
+L((a,b) \mid y) = \prod_{i=1}^n \frac{1}{\sqrt{2\pi \sigma^2}} \exp\left( -\frac{(y_i - aX_i - b)^2}{2\sigma^2} \right)
+\]
+
+Simplifying, we obtain:
+
+\[
+L((a,b) \mid y) = (2\pi \sigma^2)^{-n/2} \exp\left( -\frac{1}{2\sigma^2} \sum_{i=1}^n (y_i - aX_i - b)^2 \right)
+\]
+
+\subsection{Maximum Likelihood Estimation (MLE)}
+
+The maximum likelihood estimators (MLE) for the parameters \( a \) and \( b \) are obtained by maximizing the likelihood function \( L((a,b) \mid y) \). Equivalently, since the logarithm is a monotonically increasing function, we can maximize the log-likelihood:
+
+\[
+\log L((a,b) \mid y) = -\frac{n}{2} \log(2\pi \sigma^2) - \frac{1}{2\sigma^2} \sum_{i=1}^n (y_i - aX_i - b)^2
+\]
+
+Maximizing the log-likelihood is equivalent to minimizing the sum of squared residuals:
+
+\[
+(\hat{a}, \hat{b}) = \arg \min_{(a,b) \in \mathbb{R}^2} \sum_{i=1}^n (y_i - aX_i - b)^2
+\]
+
+Provided that \( X_i \neq X_j \) for \( i \neq j \), the least squares problem has a unique solution, historically attributed to Gauss (1801), given by:
+
+\[
+(\hat{a}, \hat{b}) = \left( \frac{\frac{1}{n-1} \sum_{i=1}^{n} (X_i - \bar{X})(Y_i - \bar{Y})}{\frac{1}{n-1} \sum_{i=1}^{n} (X_i - \bar{X})^2}, \, \bar{Y} - \hat{a} \bar{X} \right)
+\]
+
+where \( \bar{X} \) and \( \bar{Y} \) denote the sample means of \( X \) and \( Y \), respectively.
+
+\section{General Linear Models}
+
+To generalize the simple linear regression model, we introduce the framework of linear models in multiple dimensions.
+
+\begin{definition}[Linear Model]
+    A random vector \( Y = (Y_1, \ldots, Y_n)^T \in \mathbb{R}^n \) stems from a linear model if there exists a parameter vector \( \beta \in \mathbb{R}^p \), a matrix \( X \in \mathbb{R}^{n \times p} \), and a random vector \( \varepsilon \in \mathbb{R}^n \) such that
+    \[
+    Y = X \beta + \varepsilon
+    \]
+    \begin{enumerate}
+        \item \textbf{Regular Linear Model}: A linear model is called \emph{regular} if
+        \begin{enumerate}
+            \item The number of parameters does not exceed the sample size, i.e., \( p \le n \).
+            \item The design matrix \( X \) has full rank, \( \operatorname{rank}(X) = p \le n \), ensuring a unique solution.
+            \item The error vector satisfies \( E(\varepsilon) = 0 \), meaning the noise is centered.
+            \item The covariance matrix of the errors is positive definite, \( \Sigma = \operatorname{Cov}(\varepsilon_i, \varepsilon_j)_{i,j \in [n]} \).
+        \end{enumerate}
+        \item \textbf{Ordinary Linear Model}: A linear model is called \emph{ordinary} if \( \Sigma = \sigma^2 I_n \), where \( I_n \) is the \( n \times n \) identity matrix. Typically, the noise is assumed to be Gaussian in this case.
+    \end{enumerate}
+\end{definition}
+
+\begin{remark}
+    \begin{enumerate}
+        \item \textbf{Terminology:} Various synonyms are used in the literature:
+        \begin{itemize}
+            \item \( Y \): Dependent variable, response, regressand.
+            \item \( X \): Independent variable, predictor, design matrix, regressor.
+            \item \( \varepsilon \): Error, perturbation, regression function.
+        \end{itemize}
+        \item \textbf{Covariance Matrix \( \Sigma \):} The matrix \( \Sigma \) is symmetric and diagonalizable, i.e., \( \Sigma = UDU^T \) for some orthogonal matrix \( U \) and diagonal matrix \( D = \text{diag}(\lambda_1, \ldots, \lambda_n) \in \mathbb{R}^{n \times n} \).
+        \item \textbf{Positive Semi-definiteness:} The covariance matrix \( \Sigma \) is positive semi-definite, meaning \( \lambda_i \ge 0 \) for all \( i \), which can be shown as:
+        \[
+        \langle \Sigma u, u \rangle = \langle E[(\varepsilon - E[\varepsilon])(\varepsilon - E[\varepsilon])^T]u, u \rangle = E[(\varepsilon - E[\varepsilon])^2] \ge 0, \quad \forall u \in \mathbb{R}^n
+        \]
+        \item \textbf{Positive Definiteness and Inverses:} If \( \Sigma \) is positive definite (i.e., \( \lambda_i > 0 \) for all \( i \)), then its inverse \( \Sigma^{-1} \) and square root \( \Sigma^{-1/2} \) exist and can be expressed as:
+        \[
+        \Sigma^{-1} = UD^{-1}U^T \quad \text{and} \quad \Sigma^{-1/2} = UD^{-1/2}U^T
+        \]
+        \item \textbf{Random Design:} If the matrix \( X \) is not deterministic but random, the model is referred to as having a \emph{random design}.
+    \end{enumerate}
+\end{remark}
+
+\section{Least Squares Estimation}
+
+In the context of a regular linear model, the least squares estimator (LSE) seeks to minimize the weighted sum of squared residuals. Specifically, the LSE \( \hat{\beta} \) satisfies:
+
+\[
+\|\sigma^{-1/2}(Y - X\hat{\beta})\|^2 = \inf_{\beta \in \mathbb{R}^p} \|\sigma^{-1/2}(Y - X\beta)\|^2 = \inf_{\beta \in \mathbb{R}^p} \|\Sigma^{-1/2}Y - X_\Sigma \beta\|^2
+\]
+
+where \( X_\Sigma = \Sigma^{-1/2} X \).
+
+\subsection{Geometric Interpretation}
+
+The estimator \( X_\Sigma \hat{\beta} \) represents the point within the subspace:
+
+\[
+U = \{ X_\Sigma \beta \mid \beta \in \mathbb{R}^p \} \subseteq \mathbb{R}^n
+\]
+
+that is closest to the vector \( \Sigma^{-1/2} Y \) in terms of Euclidean distance. Formally, this can be expressed using the orthogonal projection \( \Pi_U \) onto \( U \):
+
+\[
+X_\Sigma \hat{\beta} = \Pi_U(\Sigma^{-1/2} Y)
+\]
+
+The orthogonal projection satisfies:
+\begin{itemize}
+    \item \( \Pi_U u = u \) for all \( u \in U \).
+    \item \( \langle \Pi_U v - v, u \rangle = 0 \) for all \( u \in U \) and \( v \in \mathbb{R}^n \).
+\end{itemize}
+
+Provided that \( (X_\Sigma^T X_\Sigma)^{-1} \) exists, we can confirm by direct computation that the projection operator \( \Pi_U \) is given by:
+
+\[
+\Pi_U = X_\Sigma (X_\Sigma^T X_\Sigma)^{-1} X_\Sigma^T
+\]
+
+For any \( u = X_\Sigma \beta \), we have:
+
+\[
+X_\Sigma (X_\Sigma^T X_\Sigma)^{-1} X_\Sigma^T X_\Sigma \beta = X_\Sigma \beta = u
+\]
+
+By symmetry, for any \( u \in U \) and \( v \in \mathbb{R}^n \):
+
+\[
+\langle \Pi_U v - v, u \rangle = \langle v, \Pi_U u \rangle - \langle v, u \rangle = \langle v, u \rangle - \langle v, u \rangle = 0
+\]
+
+\section{Representation for the Least Squares Estimator}
+
+\begin{lemma}[Representation for the LSE]
+    Consider a regular linear model. Then the least squares estimator (LSE) exists uniquely and is given by:
+    \[
+    \hat{\beta} = (X_\Sigma^T X_\Sigma)^{-1} X_\Sigma^T \Sigma^{-1/2} Y = X_\Sigma^+ \Sigma^{-1/2} Y
+    \]
+    where \( X_\Sigma^+ \) denotes the Moore-Penrose pseudoinverse of \( X_\Sigma \).
+\end{lemma}
+
+\begin{proof}
+    Since \( X \) has full rank and \( p \le n \), the matrix \( X_\Sigma^T X_\Sigma \) is invertible. Suppose \( v \in \ker(X_\Sigma^T X_\Sigma) \), then:
+
+    \[
+    0 = v^T X_\Sigma^T X_\Sigma v = (X_\Sigma v)^T (X_\Sigma v) = \| X_\Sigma v \|^2 = \| \Sigma^{-1/2} X v \|^2
+    \]
+
+    This implies \( \| X v \|^2 = 0 \), hence \( X v = 0 \). Given that \( X \) has full rank, the only solution is \( v = 0 \). Therefore, \( X_\Sigma^T X_\Sigma \) is invertible.
+
+    The projection of \( \Sigma^{-1/2} Y \) onto \( U \) is:
+
+    \[
+    X_\Sigma \hat{\beta} = \Pi_U(\Sigma^{-1/2} Y) = X_\Sigma (X_\Sigma^T X_\Sigma)^{-1} X_\Sigma^T \Sigma^{-1/2} Y
+    \]
+
+    Multiplying both sides by \( X_\Sigma^T \):
+
+    \[
+    X_\Sigma^T X_\Sigma \hat{\beta} = X_\Sigma^T X_\Sigma (X_\Sigma^T X_\Sigma)^{-1} X_\Sigma^T \Sigma^{-1/2} Y = X_\Sigma^T \Sigma^{-1/2} Y
+    \]
+
+    Hence, solving for \( \hat{\beta} \):
+
+    \[
+    \hat{\beta} = (X_\Sigma^T X_\Sigma)^{-1} X_\Sigma^T \Sigma^{-1/2} Y
+    \]
+\end{proof}
+
+\begin{remark}
+    \begin{enumerate}
+        \item If \( p > n \), the matrix \( X_\Sigma^T X_\Sigma \) is not invertible, and the LSE is not unique. In this case, the set of solutions is a \( (p - n) \)-dimensional subspace, and each solution interpolates the data perfectly, i.e.,
+        \[
+        \{ \beta \in \mathbb{R}^p \mid \| \Sigma^{-1/2} Y - X_\Sigma \beta \|^2 = 0 \}
+        \]
+    \end{enumerate}
+\end{remark}
+
+\section{Optimality of the Least Squares Estimator}
+
+The least squares estimator possesses several optimality properties under the ordinary linear model. This is formalized in the Gauss-Markov Theorem.
+
+\begin{theorem}[Gauss-Markov Theorem]
+    Consider an ordinary linear model with \( \sigma > 0 \). Then:
+    \begin{enumerate}
+        \item The least squares estimator \( \hat{\beta} = (X^T X)^{-1} X^T Y \) is a linear and unbiased estimator for the parameter \( \beta \).
+        \item For any desired linear combination of parameters \( \alpha = \langle \beta, v \rangle \) where \( v \in \mathbb{R}^p \), the estimator \( \hat{\alpha} = \langle \hat{\beta}, v \rangle \) is the best linear unbiased estimator (BLUE) of \( \alpha \). This means that \( \hat{\alpha} \) has the smallest variance among all linear unbiased estimators of \( \alpha \).
+        \item The estimator \( \hat{\sigma}^2 = \frac{\| Y - X \hat{\beta} \|^2}{n - p} \) is an unbiased estimator of \( \sigma^2 \).
+    \end{enumerate}
+\end{theorem}
+
+\begin{proof}
+    \begin{enumerate}
+        \item \textbf{Linearity and Unbiasedness of \( \hat{\beta} \):}
+        
+        The estimator \( \hat{\beta} \) is linear because it can be expressed as a linear transformation of \( Y \):
+        \[
+        \hat{\beta} = (X^T X)^{-1} X^T Y
+        \]
+        For any two vectors \( y \) and \( \tilde{y} \) in \( \mathbb{R}^n \),
+        \[
+        \hat{\beta}(y + \tilde{y}) = (X^T X)^{-1} X^T (y + \tilde{y}) = \hat{\beta}(y) + \hat{\beta}(\tilde{y})
+        \]
+        demonstrating linearity.
+
+        To show unbiasedness, compute the expectation of \( \hat{\beta} \):
+        \begin{align*}
+            E[\hat{\beta}] &= (X^T X)^{-1} X^T E[Y] \\
+            &= (X^T X)^{-1} X^T E[X \beta + \varepsilon] \\
+            &= (X^T X)^{-1} X^T (X \beta + E[\varepsilon]) \\
+            &= (X^T X)^{-1} X^T X \beta \quad \text{(since \( E[\varepsilon] = 0 \))} \\
+            &= \beta
+        \end{align*}
+        Hence, \( \hat{\beta} \) is unbiased.
+
+        \item \textbf{Optimality of \( \hat{\alpha} \) as BLUE:}
+
+        Consider a linear unbiased estimator \( \tilde{\alpha} \) for \( \alpha = \langle \beta, v \rangle \). Since \( \tilde{\alpha} \) is linear, there exists a vector \( w \in \mathbb{R}^n \) such that:
+        \[
+        \tilde{\alpha} = \langle Y, w \rangle
+        \]
+        For \( \tilde{\alpha} \) to be unbiased, we require:
+        \[
+        E[\tilde{\alpha}] = \langle E[Y], w \rangle = \langle X \beta, w \rangle = \langle \beta, X^T w \rangle = \alpha = \langle \beta, v \rangle
+        \]
+        This implies that:
+        \[
+        v = X^T w
+        \]
+        The variance of \( \tilde{\alpha} \) is:
+        \[
+        \operatorname{Var}(\tilde{\alpha}) = \operatorname{Var}(\langle Y, w \rangle) = \operatorname{Var}(\langle X \beta + \varepsilon, w \rangle) = \operatorname{Var}(\langle \varepsilon, w \rangle) = \sigma^2 \| w \|^2
+        \]
+        Now, consider the variance of \( \hat{\alpha} = \langle \hat{\beta}, v \rangle \):
+        \begin{align*}
+            \operatorname{Var}(\hat{\alpha}) &= \operatorname{Var}(\langle \hat{\beta} - \beta, v \rangle) \\
+            &= \operatorname{Var}\left( \langle (X^T X)^{-1} X^T \varepsilon, v \rangle \right) \\
+            &= \operatorname{Var}\left( \langle \varepsilon, X (X^T X)^{-1} v \rangle \right) \\
+            &= \sigma^2 \| X (X^T X)^{-1} v \|^2 \\
+            &= \sigma^2 \| X (X^T X)^{-1} X^T w \|^2 \quad \text{(since \( v = X^T w \))} \\
+            &= \sigma^2 \| \Pi_U w \|^2 \\
+            &\le \sigma^2 \| w \|^2 \quad \text{(since projection does not increase the norm)}
+        \end{align*}
+        Therefore, \( \operatorname{Var}(\hat{\alpha}) \le \operatorname{Var}(\tilde{\alpha}) \), showing that \( \hat{\alpha} \) has the smallest variance among all linear unbiased estimators of \( \alpha \).
+
+        \item \textbf{Unbiasedness of \( \hat{\sigma}^2 \):}
+
+        The estimator \( \hat{\sigma}^2 \) is given by:
+        \[
+        \hat{\sigma}^2 = \frac{\| Y - X \hat{\beta} \|^2}{n - p}
+        \]
+        To show that \( \hat{\sigma}^2 \) is unbiased, compute its expectation:
+        \begin{align*}
+            E[\hat{\sigma}^2] &= \frac{E[\| Y - X \hat{\beta} \|^2]}{n - p} \\
+            &= \frac{E[\| \varepsilon \|^2 - \| X \hat{\beta} \|^2 + 2 \langle \varepsilon, X \hat{\beta} \rangle]}{n - p} \\
+            &= \frac{E[\| \varepsilon \|^2]}{n - p} \quad \text{(since \( E[\langle \varepsilon, X \hat{\beta} \rangle] = 0 \))} \\
+            &= \frac{n \sigma^2}{n - p} \quad \text{(since \( \| \varepsilon \|^2 \) is chi-squared with \( n \) degrees of freedom)} \\
+            &= \sigma^2 \quad \text{(since \( E[\| \varepsilon \|^2] = n \sigma^2 \))}
+        \end{align*}
+        Hence, \( \hat{\sigma}^2 \) is an unbiased estimator of \( \sigma^2 \).
+    \end{enumerate}
+\end{proof}
+
+\begin{remark}
+    \begin{enumerate}
+        \item The Gauss-Markov theorem establishes that under the ordinary linear model assumptions, the least squares estimator is the best (in the sense of having the smallest variance) among all linear unbiased estimators. This optimality holds without requiring the error terms to be normally distributed.
+    \end{enumerate}
+\end{remark}
+
+\section{Conclusion}
+
+In this lecture, we have introduced the fundamental concepts of linear regression models, both in their simplest form and in a more general framework. We discussed the estimation of model parameters using the method of least squares, explored the geometric interpretation of the estimator, and established its optimality through the Gauss-Markov theorem. Understanding these foundational elements is crucial for further studies in statistical modeling and inference.
 
 
 
