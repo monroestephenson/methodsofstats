@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.11.5)  5 NOV 2024 22:54
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.11.5)  8 NOV 2024 10:19
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -357,10 +357,12 @@ LaTeX Font Info:    ... okay on input line 26.
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 Package hyperref Info: Link coloring OFF on input line 26.
+(./direct_transcription.out) (./direct_transcription.out)
 \@outlinefile=\write3
 \openout3 = `direct_transcription.out'.
 
 LaTeX Font Info:    Trying to load font information for U+msa on input line 33.
+
 
 (/usr/local/texlive/2024/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
@@ -383,26 +385,19 @@ mm/m/it/10 ; F[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 ) = \OML/cmm
 10 P[] []$\OT1/cmr/m/n/10 . 
  []
 
-[5] [6] [7] [8] [9] (./direct_transcription.aux)
+[5] [6] [7] [8] [9] [10] [11] [12] (./direct_transcription.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-02-20>
  ***********
-
-
-Package rerunfilecheck Warning: File `direct_transcription.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `direct_transcription.out':
-(rerunfilecheck)             Before: <no file>
-(rerunfilecheck)             After:  F2772C1B91415A423C25AB9E13233E4C;1831.
+Package rerunfilecheck Info: File `direct_transcription.out' has not changed.
+(rerunfilecheck)             Checksum: F2772C1B91415A423C25AB9E13233E4C;1831.
  ) 
 Here is how much of TeX's memory you used:
- 9560 strings out of 474116
- 144929 string characters out of 5743682
+ 9600 strings out of 474116
+ 145417 string characters out of 5743682
  1945187 words of memory out of 5000000
- 31787 multiletter control sequences out of 15000+600000
+ 31804 multiletter control sequences out of 15000+600000
  562665 words of font info for 53 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  75i,12n,79p,594b,589s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -421,11 +416,12 @@ texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/local/te
 xlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texl
 ive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texli
 ve/2024/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/t
-exlive/2024/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb>
-Output written on direct_transcription.pdf (9 pages, 228853 bytes).
+exlive/2024/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm7.pfb></usr/loca
+l/texlive/2024/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb>
+Output written on direct_transcription.pdf (12 pages, 249404 bytes).
 PDF statistics:
- 182 PDF objects out of 1000 (max. 8388607)
- 137 compressed objects within 2 object streams
- 52 named destinations out of 1000 (max. 500000)
- 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 249 PDF objects out of 1000 (max. 8388607)
+ 199 compressed objects within 2 object streams
+ 71 named destinations out of 1000 (max. 500000)
+ 81 words of extra memory for PDF output out of 10000 (max. 10000000)
 
