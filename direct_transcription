@@ -22,6 +22,7 @@
 \newtheorem{example}{Example}
 \newtheorem{corollary}{Corollary}
 \newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
 
 \begin{document}
 
@@ -898,4 +899,85 @@ for all $u\in U$.
         Thus, $\text{Var}(\hat{\alpha})\le \text{Var}\tilde{\alpha}$
     \end{proof}
 \end{theorem}
+\section{Lecture 8}
+Recall linear model $$Y=X\beta+\varepsilon$$
+where $\text{cov}(\varepsilon)=\Sigma$. 
+\par OLD: $\hat{\beta} =(X_\Sigma^T X_\Sigma)^{-1}X_{\varepsilon}^T \Sigma^{-1/2}Y$.
+\par $X\hat{\beta} =$ Projection of $\Sigma^{-1/2} Y$ onto span $\{X_{\varepsilon,1},\hdots, X_{\varepsilon,p}\}$
+\begin{theorem}[Gauss-Markov]
+    \begin{enumerate}
+        \item $\hat{\beta}_{OLS}$ is the best linear unbiased est (BLUE)
+        \item $\alpha_i= \langle \beta, v\rangle$ is BLUE.
+        \item $\hat{\sigma}^2 =\frac{||Y-X\hat{\beta}||^2}{n-p}$ is unbiased est for $\sigma^2>0$
+    \end{enumerate}
+\end{theorem}
+$\begin{pmatrix}  y_1  \\  y_2 \\ \vdots \\ y_n  \end{pmatrix}=\begin{pmatrix}  x_1  \\  x_2 \\ \vdots \\ x_n  \end{pmatrix} \begin{pmatrix}  \beta_1  \\  \beta_2 \\ \vdots \\ \beta_p  \end{pmatrix}^T +\begin{pmatrix}  \varepsilon_1  \\  \varepsilon_2 \\ \vdots \\ \varepsilon_n  \end{pmatrix}$
+Where our data is $(Y_i, X_i)^n_{i=1}\in (\mathbb{R} \times\mathbb{R}^p)^{\otimes p}$
+\begin{remark}
+    Is this an iid model? Depends! 
+    \begin{enumerate}
+        \item Typically $\varepsilon_i$ are iid.
+        \item If $X_i$ are random then "random design".
+        \item If $X_i$ are iid, then linear model is iid model.
+        \item If $X_i$ are deterministic, then not iid model.
+    \end{enumerate}
+\end{remark}
+$\beta \mapsto ||Y-X\hat{\beta}||.$
+\begin{proof}
+    This is a continuation of point 3 in our theorem above. 
+    \par We already introdiced $\Pi_U= X(X^T X)^{-1}X^T$ projection onto col space $U$ of $X$. Thus $I_n - \Pi_U$ is another projection operator, onto $U^\perp$ (othrogonal complement),
+    $$U^\perp =\{z\in \mathbb{R}^n \mid \langle z, X_k\rangle \forall k=1, \hdots, p \}.$$
+    Choose a basis $e_1,\hdots e_{n-p}$, orthonormal, of $U^\perp$, then 
+    $$(I_n -\Pi_U)z = \Pi_{U^\perp} z = \sum_{n=1}^{n-p} \langle z, e_k \rangle e_k.$$
+    \begin{align}
+        ||Y-X\hat{\beta}||& = ||Y- \underbrace{X(X^TX)^{-1} X^T}_{\Pi_U} Y||^2\\
+        &= ||(I_n -\Pi_n)Y||^2\\
+        &= ||(I_n -\Pi_n)(X\beta + \varepsilon)||^2\\
+        &= ||(I_n -\Pi_n)\varepsilon||^2\\
+        &= \sum_{i=1}^{n-p} \langle \varepsilon, e_i\rangle^2 \\
+    \end{align}
+    Hence, $$E[||Y-X\hat{\beta}||^2\\]=\sum_{i=1}^{n-p} E[\langle \varepsilon, e_i\rangle^2] =n-p \implies E[\hat{\sigma}]=n-p$$
+\end{proof}
+\begin{remark}
+    Recall the $N(\mu, \sigma^2)$ model, where the MLE is 
+    $$\hat{\mu} = \frac{1}{n}\sum_{i=1}^{n} X_i, \quad \hat{\sigma}^2 =\frac{1}{n}\sum_{i=1}^{n} (X_i - \hat{\mu})^2.$$
+    The unbiased estimator for $\sigma^2$ was $\frac{1}{n-1}\sum_{i=1}^{n} (X-i-\hat{\mu})^2$. This is related to the $n-p$ factor in point 3.
+\end{remark}
+\begin{remark}
+    \begin{enumerate}
+        \item If linearity is dropped, there exists better estimators than $\hat{\beta}_{OLS}$. For example a connstant estimator, $\hat{\beta}=\beta^*$
+        \item The MSE of $\hat{\beta}_{OLS}$ is $$E[||\hat{\beta}_{OLS}- \beta ||^2] = E\left[\sum_{i=1}^{p} \langle \hat{\beta}_{OLS} -\beta, \underbrace{e_i}_{ONB of \mathbb{R}^n}\rangle^2 \right]= \sum_{i=1}^{n} \text{Var}_\beta(\langle \hat{\beta}_{OLS},e_i \rangle)=\sum_{i=1}^{n} \sigma^2 ||X(X^T X)^{-1} e_k||^2$$
+        We say $X$ satisfies orthogonal design if $$X^TX = nI_p$$
+        "The different covariants are uncorrelated.=" $(X^T X)_{ij}=\langle X_i, X_j\rangle =n\delta_{ij}$
+        For orthogonal design, $$E_\beta[||\hat{\beta}_{OLS} -\beta||^2] = \frac{1}{n^2}\sigma^2 \sum_{i=1}^{n} \underbrace{||xe_i||^2}_n = \frac{\sigma^2 P}{n}.$$
+        and this is equal to noise level times the number of parameters, divided by the number of data points. 
+    \end{enumerate}
+\end{remark}
+\begin{theorem}[Bayes in Linear Models]
+    Consider a linear model $Y= X\beta +\varepsilon$, and $\varepsilon \sim N(0, \sigma^2 I_n)$ with $\sigma>0$ known and $\beta \sim N(m,M)$ where $m \in \mathbb{R}^{p}, M \in \mathbb{R}^{p\times p}$ positive semi definate.
+    Then, the posterior $\Pi(\beta| Y_iX)$ is given by 
+    $$\Pi (\beta | Y,X)= N(\mu_{\text{past}}, \Sigma_\text{past})\text{ for }$$
+    $$\mu_{\text{past}} = \sigma_\text{past} (\sigma^{-2}X^T y +M^{-1}m)\quad \Sigma_\text{past}= (\sigma^{-2}X^TX+M^{-2})^{-1}$$
+\end{theorem}
+\begin{remark}
+    $\Sigma_\text{past}$ independent of $Y$. For "$M^{-2} \to 0$", then "$\mu_\text{past}\to  \hat{beta}_{OLS}$"
+\end{remark}
+\begin{proof}
+    $$L(X,Y,\beta) \pi(\beta)\propto \exp \left(-\frac{1}{2\sigma^2}||Y-X\beta|| -\frac{1}{2}(\beta - m)^T M^{-1}(\beta-m)\right)$$
+    We want this to be proportional to $\exp \left(-\frac{1}{2}(\beta - \mu_\text{past})^T \sigma_\text{past}^{-1}(\beta - \mu_\text{past})\right)$.
+    \par Now, 
+    $$\exp \left(-\frac{1}{2}(\beta - \mu_\text{past})^T \sigma_\text{past}^{-1}(\beta - \mu_\text{past})\right)\propto \exp \left(-\frac{1}{\sigma^2}\beta^T X^TX \beta - \frac{1}{2}\beta^T M^{-1}\beta +\frac{1}{\sigma^2}\beta^T X^TY + \beta^T M^{-1}m\right)$$
+    and this is equal to $$\exp \left(-\frac{1}{2}\beta^T\left(\frac{1}{\sigma^2} X^TX +M^{-1}\right)\beta +\beta^T(\frac{1}{\sigma^2} X^TY + M^{-1}m\right)$$
+    and this is $$\propto \exp \left(-\frac{1}{2}(\beta - \mu_\text{past})^T \sigma_\text{past}^{-1}(\beta - \mu_\text{past})\right)$$
+\end{proof}
+\begin{corollary}
+    For $\ell =||\cdot ||^2$, the Bayes estimator is $\hat{\beta}_\Pi= \mu_\text{past}$
+\end{corollary}
+\begin{proposition}
+    Consider the previous setting (from the theorem), with $m=0$, and $M=\tau^2 I_p$ (centered, isotropic, normal prior). The, $\mu_\text{past}= \hat{\beta}_\Pi$ minimizes 
+    $$\beta \mapsto|| Y -X \beta ||^2_{\mathbb{R}^n}+ \underbrace{\frac{\sigma^2}{\tau^2}||\beta||^2_{\mathbb{R}^p}}_{\text{"penalty" or "regularization"}}$$
+\begin{proof}
+    
+\end{proof}
+\end{proposition}
 \end{document}
