@@ -956,28 +956,51 @@ $\beta \mapsto ||Y-X\hat{\beta}||.$
 \begin{theorem}[Bayes in Linear Models]
     Consider a linear model $Y= X\beta +\varepsilon$, and $\varepsilon \sim N(0, \sigma^2 I_n)$ with $\sigma>0$ known and $\beta \sim N(m,M)$ where $m \in \mathbb{R}^{p}, M \in \mathbb{R}^{p\times p}$ positive semi definate.
     Then, the posterior $\Pi(\beta| Y_iX)$ is given by 
-    $$\Pi (\beta | Y,X)= N(\mu_{\text{past}}, \Sigma_\text{past})\text{ for }$$
-    $$\mu_{\text{past}} = \sigma_\text{past} (\sigma^{-2}X^T y +M^{-1}m)\quad \Sigma_\text{past}= (\sigma^{-2}X^TX+M^{-2})^{-1}$$
+    $$\Pi (\beta | Y,X)= N(\mu_{\text{post}}, \Sigma_\text{post})\text{ for }$$
+    $$\mu_{\text{post}} = \sigma_\text{post} (\sigma^{-2}X^T y +M^{-1}m)\quad \Sigma_\text{post}= (\sigma^{-2}X^TX+M^{-2})^{-1}$$
 \end{theorem}
 \begin{remark}
-    $\Sigma_\text{past}$ independent of $Y$. For "$M^{-2} \to 0$", then "$\mu_\text{past}\to  \hat{beta}_{OLS}$"
+    $\Sigma_\text{post}$ independent of $Y$. For "$M^{-2} \to 0$", then "$\mu_\text{post}\to  \hat{beta}_{OLS}$"
 \end{remark}
 \begin{proof}
     $$L(X,Y,\beta) \pi(\beta)\propto \exp \left(-\frac{1}{2\sigma^2}||Y-X\beta|| -\frac{1}{2}(\beta - m)^T M^{-1}(\beta-m)\right)$$
-    We want this to be proportional to $\exp \left(-\frac{1}{2}(\beta - \mu_\text{past})^T \sigma_\text{past}^{-1}(\beta - \mu_\text{past})\right)$.
+    We want this to be proportional to $\exp \left(-\frac{1}{2}(\beta - \mu_\text{post})^T \sigma_\text{post}^{-1}(\beta - \mu_\text{post})\right)$.
     \par Now, 
-    $$\exp \left(-\frac{1}{2}(\beta - \mu_\text{past})^T \sigma_\text{past}^{-1}(\beta - \mu_\text{past})\right)\propto \exp \left(-\frac{1}{\sigma^2}\beta^T X^TX \beta - \frac{1}{2}\beta^T M^{-1}\beta +\frac{1}{\sigma^2}\beta^T X^TY + \beta^T M^{-1}m\right)$$
+    $$\exp \left(-\frac{1}{2}(\beta - \mu_\text{post})^T \sigma_\text{post}^{-1}(\beta - \mu_\text{post})\right)\propto \exp \left(-\frac{1}{\sigma^2}\beta^T X^TX \beta - \frac{1}{2}\beta^T M^{-1}\beta +\frac{1}{\sigma^2}\beta^T X^TY + \beta^T M^{-1}m\right)$$
     and this is equal to $$\exp \left(-\frac{1}{2}\beta^T\left(\frac{1}{\sigma^2} X^TX +M^{-1}\right)\beta +\beta^T(\frac{1}{\sigma^2} X^TY + M^{-1}m\right)$$
-    and this is $$\propto \exp \left(-\frac{1}{2}(\beta - \mu_\text{past})^T \sigma_\text{past}^{-1}(\beta - \mu_\text{past})\right)$$
+    and this is $$\propto \exp \left(-\frac{1}{2}(\beta - \mu_\text{post})^T \sigma_\text{post}^{-1}(\beta - \mu_\text{post})\right)$$
 \end{proof}
 \begin{corollary}
-    For $\ell =||\cdot ||^2$, the Bayes estimator is $\hat{\beta}_\Pi= \mu_\text{past}$
+    For $\ell =||\cdot ||^2$, the Bayes estimator is $\hat{\beta}_\Pi= \mu_\text{post}$
 \end{corollary}
 \begin{proposition}
-    Consider the previous setting (from the theorem), with $m=0$, and $M=\tau^2 I_p$ (centered, isotropic, normal prior). The, $\mu_\text{past}= \hat{\beta}_\Pi$ minimizes 
+    Consider the previous setting (from the theorem), with $m=0$, and $M=\tau^2 I_p$ (centered, isotropic, normal prior). The, $\mu_\text{post}= \hat{\beta}_\Pi$ minimizes 
     $$\beta \mapsto|| Y -X \beta ||^2_{\mathbb{R}^n}+ \underbrace{\frac{\sigma^2}{\tau^2}||\beta||^2_{\mathbb{R}^p}}_{\text{"penalty" or "regularization"}}$$
 \begin{proof}
-    
+    $$\nabla_\beta J(\beta) = -Z X^T \underbrace{(Y-X\beta)}_{\mathbb{R}^n}+\frac{2\sigma^2}{\tau^2} \beta=0 \in \mathbb{R}^p $$
+    This happens if and only if $$Z(X^TX +\frac{\sigma^2}{\tau^2})\beta - 2 X^T Y=0\iff \hat{\beta} = (X^TX+ \frac{\sigma^2}{\tau^2}I)^{-1}X^T Y.$$
+    Thus, 
+    \begin{align}
+        \mu_\text{post}&=\Sigma_\text{post}^{-1}\left(\sigma^{-2}X^TY + M^{-1},\right)\\
+        &= \left(\sigma^{-2}X^T X + \frac{1}{\tau^2}I_p\right)^{-1}\sigma^{-2}X^T Y\\
+        &= (X^TX+\frac{\sigma^2}{\tau^2} I_p)^{-1} X^T Y.
+    \end{align}
 \end{proof}
+\end{proposition}
+\begin{remark}
+    $\hat{\beta}$ is defined even if $\text{rank}(X)<p$, in particular, even for $n<p$.
+\end{remark}
+\begin{definition}
+    $\hat{\beta}$ given by $$\hat{\beta}=\arg \min_{\beta \in \mathbb{R}^p} ||Y-\beta||^2_{\mathbb{R}^n}+\lambda ||\beta||_{\mathbb{R}^p}^2$$
+    is called a ridge regression estimator. Have $\lambda>0$ is called regularization parameter. We sometimes write $\hat{\beta}_\text{ridge}$. $\hat{\beta}_\text{ridge}$ is always uniquely defined. 
+\end{definition}
+\begin{proposition}[MSE of $\hat{\beta}_\text{ridge}$]
+    Consider a linear model with $\varepsilon \sim N(0, \sigma I_n)$, $\sigma>0$ known, and $X^TX= nI_p$ with design. Let $\alpha =\langle \beta, v\rangle,$ for $v\in \mathbb{R}$ and $\hat{\alpha}_\text{ridge}=\langle \hat{\beta}_\text{ridge}, v\rangle.$
+    Then, 
+    \begin{enumerate}
+        \item $$E_\beta [|\hat{\alpha}_\text{ridge}-\alpha|^2]= (1+\frac{n}{\lambda})\langle \beta, v\rangle^2+\frac{\sigma^2 ||v||^2}{n}\left(1+\frac{\lambda}{n}\right)$$
+        \item $$E_\beta [|\hat{\beta}_\text{ridge}-\beta|^2] = \left(1+\frac{n}{\lambda}\right)^{-2}||\beta||^2+\underbrace{\frac{p\sigma^2}{n}}_{\text{risk of }\hat{\beta}_{OLS}}\left(1+\frac{\lambda}{n}\right)^{-2}$$
+    \end{enumerate}
+    
 \end{proposition}
 \end{document}

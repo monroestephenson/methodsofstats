@@ -1410,6 +1410,255 @@ In this lecture, we have introduced the fundamental concepts of linear regressio
 
 
 
+\chapter{Lecture 8}
+
+Recall the linear model:
+\[
+Y = X\beta + \varepsilon
+\]
+where $\text{Cov}(\varepsilon) = \Sigma$.
+
+\paragraph{OLD Estimator}
+\[
+\hat{\beta} = \left(X_\Sigma^T X_\Sigma\right)^{-1} X_\Sigma^T \Sigma^{-1/2} Y.
+\]
+
+\paragraph{Projection Interpretation}
+\[
+X\hat{\beta} = \text{Projection of } \Sigma^{-1/2} Y \text{ onto the span } \{X_{\varepsilon,1}, \hdots, X_{\varepsilon,p}\}.
+\]
+
+\begin{theorem}[Gauss-Markov]
+\begin{enumerate}
+    \item $\hat{\beta}_{\text{OLS}}$ is the Best Linear Unbiased Estimator (BLUE).
+    \item For any linear combination $\alpha_i = \langle \beta, v \rangle$, the estimator $\hat{\alpha}_i$ is BLUE.
+    \item The estimator 
+    \[
+    \hat{\sigma}^2 = \frac{||Y - X\hat{\beta}||^2}{n - p}
+    \]
+    is an unbiased estimator for $\sigma^2 > 0$.
+\end{enumerate}
+\end{theorem}
+
+Expressed component-wise, the model is:
+\[
+\begin{pmatrix}  
+    y_1  \\  
+    y_2 \\ 
+    \vdots \\ 
+    y_n  
+\end{pmatrix}
+=
+\begin{pmatrix}  
+    x_1  \\  
+    x_2 \\ 
+    \vdots \\ 
+    x_n  
+\end{pmatrix} 
+\begin{pmatrix}  
+    \beta_1  \\  
+    \beta_2 \\ 
+    \vdots \\ 
+    \beta_p  
+\end{pmatrix}^T 
++
+\begin{pmatrix}  
+    \varepsilon_1  \\  
+    \varepsilon_2 \\ 
+    \vdots \\ 
+    \varepsilon_n  
+\end{pmatrix}
+\]
+where our data is $(Y_i, X_i)_{i=1}^n \in (\mathbb{R} \times \mathbb{R}^p)^{\otimes n}$.
+
+\begin{remark}
+Is this an IID model? It depends!
+\begin{enumerate}
+    \item Typically, $\varepsilon_i$ are IID.
+    \item If $X_i$ are random, then we have a "random design".
+    \item If $X_i$ are IID, then the linear model is an IID model.
+    \item If $X_i$ are deterministic, then it is not an IID model.
+\end{enumerate}
+\end{remark}
+
+Consider the mapping:
+\[
+\beta \mapsto ||Y - X\hat{\beta}||.
+\]
+
+\begin{proof}[Proof of Theorem (Point 3)]
+This proof continues from point 3 of the Gauss-Markov theorem.
+
+We have already introduced the projection matrix:
+\[
+\Pi_U = X(X^T X)^{-1}X^T
+\]
+which projects onto the column space $U$ of $X$. Thus, $I_n - \Pi_U$ is the projection operator onto $U^\perp$, the orthogonal complement of $U$:
+\[
+U^\perp = \left\{ z \in \mathbb{R}^n \mid \langle z, X_k \rangle = 0 \text{ for all } k = 1, \hdots, p \right\}.
+\]
+Choose an orthonormal basis $e_1, \hdots, e_{n-p}$ of $U^\perp$. Then,
+\[
+(I_n - \Pi_U)z = \Pi_{U^\perp} z = \sum_{k=1}^{n-p} \langle z, e_k \rangle e_k.
+\]
+Now, compute the norm:
+\begin{align*}
+||Y - X\hat{\beta}||^2 &= ||Y - \Pi_U Y||^2 \\
+&= ||(I_n - \Pi_U) Y||^2 \\
+&= ||(I_n - \Pi_U)(X\beta + \varepsilon)||^2 \\
+&= ||(I_n - \Pi_U)\varepsilon||^2 \\
+&= \sum_{k=1}^{n-p} \langle \varepsilon, e_k \rangle^2.
+\end{align*}
+Taking expectation:
+\[
+\mathbb{E}\left[ ||Y - X\hat{\beta}||^2 \right] = \sum_{k=1}^{n-p} \mathbb{E}\left[ \langle \varepsilon, e_k \rangle^2 \right] = (n - p) \sigma^2.
+\]
+Hence, 
+\[
+\mathbb{E}\left[ \hat{\sigma}^2 \right] = \frac{\mathbb{E}\left[ ||Y - X\hat{\beta}||^2 \right]}{n - p} = \sigma^2.
+\]
+\end{proof}
+
+\begin{remark}
+Recall the $N(\mu, \sigma^2)$ model, where the Maximum Likelihood Estimators (MLE) are:
+\[
+\hat{\mu} = \frac{1}{n} \sum_{i=1}^{n} Y_i, \quad \hat{\sigma}^2 = \frac{1}{n} \sum_{i=1}^{n} (Y_i - \hat{\mu})^2.
+\]
+The unbiased estimator for $\sigma^2$ is:
+\[
+\frac{1}{n - 1} \sum_{i=1}^{n} (Y_i - \hat{\mu})^2,
+\]
+which relates to the $n - p$ factor in point 3 of the Gauss-Markov theorem.
+\end{remark}
+
+\begin{remark}
+\begin{enumerate}
+    \item If linearity is dropped, there exist better estimators than $\hat{\beta}_{\text{OLS}}$. For example, a constant estimator $\hat{\beta} = \beta^*$.
+    \item The Mean Squared Error (MSE) of $\hat{\beta}_{\text{OLS}}$ is:
+    \[
+    \mathbb{E}\left[ ||\hat{\beta}_{\text{OLS}} - \beta||^2 \right] = \mathbb{E}\left[ \sum_{i=1}^{p} \langle \hat{\beta}_{\text{OLS}} - \beta, e_i \rangle^2 \right] = \sum_{i=1}^{p} \text{Var}_\beta\left( \langle \hat{\beta}_{\text{OLS}}, e_i \rangle \right) = \sum_{i=1}^{p} \sigma^2 ||X(X^T X)^{-1} e_i||^2.
+    \]
+    We say $X$ satisfies an orthogonal design if:
+    \[
+    X^T X = nI_p.
+    \]
+    This implies that the different covariates are uncorrelated, i.e., $(X^T X)_{ij} = \langle X_i, X_j \rangle = n \delta_{ij}$.
+    
+    For an orthogonal design, the MSE simplifies to:
+    \[
+    \mathbb{E}_\beta\left[ ||\hat{\beta}_{\text{OLS}} - \beta||^2 \right] = \frac{\sigma^2 p}{n}.
+    \]
+    This expression represents the noise level multiplied by the number of parameters, divided by the number of data points.
+\end{enumerate}
+\end{remark}
+
+\begin{theorem}[Bayes in Linear Models]
+Consider the linear model $Y = X\beta + \varepsilon$, where $\varepsilon \sim N(0, \sigma^2 I_n)$ with $\sigma > 0$ known, and assume a prior distribution $\beta \sim N(m, M)$ where $m \in \mathbb{R}^{p}$ and $M \in \mathbb{R}^{p \times p}$ is positive semi-definite. Then, the posterior distribution $\Pi(\beta \mid Y, X)$ is given by:
+\[
+\Pi(\beta \mid Y, X) = N(\mu_{\text{post}}, \Sigma_{\text{post}})
+\]
+where
+\[
+\mu_{\text{post}} = \Sigma_{\text{post}} \left( \sigma^{-2} X^T Y + M^{-1} m \right), \quad \Sigma_{\text{post}} = \left( \sigma^{-2} X^T X + M^{-1} \right)^{-1}.
+\]
+\end{theorem}
+
+\begin{remark}
+$\Sigma_{\text{post}}$ is independent of $Y$. As $M^{-1} \to 0$, the posterior mean $\mu_{\text{post}} \to \hat{\beta}_{\text{OLS}}$.
+\end{remark}
+
+\begin{proof}
+The posterior is proportional to the product of the likelihood and the prior:
+\[
+L(X, Y, \beta) \pi(\beta) \propto \exp\left( -\frac{1}{2\sigma^2} ||Y - X\beta||^2 - \frac{1}{2} (\beta - m)^T M^{-1} (\beta - m) \right).
+\]
+We want to express this in the form of a Gaussian distribution:
+\[
+\exp\left( -\frac{1}{2} (\beta - \mu_{\text{post}})^T \Sigma_{\text{post}}^{-1} (\beta - \mu_{\text{post}}) \right).
+\]
+Expanding the exponents:
+\begin{align*}
+& -\frac{1}{2\sigma^2} (Y - X\beta)^T (Y - X\beta) - \frac{1}{2} (\beta - m)^T M^{-1} (\beta - m) \\
+&= -\frac{1}{2} \beta^T \left( \frac{1}{\sigma^2} X^T X + M^{-1} \right) \beta + \beta^T \left( \frac{1}{\sigma^2} X^T Y + M^{-1} m \right) + \text{const}.
+\end{align*}
+Completing the square, we identify:
+\[
+\Sigma_{\text{post}} = \left( \frac{1}{\sigma^2} X^T X + M^{-1} \right)^{-1}, \quad \mu_{\text{post}} = \Sigma_{\text{post}} \left( \frac{1}{\sigma^2} X^T Y + M^{-1} m \right).
+\]
+Thus, the posterior distribution is:
+\[
+\Pi(\beta \mid Y, X) = N(\mu_{\text{post}}, \Sigma_{\text{post}}).
+\]
+\end{proof}
+
+\begin{corollary}
+For the loss function $\ell(\beta) = ||\cdot||^2$, the Bayes estimator is the posterior mean:
+\[
+\hat{\beta}_\Pi = \mu_{\text{post}}.
+\]
+\end{corollary}
+
+\begin{proposition}
+Consider the previous setting from the theorem, with $m = 0$ and $M = \tau^2 I_p$ (a centered, isotropic normal prior). Then, the posterior mean $\mu_{\text{post}} = \hat{\beta}_\Pi$ minimizes:
+\[
+\beta \mapsto ||Y - X\beta||^2_{\mathbb{R}^n} + \frac{\sigma^2}{\tau^2} ||\beta||^2_{\mathbb{R}^p}.
+\]
+\end{proposition}
+
+\begin{proof}
+With $m = 0$ and $M = \tau^2 I_p$, the posterior mean is:
+\[
+\mu_{\text{post}} = \Sigma_{\text{post}} \left( \sigma^{-2} X^T Y \right), \quad \Sigma_{\text{post}} = \left( \frac{1}{\sigma^2} X^T X + \frac{1}{\tau^2} I_p \right)^{-1}.
+\]
+The objective function to minimize is:
+\[
+J(\beta) = ||Y - X\beta||^2 + \frac{\sigma^2}{\tau^2} ||\beta||^2.
+\]
+Taking the gradient with respect to $\beta$:
+\[
+\nabla_\beta J(\beta) = -2X^T(Y - X\beta) + 2\frac{\sigma^2}{\tau^2} \beta = 0.
+\]
+Solving for $\beta$:
+\[
+X^T X \beta + \frac{\sigma^2}{\tau^2} \beta = X^T Y \implies \left( X^T X + \frac{\sigma^2}{\tau^2} I_p \right) \beta = X^T Y.
+\]
+Thus, the minimizer is:
+\[
+\hat{\beta}_{\text{ridge}} = \left( X^T X + \frac{\sigma^2}{\tau^2} I_p \right)^{-1} X^T Y.
+\]
+Comparing with the posterior mean:
+\[
+\mu_{\text{post}} = \left( \frac{1}{\sigma^2} X^T X + \frac{1}{\tau^2} I_p \right)^{-1} \frac{1}{\sigma^2} X^T Y = \left( X^T X + \frac{\sigma^2}{\tau^2} I_p \right)^{-1} X^T Y = \hat{\beta}_{\text{ridge}}.
+\]
+Therefore, $\mu_{\text{post}}$ minimizes the given objective function.
+\end{proof}
+
+\begin{remark}
+The estimator $\hat{\beta}$ is defined even if $\text{rank}(X) < p$, in particular, even for $n < p$.
+\end{remark}
+
+\begin{definition}[Ridge Regression]
+The estimator $\hat{\beta}$ given by
+\[
+\hat{\beta} = \arg\min_{\beta \in \mathbb{R}^p} \left( ||Y - X\beta||^2_{\mathbb{R}^n} + \lambda ||\beta||_{\mathbb{R}^p}^2 \right)
+\]
+is called a ridge regression estimator. The parameter $\lambda > 0$ is referred to as the regularization parameter. We sometimes denote this estimator by $\hat{\beta}_{\text{ridge}}$. The ridge regression estimator $\hat{\beta}_{\text{ridge}}$ is always uniquely defined.
+\end{definition}
+
+\begin{proposition}[MSE of $\hat{\beta}_{\text{ridge}}$]
+Consider a linear model with $\varepsilon \sim N(0, \sigma^2 I_n)$, $\sigma > 0$ known, and assume an orthogonal design where $X^T X = nI_p$. Let $\alpha = \langle \beta, v \rangle$ for some $v \in \mathbb{R}^p$, and let $\hat{\alpha}_{\text{ridge}} = \langle \hat{\beta}_{\text{ridge}}, v \rangle$. Then:
+\begin{enumerate}
+    \item 
+    \[
+    \mathbb{E}_\beta \left[ |\hat{\alpha}_{\text{ridge}} - \alpha|^2 \right] = \left(1 + \frac{n}{\lambda}\right) \langle \beta, v \rangle^2 + \frac{\sigma^2 ||v||^2}{n} \left(1 + \frac{\lambda}{n}\right).
+    \]
+    \item 
+    \[
+    \mathbb{E}_\beta \left[ ||\hat{\beta}_{\text{ridge}} - \beta||^2 \right] = \left(1 + \frac{n}{\lambda}\right)^{-2} ||\beta||^2 + \frac{p \sigma^2}{n} \left(1 + \frac{\lambda}{n}\right)^{-2}.
+    \]
+    The second term represents the risk of $\hat{\beta}_{\text{OLS}}$ scaled by $\left(1 + \frac{\lambda}{n}\right)^{-2}$.
+\end{enumerate}
+\end{proposition}
 
 
 

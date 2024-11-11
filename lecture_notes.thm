@@ -1,52 +1,66 @@
-\contentsline {example}{{Example}{1}{Polling}}{4}{example.1}%
-\contentsline {definition}{{Definition}{1}{Sample space}}{5}{definition.1}%
-\contentsline {definition}{{Definition}{2}{Statistical model}}{5}{definition.2}%
-\contentsline {remark}{{Remark}{1}{}}{5}{remark.1}%
-\contentsline {remark}{{Remark}{2}{Back to Example \ref {ex:polling}}}{5}{remark.2}%
-\contentsline {remark}{{Remark}{3}{}}{5}{remark.3}%
-\contentsline {definition}{{Definition}{3}{Estimator}}{6}{definition.3}%
-\contentsline {definition}{{Definition}{4}{Unbiased estimator}}{6}{definition.4}%
-\contentsline {remark}{{Remark}{4}{Unbiasedness}}{6}{remark.4}%
-\contentsline {definition}{{Definition}{5}{Consistent estimator}}{6}{definition.5}%
-\contentsline {definition}{{Definition}{6}{Dominated statistical model \& MLE}}{8}{definition.6}%
-\contentsline {remark}{{Remark}{5}{Caveats}}{8}{remark.5}%
-\contentsline {remark}{{Remark}{6}{}}{8}{remark.6}%
-\contentsline {example}{{Example}{2}{Normal model}}{9}{example.2}%
-\contentsline {remark}{{Remark}{7}{}}{10}{remark.7}%
-\contentsline {definition}{{Definition}{7}{Prior, Posterior, Bayes' Rule}}{10}{definition.7}%
-\contentsline {remark}{{Remark}{8}{}}{10}{remark.8}%
-\contentsline {remark}{{Remark}{9}{Beta distribution}}{11}{remark.9}%
-\contentsline {definition}{{Definition}{8}{Conjugate Bayesian models}}{12}{definition.8}%
-\contentsline {definition}{{Definition}{9}{Loss function}}{13}{definition.9}%
-\contentsline {proposition}{{Proposition}{1}{Bias-Variance Decomposition}}{13}{proposition.1}%
-\contentsline {proof}{{\proofname }{1}{}}{13}{proof.1}%
-\contentsline {definition}{{Definition}{10}{Minimax Risk}}{13}{definition.10}%
-\contentsline {definition}{{Definition}{11}{Bayes Risk}}{14}{definition.11}%
-\contentsline {definition}{{Definition}{12}{Posterior Risk}}{14}{definition.12}%
-\contentsline {proposition}{{Proposition}{2}{Bayes Risk and Posterior Risk}}{14}{proposition.2}%
-\contentsline {proof}{{\proofname }{2}{}}{14}{proof.2}%
-\contentsline {example}{{Example}{3}{}}{14}{example.3}%
-\contentsline {proposition}{{Proposition}{3}{}}{15}{proposition.3}%
-\contentsline {proof}{{\proofname }{3}{}}{15}{proof.3}%
-\contentsline {proposition}{{Proposition}{4}{}}{15}{proposition.4}%
-\contentsline {proof}{{\proofname }{4}{}}{15}{proof.4}%
-\contentsline {corollary}{{Corollary}{1}{}}{16}{corollary.1}%
-\contentsline {proof}{{\proofname }{5}{}}{16}{proof.5}%
-\contentsline {example}{{Example}{4}{}}{16}{example.4}%
-\contentsline {definition}{{Definition}{13}{}}{16}{definition.13}%
-\contentsline {remark}{{Remark}{10}{}}{16}{remark.10}%
-\contentsline {proposition}{{Proposition}{5}{}}{16}{proposition.5}%
-\contentsline {definition}{{Definition}{14}{}}{16}{definition.14}%
-\contentsline {definition}{{Definition}{15}{Confidence Set}}{18}{definition.15}%
-\contentsline {example}{{Example}{5}{}}{18}{example.5}%
-\contentsline {definition}{{Definition}{16}{Level}}{20}{definition.16}%
-\contentsline {definition}{{Definition}{17}{Uniformly Most Powerful Test}}{20}{definition.17}%
-\contentsline {theorem}{{Theorem}{1}{Neyman-Pearson Lemma}}{21}{theorem.1}%
-\contentsline {definition}{{Definition}{18}{Linear Model}}{30}{definition.18}%
-\contentsline {remark}{{Remark}{11}{}}{30}{remark.11}%
-\contentsline {lemma}{{Lemma}{1}{Representation for the LSE}}{32}{lemma.1}%
-\contentsline {proof}{{\proofname }{6}{}}{32}{proof.6}%
-\contentsline {remark}{{Remark}{12}{}}{32}{remark.12}%
-\contentsline {theorem}{{Theorem}{2}{Gauss-Markov Theorem}}{33}{theorem.2}%
-\contentsline {proof}{{\proofname }{7}{}}{33}{proof.7}%
-\contentsline {remark}{{Remark}{13}{}}{34}{remark.13}%
+\contentsline {example}{{Example}{1}{Polling}}{5}{example.1}%
+\contentsline {definition}{{Definition}{1}{Sample space}}{6}{definition.1}%
+\contentsline {definition}{{Definition}{2}{Statistical model}}{6}{definition.2}%
+\contentsline {remark}{{Remark}{1}{}}{6}{remark.1}%
+\contentsline {remark}{{Remark}{2}{Back to Example \ref {ex:polling}}}{6}{remark.2}%
+\contentsline {remark}{{Remark}{3}{}}{6}{remark.3}%
+\contentsline {definition}{{Definition}{3}{Estimator}}{7}{definition.3}%
+\contentsline {definition}{{Definition}{4}{Unbiased estimator}}{7}{definition.4}%
+\contentsline {remark}{{Remark}{4}{Unbiasedness}}{7}{remark.4}%
+\contentsline {definition}{{Definition}{5}{Consistent estimator}}{7}{definition.5}%
+\contentsline {definition}{{Definition}{6}{Dominated statistical model \& MLE}}{9}{definition.6}%
+\contentsline {remark}{{Remark}{5}{Caveats}}{9}{remark.5}%
+\contentsline {remark}{{Remark}{6}{}}{9}{remark.6}%
+\contentsline {example}{{Example}{2}{Normal model}}{10}{example.2}%
+\contentsline {remark}{{Remark}{7}{}}{11}{remark.7}%
+\contentsline {definition}{{Definition}{7}{Prior, Posterior, Bayes' Rule}}{11}{definition.7}%
+\contentsline {remark}{{Remark}{8}{}}{11}{remark.8}%
+\contentsline {remark}{{Remark}{9}{Beta distribution}}{12}{remark.9}%
+\contentsline {definition}{{Definition}{8}{Conjugate Bayesian models}}{13}{definition.8}%
+\contentsline {definition}{{Definition}{9}{Loss function}}{14}{definition.9}%
+\contentsline {proposition}{{Proposition}{1}{Bias-Variance Decomposition}}{14}{proposition.1}%
+\contentsline {proof}{{\proofname }{1}{}}{14}{proof.1}%
+\contentsline {definition}{{Definition}{10}{Minimax Risk}}{14}{definition.10}%
+\contentsline {definition}{{Definition}{11}{Bayes Risk}}{15}{definition.11}%
+\contentsline {definition}{{Definition}{12}{Posterior Risk}}{15}{definition.12}%
+\contentsline {proposition}{{Proposition}{2}{Bayes Risk and Posterior Risk}}{15}{proposition.2}%
+\contentsline {proof}{{\proofname }{2}{}}{15}{proof.2}%
+\contentsline {example}{{Example}{3}{}}{15}{example.3}%
+\contentsline {proposition}{{Proposition}{3}{}}{16}{proposition.3}%
+\contentsline {proof}{{\proofname }{3}{}}{16}{proof.3}%
+\contentsline {proposition}{{Proposition}{4}{}}{16}{proposition.4}%
+\contentsline {proof}{{\proofname }{4}{}}{16}{proof.4}%
+\contentsline {corollary}{{Corollary}{1}{}}{17}{corollary.1}%
+\contentsline {proof}{{\proofname }{5}{}}{17}{proof.5}%
+\contentsline {example}{{Example}{4}{}}{17}{example.4}%
+\contentsline {definition}{{Definition}{13}{}}{17}{definition.13}%
+\contentsline {remark}{{Remark}{10}{}}{17}{remark.10}%
+\contentsline {proposition}{{Proposition}{5}{}}{17}{proposition.5}%
+\contentsline {definition}{{Definition}{14}{}}{17}{definition.14}%
+\contentsline {definition}{{Definition}{15}{Confidence Set}}{19}{definition.15}%
+\contentsline {example}{{Example}{5}{}}{19}{example.5}%
+\contentsline {definition}{{Definition}{16}{Level}}{21}{definition.16}%
+\contentsline {definition}{{Definition}{17}{Uniformly Most Powerful Test}}{21}{definition.17}%
+\contentsline {theorem}{{Theorem}{1}{Neyman-Pearson Lemma}}{22}{theorem.1}%
+\contentsline {definition}{{Definition}{18}{Linear Model}}{31}{definition.18}%
+\contentsline {remark}{{Remark}{11}{}}{31}{remark.11}%
+\contentsline {lemma}{{Lemma}{1}{Representation for the LSE}}{33}{lemma.1}%
+\contentsline {proof}{{\proofname }{6}{}}{33}{proof.6}%
+\contentsline {remark}{{Remark}{12}{}}{33}{remark.12}%
+\contentsline {theorem}{{Theorem}{2}{Gauss-Markov Theorem}}{34}{theorem.2}%
+\contentsline {proof}{{\proofname }{7}{}}{34}{proof.7}%
+\contentsline {remark}{{Remark}{13}{}}{35}{remark.13}%
+\contentsline {theorem}{{Theorem}{3}{Gauss-Markov}}{37}{theorem.3}%
+\contentsline {remark}{{Remark}{14}{}}{37}{remark.14}%
+\contentsline {proof}{{Proof of Theorem (Point 3)}{8}{}}{38}{proof.8}%
+\contentsline {remark}{{Remark}{15}{}}{38}{remark.15}%
+\contentsline {remark}{{Remark}{16}{}}{39}{remark.16}%
+\contentsline {theorem}{{Theorem}{4}{Bayes in Linear Models}}{39}{theorem.4}%
+\contentsline {remark}{{Remark}{17}{}}{39}{remark.17}%
+\contentsline {proof}{{\proofname }{9}{}}{40}{proof.9}%
+\contentsline {corollary}{{Corollary}{2}{}}{40}{corollary.2}%
+\contentsline {proposition}{{Proposition}{6}{}}{40}{proposition.6}%
+\contentsline {proof}{{\proofname }{10}{}}{40}{proof.10}%
+\contentsline {remark}{{Remark}{18}{}}{41}{remark.18}%
+\contentsline {definition}{{Definition}{19}{Ridge Regression}}{41}{definition.19}%
+\contentsline {proposition}{{Proposition}{7}{MSE of $\hat {\beta }_{\text {ridge}}$}}{41}{proposition.7}%
