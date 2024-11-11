@@ -1,0 +1,202 @@
+{
+    "mathbb_R": {
+        "prefix": "\\R",
+        "body": ["\\mathbb{R}"],
+        "description": "Shortcut for \\mathbb{R} (Real numbers)"
+    },
+    "mathbb_Z": {
+        "prefix": "\\Z",
+        "body": ["\\mathbb{Z}"],
+        "description": "Shortcut for \\mathbb{Z} (Integers)"
+    },
+    "mathbb_Q": {
+        "prefix": "\\Q",
+        "body": ["\\mathbb{Q}"],
+        "description": "Shortcut for \\mathbb{Q} (Rational numbers)"
+    },
+    "mathbb_C": {
+        "prefix": "\\C",
+        "body": ["\\mathbb{C}"],
+        "description": "Shortcut for \\mathbb{C} (Complex numbers)"
+    },
+    "mathbb_N": {
+        "prefix": "\\N",
+        "body": ["\\mathbb{N}"],
+        "description": "Shortcut for \\mathbb{N} (Natural numbers)"
+    },
+    "mathbb_P": {
+        "prefix": "\\P",
+        "body": ["\\mathbb{P}"],
+        "description": "Shortcut for \\mathbb{P} (Probability)"
+    },
+    "mathbf_x": {
+        "prefix": "\\x",
+        "body": ["\\mathbf{x}"],
+        "description": "Shortcut for \\mathbf{x} (Bold x)"
+    },
+    "mathbf_y": {
+        "prefix": "\\y",
+        "body": ["\\mathbf{y}"],
+        "description": "Shortcut for \\mathbf{y} (Bold y)"
+    },
+    "mathbf_z": {
+        "prefix": "\\z",
+        "body": ["\\mathbf{z}"],
+        "description": "Shortcut for \\mathbf{z} (Bold z)"
+    },
+    "mathcal_F": {
+        "prefix": "\\F",
+        "body": ["\\mathcal{F}"],
+        "description": "Shortcut for \\mathcal{F} (Function space)"
+    },
+    "mathcal_L": {
+        "prefix": "\\L",
+        "body": ["\\mathcal{L}"],
+        "description": "Shortcut for \\mathcal{L} (Lagrangian or Laplace transform)"
+    },
+    "mathcal_O": {
+        "prefix": "\\O",
+        "body": ["\\mathcal{O}"],
+        "description": "Shortcut for \\mathcal{O} (Big O notation)"
+    },
+    "sum": {
+        "prefix": "\\sum",
+        "body": ["\\sum_{i=1}^{n} $1"],
+        "description": "Shortcut for summation notation"
+    },
+    "prod": {
+        "prefix": "\\prod",
+        "body": ["\\prod_{i=1}^{n} $1"],
+        "description": "Shortcut for product notation"
+    },
+    "integral": {
+        "prefix": "\\int",
+        "body": ["\\int_{a}^{b} $1 \\,dx"],
+        "description": "Shortcut for integral notation"
+    },
+    "partial_derivative": {
+        "prefix": "\\pd",
+        "body": ["\\frac{\\partial $1}{\\partial $2}"],
+        "description": "Shortcut for partial derivative"
+    },
+    "fraction": {
+        "prefix": "\\frac",
+        "body": ["\\frac{$1}{$2}"],
+        "description": "Shortcut for fractions"
+    },
+    "limits": {
+        "prefix": "\\lim",
+        "body": ["\\lim_{n \\to \\infty} $1"],
+        "description": "Shortcut for limits"
+    },
+    "double_dollar": {
+        "prefix": "$$",
+        "body": ["$$$1$$"],
+        "description": "Automatically closes $$ for math mode"
+    },
+    "quad_dollar": {
+        "prefix": "$$$$",
+        "body": ["$$$$$1$$$$"],
+        "description": "Expands $$$$ for display math mode"
+    },
+    "sum_1_to_n": {
+        "prefix": "\\sum1n",
+        "body": ["\\sum_{i=1}^n $1"],
+        "description": "Summation from 1 to n"
+    },
+    "quad_space": {
+        "prefix": "\\quad",
+        "body": ["\\quad"],
+        "description": "Shortcut for \\quad (space)"
+    },
+    "matrix": {
+        "prefix": "\\matrix",
+        "body": ["\\begin{matrix} $1 & $2 \\\\ $3 & $4 \\end{matrix}"],
+        "description": "Matrix template"
+    },
+    "pmatrix": {
+        "prefix": "\\pmatrix",
+        "body": ["\\begin{pmatrix} $1 & $2 \\\\ $3 & $4 \\end{pmatrix}"],
+        "description": "Parenthesis matrix template"
+    },
+    "cases": {
+        "prefix": "\\cases",
+        "body": ["\\begin{cases} $1 & \\text{if $2} \\\\ $3 & \\text{if $4} \\end{cases}"],
+        "description": "Cases template"
+    },
+    "align_env": {
+        "prefix": "\\align",
+        "body": ["\\begin{align} $1 \\end{align}"],
+        "description": "Align environment"
+    },
+    "norm": {
+        "prefix": "\\norm",
+        "body": ["\\left\\| $1 \\right\\|"],
+        "description": "Shortcut for norm notation"
+    },
+    "inner_product": {
+        "prefix": "\\ip",
+        "body": ["\\langle $1, $2 \\rangle"],
+        "description": "Shortcut for inner product"
+    },
+    "mathbb_T": {
+        "prefix": "\\T",
+        "body": ["\\mathbb{T}"],
+        "description": "Shortcut for \\mathbb{T} (Torus or topology)"
+    },
+    "vector_v": {
+        "prefix": "\\v",
+        "body": ["\\mathbf{v}"],
+        "description": "Shortcut for \\mathbf{v} (vector v)"
+    },
+    "epsilon": {
+        "prefix": "\\eps",
+        "body": ["\\epsilon"],
+        "description": "Shortcut for epsilon symbol"
+    },
+    "absolute_value": {
+        "prefix": "\\abs",
+        "body": ["\\left| $1 \\right|"],
+        "description": "Shortcut for absolute value notation"
+    },
+    "less_equal": {
+        "prefix": "\\leq",
+        "body": ["\\leq"],
+        "description": "Less than or equal to symbol"
+    },
+    "greater_equal": {
+        "prefix": "\\geq",
+        "body": ["\\geq"],
+        "description": "Greater than or equal to symbol"
+    },
+    "rightarrow": {
+        "prefix": "\\to",
+        "body": ["\\rightarrow"],
+        "description": "Shortcut for right arrow"
+    },
+    "implies": {
+        "prefix": "\\implies",
+        "body": ["\\implies"],
+        "description": "Shortcut for implication symbol"
+    },
+    "equiv": {
+        "prefix": "\\equiv",
+        "body": ["\\equiv"],
+        "description": "Shortcut for equivalence symbol"
+    },
+    "perpendicular": {
+        "prefix": "\\perp",
+        "body": ["\\perp"],
+        "description": "Shortcut for perpendicular symbol"
+    },
+    "angle": {
+        "prefix": "\\angle",
+        "body": ["\\angle"],
+        "description": "Shortcut for angle symbol"
+    },
+    "dot_product": {
+        "prefix": "\\dotp",
+        "body": ["\\cdot"],
+        "description": "Dot product symbol"
+    }
+}
