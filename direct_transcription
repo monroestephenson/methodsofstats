@@ -980,4 +980,79 @@ $\beta \mapsto ||Y-X\hat{\beta}||.$
     
 \end{proof}
 \end{proposition}
+\section{Lecture 10}
+$t$-distribution $\cdot$ $t_n(x)\propto \left(\frac{n^2}{n}+1\right)^{-(n+1)/2}$
+\par $F$ - $\cdot$ $f_{m,n}(x)\propto \frac{x^{m/2-1}}{(n+mx)^{(m+n)/2}}$
+\par In the linear model $Y=X\beta+\varepsilon$, $\varepsilon\sim N(0,\sigma^2 I_n)$, $$\hat{\beta}= (X^TX)^{-1}X^TY\sim N(0, \sigma^2A)$$ where $$\sigma^2=\hat{\sigma}^2=||\frac{||Y-X\beta}{n-p}\sim \sigma^2\frac{\chi^2(n-p)}{n-p}$$
+\par We now have $$t_n = \frac{N(0,1)}{\chi^2(n)n}\quad \quad f_{m,n}=\frac{n\chi^2(m)}{m\chi^2(n)}$$
+\begin{lemma}
+    Let $\xi\sim N(0,I_n)$, a ramdom variable in $\mathbb{R}^n$, and let $R\in \mathbb{R}^{n\times n}$ be an orthogonal projection $(R=R^2, R=R^T)$, with $\text{rank}(R)= r\le n.$
+    \begin{enumerate}
+        \item $\xi^T R \xi = ||R\xi ||^2\sim \chi^2(r).$
+        \item If $B\in \mathbb{R}^{p\times n}$ is such that $BR =0$, then $B\xi$ is independent from $R\xi$
+        \item If $S\in \mathbb{R}^{n\times n}$ is another orthogonal projection, rank$(S)=s\le n$ and $RS=0$, then $$\frac{s}{r}\frac{\xi^T R\xi}{\xi^T S\xi}\sim F(r,s)$$ 
+    \end{enumerate}
+    \begin{proof}
+        \begin{enumerate}
+            \item Since $R$ is an othrogonal projection, there exists an orthogonal matrix $T^T=T^{-1}$ such that 
+            $$R=T\begin{pmatrix} I_r & \mathbf{0}  \\
+                                \mathbf{0} &   \mathbf{0}
+                \end{pmatrix}T^T = TD_rT^T.$$
+                Then we have $T^T\sim N(0, T^TT)= N(0,I_n)$.
+                $$\xi^T R \xi=\xi^T  (TD_r T^T)\xi =(T^T \xi)^T D_r T^T \xi =\sum_{i=1}^{n} (T^T \xi )_i^2 \sim \chi^2(r).$$
+                \item Let $A_1=B\xi$, $A_2=R\xi$, then $$\text{Cov}(A_1, A_2)=\text{Cov} (B\xi, R\xi)= B\text{Cov}(\xi,\xi)R^T=BR^T = BR=0$$
+                \item By (2), we know $S\xi$ and $R\xi$ are independent. By (1), $\xi^TS\xi\sim \chi^2(s)$, $\xi R\xi \sim \chi^2(r)$. The claim follows from the definition of $F(r,s)$.
+        \end{enumerate}
+    \end{proof}
+\end{lemma}
+\begin{theorem}{Linear Model Confidence Sets -unknown $\sigma^2$}
+    Assume regular linear model, $Y= X\beta+ \varepsilon$, rank$(X)=p\le n$, $\varepsilon\sim N(0,\sigma^2 I_n)$. Let $\alpha\in (0,1)$
+    \begin{enumerate}
+        \item Let $q_{F_{p, n-p},1-\alpha}$ be the $1-\alpha$ quantile of $F_{p, n-p}$ distribution. Then $C(Y,X)= \left\{\beta \in \mathbb{R}^p \mid \frac{||X (\beta-\hat{\beta}_{OLS})||^2}{p \hat{\sigma}^2}\le q_{F_{p, n-p},1-\alpha}\right\}$
+        is a level $1-\alpha$ confidence set.
+        \item Let $\alpha=\langle \beta, v\rangle$, for some $v\in \mathbb{R}^p$. Then a $1-\alpha$ confidence set is $$C=C(Y,X)=\left\{\alpha \in \mathbb{R} \mid \left|\frac{\alpha - \hat{\alpha}}{\hat{\sigma}\sqrt{v^T (X^TX)^{-1}v}}\right|<q\right\}$$
+        where $\hat{\alpha} = \langle \hat{\beta}_{OLS},v\rangle$ and $q$ is the $1-\alpha/2$ quantile of $t_n$.  
+    \end{enumerate}
+    \begin{proof}
+        \begin{enumerate}
+            \item We know $X\hat{\beta}_{OLS}= \Pi_U Y=\Pi_UX\beta +\Pi_U \varepsilon =X\beta +\Pi_U \varepsilon$
+            Moreover, $$\hat{\sigma}^2 =\frac{||X (\beta-\hat{\beta}_{OLS})||^2}{n-p} = \frac{(||I_n-\Pi_U)Y||^2}{n-p}=\frac{||\Pi_{U^\perp}Y||^2}{n-p}=\\frac{||\Pi_{U^\perp}\varepsilon||^2}{n-p}$$
+            This implies $$\frac{||X\beta -X\hat{\beta}_{OLS}}{p\hat{\sigma}^2}=\frac{|n-p|||\Pi_U\varepsilon||^2}{p||\Pi_{U^\perp}\varepsilon||^2}\sim \frac{(n-p)\sigma^2 \chi^2(p)}{p\sigma^2 \chi^2(n-p)}\sim F(p, n-p).$$
+            \item We know $$\hat{\sigma}= \langle \hat{\beta}_{OLS}, v \rangle = v^T \hat{\beta}_{OLS}\sim v^T N(\beta, (X^TX)^{-1}\sigma^2)=N(\alpha, v^T (X^TX)^{-1}v \sigma^2)$$
+            And this implies $$\frac{\alpha - \hat{\alpha}}{\sigma\sqrt{v^T (X^TX)^{-1}v}} \sim N(0,1).$$
+            Finally, also, as in (1), $\hat{\sigma}^2 \sim \sigma^2\chi^2(n-p).$
+            This implies $$\frac{\alpha - \hat{\alpha}}{\hat{\sigma}\sqrt{v^T (X^TX)^{-1}v}}\sim t_{n-p}.$$ 
+        \end{enumerate}
+    \end{proof}
+\end{theorem}
+\subsection{The $t-$ and $F-$test}
+\begin{remark}[Method (t-test)]
+    In a regular linear model with $\varepsilon\sim N(0,\sigma I_n)$, consider $H_0:\gamma = \gamma_0$ vs $H_1 \gamma \neq \gamma_0$ ($\gamma = \langle \beta, v\rangle$).
+    The two sided $t-$test is $$\varphi_{\alpha_0}(Y,X)= \mathbf{1} (\{|T_{\alpha_0,n-p}(Y,X)|>q\}),$$
+    where $$T_{\alpha_0,n-p}=\frac{\alpha_0 - \hat{\alpha}}{\hat{\sigma}\sqrt{v^T (X^TX)^{-1}v}}$$
+    and $q$ is the $1-\alpha/2$-quantile of $t_{n-p}.$
+\end{remark}
+\begin{remark}[Method (F-test)]
+    Same setting as before for $t$-test, $H_0:\beta = \beta_0$ vs $H_1 \beta \neq \beta_0$ since $\beta_0\in \mathbb{R}^p$. Then the $F$-test is 
+    $$\varphi_{\beta_0}(Y,X)=\mathbb{1}(|F_{\beta_0,n-p}(Y,X)|>q)$$
+    where $$F_{\beta_0,n-p}(Y,X) =\frac{||X (\beta-\hat{\beta}_{OLS})||^2}{p \hat{\sigma}^2}$$ 
+    and $q=(1-\alpha)$-quantile of $F_{p,n-p}$.
+\end{remark}
+\subsection{General linear hypothesis testing problems}
+\begin{definition}
+    A linear hypothesis testomng pb. is of the form $H_0: K\beta = d$ vs $H_1: K \beta \neq d$, where $K\in \mathbb{R}^{r\times p}$ with rank$(K)=r\le p$, $d\in \mathbb{R}^p$. In other words "r linear constrations on $\beta$"
+    \par $K$ os called the "contrast matrix"
+    \begin{theorem}
+        Assume regular linear model, with $\varepsilon \sim N(0, \sigma^2 I_n),$ and consider $H_0: K\beta =d$ vs. $K\beta\neq d$.
+        \par Defin residual sum of squares as $RSS=||Y- X\beta_{OLS}||^2$ and $RSS_{H_0}=||Y- X\beta_{H_0}||^2$ and $\hat{\beta}_{H_0}$ over $\{\beta \colon K\beta =d\}$.
+        \begin{proof}
+            \begin{enumerate}
+                \item $$\hat{\beta}_{H_0}= \hat{\beta}_{OLS}- (X^TX)^{-1} K^T(K(X^TX)^{-1}K^T)^{-1}(K\hat{\beta}_{OLS}-d)$$
+                \item $RSS_{H_0}-RSS= (K \hat{\beta}_{OLS}-d)(K (X^TX)^{-1}K^T)^{-1}(K\hat{\beta}_{OLS}-d), \quad \frac{RSS_{H_0}-RSS}{\sigma^2}\sim \chi^2(r)$
+                \item Define $$F=\frac{n-p}{r}=\frac{RSS_{H_0}-RSS}{RSS}=\frac{RSS_{H_0}-RSS}{r\hat{\sigma}^2}\sim F_{r,n-p}$$
+                under $H_0.$
+            \end{enumerate}
+        \end{proof}
+    \end{theorem}
+\end{definition}
 \end{document}
