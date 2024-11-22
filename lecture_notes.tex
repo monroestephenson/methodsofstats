@@ -21,6 +21,8 @@ backrefstyle=two % sortiert nach year, name und dann title
 \usepackage{wrapfig}
 \usepackage{lmodern}
 \usepackage{xcolor}
+\usepackage{bm}
+
 \usepackage{pdfpages,datetime}
 
 
@@ -1409,6 +1411,681 @@ The least squares estimator possesses several optimality properties under the or
 In this lecture, we have introduced the fundamental concepts of linear regression models, both in their simplest form and in a more general framework. We discussed the estimation of model parameters using the method of least squares, explored the geometric interpretation of the estimator, and established its optimality through the Gauss-Markov theorem. Understanding these foundational elements is crucial for further studies in statistical modeling and inference.
 
 
+\chapter{Lecture 9: Ridge Regression and Its Properties}
+
+In this lecture, we delve into Ridge Regression, a technique used to address multicollinearity in linear models. We will explore its derivation, properties, and how it compares to Ordinary Least Squares (OLS). Additionally, we will discuss the bias-variance trade-off inherent in Ridge Regression and present propositions regarding its Mean Squared Error (MSE).
+
+\subsection*{Proof of Ridge Regression Estimator}
+
+We begin by deriving the Ridge Regression estimator through optimization of the penalized loss function.
+
+\textbf{Objective:} Minimize the cost function 
+\[
+\mathcal{J}(\bm{\beta}) = \|\bm{Y} - \bm{X} \bm{\beta}\|^2 + \frac{\sigma^2}{\tau^2} \|\bm{\beta}\|^2
+\]
+with respect to the coefficient vector \(\bm{\beta}\).
+
+\textbf{Steps:}
+
+1. **Compute the Gradient:**
+
+   To find the minimum, we take the gradient of \(\mathcal{J}(\bm{\beta})\) with respect to \(\bm{\beta}\):
+   \[
+   \nabla_{\bm{\beta}} \mathcal{J}(\bm{\beta}) = 2 \bm{X}^\top (\bm{Y} - \bm{X} \bm{\beta}) + \frac{2\sigma^2}{\tau^2} \bm{\beta}
+   \]
+
+2. **Set Gradient to Zero:**
+
+   Setting the gradient equal to zero to find the critical point:
+   \[
+   2 \bm{X}^\top (\bm{Y} - \bm{X} \bm{\beta}) + \frac{2\sigma^2}{\tau^2} \bm{\beta} = 0
+   \]
+   Simplifying:
+   \[
+   (\bm{X}^\top \bm{X} + \frac{\sigma^2}{\tau^2} \bm{I}) \bm{\beta} = \bm{X}^\top \bm{Y}
+   \]
+
+3. **Solve for \(\bm{\beta}\):**
+
+   Finally, we solve for \(\bm{\beta}\):
+   \[
+   \bm{\beta} = (\bm{X}^\top \bm{X} + \frac{\sigma^2}{\tau^2} \bm{I})^{-1} \bm{X}^\top \bm{Y}
+   \]
+   
+   This is the Ridge Regression estimator, which introduces a penalty term \(\lambda = \frac{\sigma^2}{\tau^2}\) to shrink the coefficients.
+
+\subsection*{Posterior Mean}
+
+In a Bayesian framework, the posterior mean of \(\bm{\beta}\) given the data can be expressed as:
+\[
+\mu_{\text{post}} = \bm{\Sigma}_{\text{post}}^{-1} (\bm{X}^\top \bm{Y} + \bm{M}_0^{-1} \bm{\mu}_0)
+\]
+Upon substituting \(\bm{M}_0^{-1} = \frac{\sigma^2}{\tau^2} \bm{I}_p\), we obtain:
+\[
+\mu_{\text{post}} = (\sigma^{-2} \bm{X}^\top \bm{X} + \tau^{-2} \bm{I}_p)^{-1} \sigma^{-2} \bm{X}^\top \bm{Y}
+\]
+Simplifying further:
+\[
+\mu_{\text{post}} = (\bm{X}^\top \bm{X} + \frac{\sigma^2}{\tau^2} \bm{I})^{-1} \bm{X}^\top \bm{Y}
+\]
+This aligns with the Ridge Regression estimator derived earlier.
+
+\subsection*{Remark on Ridge Regression's Existence}
+
+An important property of Ridge Regression is that the estimator \(\bm{\beta}\) is always defined, even when the design matrix \(\bm{X}\) does not have full rank. Specifically, Ridge Regression provides a unique solution even in cases where \(n < p\) (i.e., when there are more predictors than observations), addressing issues of multicollinearity and overfitting inherent in OLS.
+
+\subsection*{Definition of Ridge Regression Estimator}
+
+\[
+\hat{\bm{\beta}}_{\text{ridge}} = \operatorname*{argmin}_{\bm{\beta} \in \mathbb{R}^p} \|\bm{Y} - \bm{X} \bm{\beta} \|^2 + \lambda \|\bm{\beta}\|^2,
+\]
+is termed the \textbf{Ridge Regression} estimator. Here, \(\lambda > 0\) serves as the regularization parameter that controls the strength of the penalty on the size of the coefficients. A key feature of Ridge Regression is that \(\hat{\bm{\beta}}_{\text{ridge}}\) is always uniquely defined, making it a robust alternative to OLS, especially in high-dimensional settings.
+
+When the model is specified as \(\bm{Y} = \bm{X} \bm{\beta} + \bm{\varepsilon}\), where \(\bm{\varepsilon} \sim N(0, \sigma^2 \bm{I}_n)\), the Ridge estimator takes the form:
+\[
+\hat{\bm{\beta}}_{\text{ridge}} = (\bm{X}^\top \bm{X} + \lambda \bm{I}_p)^{-1} \bm{X}^\top \bm{Y}.
+\]
+Notably, this estimator is independent of \(\sigma^2\), highlighting its focus on minimizing the penalized residual sum of squares without direct dependence on the noise variance.
+
+\subsection*{Proposition: Mean Squared Error (MSE) of \(\hat{\bm{\beta}}_{\text{ridge}}\)}
+
+We now analyze the MSE of the Ridge estimator under specific conditions.
+
+\textbf{Assumptions:}
+\begin{itemize}
+    \item The linear model is given by \(\bm{Y} = \bm{X} \bm{\beta} + \bm{\varepsilon}\).
+    \item The error term \(\bm{\varepsilon} \sim N(0, \sigma^2 \bm{I}_n)\), with \(\sigma^2 > 0\) known.
+    \item The design matrix satisfies \(\bm{X}^\top \bm{X} = n \bm{I}_p\), indicating an orthonormal design.
+\end{itemize}
+
+\textbf{Definition:}
+Let \(\mathcal{J} := \langle \bm{\beta}, \bm{v} \rangle\) for some \(\bm{v} \in \mathbb{R}^p\), and define:
+\[
+\delta_{\text{ridge}} = \langle \hat{\bm{\beta}}_{\text{ridge}}, \bm{v} \rangle.
+\]
+
+\textbf{Statements:}
+\begin{enumerate}
+    \item The expected squared error of \(\delta_{\text{ridge}}\) is:
+    \[
+    \mathbb{E}_{\bm{\beta}}[(\delta_{\text{ridge}} - \mathcal{J})^2] = (1 + \lambda)^{-2} \langle \bm{\beta}_v, \bm{v} \rangle^2 + \frac{\sigma^2}{n} \|\bm{v}\|^2 (1 + \lambda)^{-2}.
+    \]
+    
+    \item The expected squared error of the Ridge estimator vector is:
+    \[
+    \mathbb{E}_{\bm{\beta}}[\|\hat{\bm{\beta}}_{\text{ridge}} - \bm{\beta}\|^2] = (1 + \lambda)^{-2} \|\bm{\beta}\|^2 + \frac{p \sigma^2}{n} \frac{1}{(1 + \lambda)^2}.
+    \]
+\end{enumerate}
+
+\textbf{Derivation:}
+
+Starting from the Ridge estimator:
+\[
+\hat{\bm{\beta}}_{\text{ridge}} = (\bm{X}^\top \bm{X} + \lambda \bm{I}_p)^{-1} \bm{X}^\top \bm{Y}.
+\]
+Given the orthonormal design \(\bm{X}^\top \bm{X} = n \bm{I}_p\), this simplifies to:
+\[
+\hat{\bm{\beta}}_{\text{ridge}} = \left(n \bm{I}_p + \lambda \bm{I}_p\right)^{-1} \bm{X}^\top \bm{Y} = \frac{1}{1 + \frac{\lambda}{n}} (\bm{X}^\top \bm{X} \bm{\beta} + \bm{X}^\top \bm{\varepsilon}).
+\]
+Simplifying further:
+\[
+\hat{\bm{\beta}}_{\text{ridge}} = \frac{1}{1 + \frac{\lambda}{n}} \bm{\beta} + \frac{1}{1 + \frac{\lambda}{n}} \bm{X}^\top \bm{\varepsilon}.
+\]
+This expression separates the estimator into a bias term and a variance term, which will be instrumental in understanding the bias-variance decomposition.
+
+\subsection*{Bias-Variance Decomposition}
+
+The Mean Squared Error (MSE) of an estimator can be decomposed into the sum of the squared bias and the variance of the estimator:
+\[
+\mathbb{E}\left[(\hat{\bm{\beta}}_{\text{ridge}} - \mathcal{J})^2\right] = (\mathbb{E}[\hat{\bm{\beta}}_{\text{ridge}}] - \mathcal{J})^2 + \text{Var}(\hat{\bm{\beta}}_{\text{ridge}}).
+\]
+Substituting from our Ridge estimator:
+\[
+= \left((1 + \frac{\lambda}{n})^{-1} \langle \bm{\beta}, \bm{v} \rangle\right)^2 + \frac{\lambda^2}{(1 + \lambda)^2} \text{Var}(\bm{X}^\top \bm{\varepsilon}, \nu).
+\]
+\textbf{Observations:}
+\[
+(1 + \frac{\lambda}{n})^{-1} = \frac{1}{(1 + \frac{\lambda}{n})}.
+\]
+Furthermore, the variance term can be expressed as:
+\[
+\text{Var}(\bm{X}^\top \bm{\varepsilon}, \bm{\nu}) = \bm{\nu}^\top \bm{X} \text{Cov}(\bm{\varepsilon}) \bm{X}^\top \bm{\nu} = \sigma^2 \|\bm{\nu}\|^2.
+\]
+Thus, the bias-variance decomposition clearly illustrates the trade-off controlled by the regularization parameter \(\lambda\).
+
+\subsection*{Corollary: MSE Under Orthonormal Design}
+
+Under the same assumptions, specifically the orthonormal design \(\bm{X}^\top \bm{X} = n \bm{I}_p\), the MSE of the Ridge estimator vector is:
+\[
+\mathbb{E}[\|\hat{\bm{\beta}}_{\text{ridge}} - \bm{\beta}\|^2] = \frac{1}{(1 + \frac{\lambda}{n})^2} \|\bm{\beta}\|^2 + \frac{p \sigma^2}{n (1 + \frac{\lambda}{n})^2}.
+\]
+This expression highlights how both the bias and variance components of the estimator's error are influenced by \(\lambda\).
+
+\subsection*{Remark on Ridge Regression Behavior}
+
+An insightful observation about Ridge Regression is its behavior in relation to the norm of \(\bm{\beta}\):
+\[
+\text{For small } \|\bm{\beta}\|, \text{ Ridge Regression converges to OLS.}
+\]
+This implies that the optimal choice of \(\lambda\) depends on the true underlying parameter \(\|\bm{\beta}\|\). When \(\|\bm{\beta}\|\) is small, a smaller \(\lambda\) is preferred to minimize bias, whereas larger \(\lambda\) values are beneficial when \(\|\bm{\beta}\|\) is large to control variance.
+
+\subsection*{Confidence Sets \& Tests in Linear Model}
+
+While Ridge and OLS estimators provide point estimates for \(\bm{\beta}\), it's crucial to quantify the uncertainty associated with these estimates. This involves constructing confidence sets and performing hypothesis tests, which inherently depend on the variance \(\sigma^2\).
+
+\textbf{Assumption:} Throughout this discussion, we assume \(\bm{\varepsilon} \sim N(0, \sigma^2 \bm{I}_n)\), ensuring the errors are normally distributed with known variance.
+
+\subsubsection*{Easy Case: Known \(\sigma^2\)}
+
+When the variance \(\sigma^2\) is known, the distribution of the OLS estimator is straightforward:
+\[
+\hat{\bm{\beta}}_{\text{OLS}} \sim N(\bm{\beta}, \sigma^2 (\bm{X}^\top \bm{X})^{-1}).
+\]
+Given an orthonormal design (\(\bm{X}^\top \bm{X} = n \bm{I}_p\)), this simplifies to:
+\[
+\hat{\bm{\beta}}_{\text{OLS}} \sim N\left(\bm{\beta}, \frac{\sigma^2}{n} \bm{I}_p\right).
+\]
+
+For any linear combination \(\mathcal{J} = \langle \bm{\beta}, \bm{\nu} \rangle\), the estimator is:
+\[
+\hat{\mathcal{J}} = \langle \hat{\bm{\beta}}_{\text{OLS}}, \bm{\nu} \rangle \sim N\left(\mathcal{J}, \sigma^2 \bm{\nu}^\top (\bm{X}^\top \bm{X})^{-1} \bm{\nu}\right).
+\]
+This allows us to construct a 95\% confidence interval for \(\mathcal{J}\):
+\[
+I_{95\%}(\mathcal{J}) = \left[ \hat{\mathcal{J}} \pm 1.96 \sqrt{\bm{\nu}^\top (\bm{X}^\top \bm{X})^{-1} \bm{\nu}} \right].
+\]
+
+\subsection*{Notes on \textit{t}- and \textit{F}-distributions}
+
+In practice, the variance \(\sigma^2\) is often unknown and must be estimated from the data. This necessitates the use of the \textit{t}-distribution and the \textit{F}-distribution for constructing confidence intervals and conducting hypothesis tests.
+
+\subsubsection*{Definitions}
+
+\textbf{t-distribution:}  
+The \textit{t}-distribution with \(n \geq 1\) degrees of freedom on \(\mathbb{R}\) has the probability density function:
+\[
+f_n(x) = C_n \left( 1 + \frac{x^2}{n} \right)^{-\frac{n+1}{2}},
+\]
+where \(C_n\) is the normalizing constant ensuring that the total probability integrates to 1.
+
+\textbf{Special Case:} For \(n = 1\), the \textit{t}-distribution simplifies to:
+\[
+f_1(x) = C_1 \frac{1}{1 + x^2},
+\]
+which corresponds to the \textbf{Cauchy distribution}, a distribution with heavy tails.
+
+\textbf{F-distribution:}  
+The \(F\)-distribution with \((m, n) \in \mathbb{N}^2\) degrees of freedom has the density:
+\[
+f_{m,n}(x) = C_{m,n} \frac{x^{\frac{m}{2} - 1}}{(m x + n)^{\frac{m+n}{2}}}, \quad x \in (0, \infty),
+\]
+where \(C_{m,n}\) is the normalizing constant. The \(F\)-distribution is pivotal in variance ratio tests and regression analysis.
+
+\subsection*{Utility of \textit{t}- and \textit{F}-distributions}
+
+These distributions are instrumental in constructing confidence intervals and performing hypothesis tests when dealing with normally distributed errors, especially when the variance is unknown and must be estimated from the data.
+
+\begin{lemma}
+Let \(X_1, \dots, X_n, Y_1, \dots, Y_n\) be independent and identically distributed (i.i.d.) \(N(0, \Delta)\) random variables. Then:
+
+\begin{enumerate}
+    \item 
+    \[
+    T_n := \frac{X_n}{\sqrt{\frac{1}{n} \sum_{i=1}^n Y_i^2}} \sim t_n.
+    \]
+    
+    \item 
+    \[
+    F_{m,n} := \frac{\frac{1}{m} \sum_{i=1}^m X_i^2}{\frac{1}{n} \sum_{j=1}^n Y_j^2} \sim F_{m,n}.
+    \]
+\end{enumerate}
+\end{lemma}
+
+\subsection*{Remarks on the Lemma}
+
+\begin{enumerate}
+    \item 
+    The \textit{t}-distribution emerges when evaluating the ratio of a normally distributed variable to the square root of a scaled chi-squared variable, reflecting the relationship between the sample mean and sample variance.
+    
+    \item 
+    As the degrees of freedom \(n\) increase, the \textit{t}-distribution \(T_n\) converges in distribution to the standard normal distribution \(N(0, 1)\), illustrating the asymptotic behavior of the estimator.
+\end{enumerate}
+
+\subsection*{Proof of the Lemma}
+
+\begin{proof}
+\begin{enumerate}
+    \item 
+    To show that \(T_n\) follows a \textit{t}-distribution with \(n\) degrees of freedom, observe that:
+    \[
+    T^2_n = F_{1,n}.
+    \]
+    Considering the symmetry of the \textit{t}-distribution around 0, we utilize a change of variables:
+    \[
+    f_{F_{m,n}}(x) = f_{F_{m,n}}(x^2) \cdot 2x, \quad x > 0.
+    \]
+    Given that \(T_n\) is symmetric, we derive:
+    \[
+    f_{T_n}(x) = f_{F_{m,n}}(x^2) |x| = C_n \left( 1 + \frac{x^2}{n} \right)^{-\frac{n+1}{2}}.
+    \]
+    This aligns with the known density of the \textit{t}-distribution.
+
+    \item 
+    To establish the distribution of \(F_{m,n}\), define:
+    \[
+    X = \sum_{i=1}^m X_i^2, \quad Y = \sum_{j=1}^n Y_j^2.
+    \]
+    Since each \(X_i\) and \(Y_j\) is normally distributed, it follows that:
+    \[
+    X \sim \chi^2_m, \quad Y \sim \chi^2_n,
+    \]
+    where \(\chi^2_m\) and \(\chi^2_n\) denote chi-squared distributions with \(m\) and \(n\) degrees of freedom, respectively. The density of \(\chi^2_m\) is:
+    \[
+    f(x) \propto x^{m/2 - 1} e^{-x/2}, \quad x > 0.
+    \]
+\end{enumerate}
+\end{proof}
+
+\subsection*{Derivation of the \(F\)-distribution}
+
+To derive the distribution of \(F_{m,n}\), consider the ratio:
+\[
+W = \frac{X}{Y}.
+\]
+The cumulative distribution function (CDF) of \(W\) is:
+\[
+\mathbb{P}\left(\frac{X}{Y} < z\right) = \int_0^\infty \int_0^{zy} 1 \cdot f_X(x) f_Y(y) \, dx \, dy.
+\]
+By substituting \(x = wy\), we obtain:
+\[
+= \int_0^\infty \int_0^z f_X(wy) f_Y(y) \cdot y \, dw \, dy.
+\]
+This simplifies to:
+\[
+= \int_0^\infty f_X(zy) f_Y(y) \cdot y \, dy.
+\]
+Substituting the chi-squared densities:
+\[
+\propto \int_0^\infty (zy)^{\frac{m}{2} - 1} y^{\frac{n}{2} - 1} e^{-(z+y)/2} \, dy.
+\]
+Introducing the change of variable \(a = \frac{z}{z+1}y\), the integral becomes:
+\[
+\propto z^{\frac{m}{2} - 1} (z+1)^{-\frac{m+n}{2}} \int_0^\infty a^{\frac{m}{2} - 1} e^{-a} \, da.
+\]
+Recognizing that the integral is the gamma function \(\Gamma\left(\frac{m}{2}\right)\), we conclude:
+\[
+f_F(z) \propto z^{\frac{m}{2} - 1} (z+1)^{-\frac{m+n}{2}}.
+\]
+Finally, by appropriate scaling, we arrive at the density function of the \(F\)-distribution:
+\[
+f_{m,n}(z) = \frac{m^{m/2} n^{n/2}}{B\left(\frac{m}{2}, \frac{n}{2}\right)} \frac{z^{m/2 - 1}}{(m z + n)^{(m+n)/2}},
+\]
+where \(B(\cdot, \cdot)\) is the beta function.
+
+\chapter{Lecture 10: Confidence Sets and Hypothesis Testing in Linear Models}
+
+Building upon the foundations laid in the previous lecture, we now focus on constructing confidence sets and performing hypothesis tests within the context of linear models. We will explore both \(t\)-tests and \(F\)-tests, essential tools for statistical inference in regression analysis.
+
+\subsection*{Ridge and OLS Estimators}
+
+Recall that in the linear model \(Y = X\beta + \varepsilon\), with \(\varepsilon \sim N(0, \sigma^2 I_n)\), the OLS estimator is given by:
+\[
+\hat{\beta} = (X^TX)^{-1}X^TY \sim N(\beta, \sigma^2 (X^TX)^{-1}).
+\]
+When \(\sigma^2\) is unknown, it is typically estimated by:
+\[
+\hat{\sigma}^2 = \frac{||Y - X\hat{\beta}_{OLS}||^2}{n - p} \sim \sigma^2 \frac{\chi^2(n - p)}{n - p}.
+\]
+This estimator is unbiased and follows a scaled chi-squared distribution.
+
+\subsection*{Distributions of Estimators}
+
+\[
+t_n = \frac{N(0,1)}{\sqrt{\chi^2(n)/n}} \quad \text{and} \quad F_{m,n} = \frac{\chi^2(m)/m}{\chi^2(n)/n}
+\]
+These ratios form the basis of the \(t\)- and \(F\)-distributions, respectively.
+
+\begin{lemma}
+Let \(\xi \sim N(0, I_n)\), a random variable in \(\mathbb{R}^n\), and let \(R \in \mathbb{R}^{n \times n}\) be an orthogonal projection matrix (\(R = R^2\), \(R = R^T\)), with \(\text{rank}(R) = r \le n\). Then:
+\begin{enumerate}
+    \item \(\xi^T R \xi = ||R\xi||^2 \sim \chi^2(r).\)
+    \item If \(B \in \mathbb{R}^{p \times n}\) is such that \(BR = 0\), then \(B\xi\) is independent of \(R\xi\).
+    \item If \(S \in \mathbb{R}^{n \times n}\) is another orthogonal projection with \(\text{rank}(S) = s \le n\) and \(RS = 0\), then 
+    \[
+    \frac{s}{r} \frac{\xi^T R \xi}{\xi^T S \xi} \sim F(r, s).
+    \]
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+\begin{enumerate}
+    \item 
+    Since \(R\) is an orthogonal projection, there exists an orthogonal matrix \(T\) such that:
+    \[
+    R = T \begin{pmatrix} I_r & \mathbf{0} \\ \mathbf{0} & \mathbf{0} \end{pmatrix} T^T = T D_r T^T.
+    \]
+    Applying the orthogonal transformation \(T^T\) to \(\xi\), we maintain the distribution:
+    \[
+    T^T \xi \sim N(0, I_n).
+    \]
+    Therefore,
+    \[
+    \xi^T R \xi = \xi^T (T D_r T^T) \xi = (T^T \xi)^T D_r (T^T \xi) = \sum_{i=1}^{r} (T^T \xi)_i^2 \sim \chi^2(r).
+    \]
+    
+    \item 
+    Let \(A_1 = B\xi\) and \(A_2 = R\xi\). The covariance between \(A_1\) and \(A_2\) is:
+    \[
+    \text{Cov}(A_1, A_2) = \text{Cov}(B\xi, R\xi) = B \text{Cov}(\xi, \xi) R^T = BR^T = BR = 0,
+    \]
+    since \(BR = 0\) by assumption. Given that both \(A_1\) and \(A_2\) are linear combinations of jointly normal variables, zero covariance implies independence.
+    
+    \item 
+    Given that \(RS = 0\), by part (2), \(S\xi\) and \(R\xi\) are independent. From part (1), we have \(S\xi \sim \chi^2(s)\) and \(R\xi \sim \chi^2(r)\). Thus, the ratio:
+    \[
+    \frac{s}{r} \frac{\xi^T R \xi}{\xi^T S \xi} \sim F(r, s)
+    \]
+    follows directly from the definition of the \(F\)-distribution as the ratio of two scaled chi-squared variables.
+\end{enumerate}
+\end{proof}
+
+\subsection*{Theorem: Confidence Sets in Linear Models with Unknown \(\sigma^2\)}
+
+\begin{theorem}[Linear Model Confidence Sets - Unknown \(\sigma^2\)]
+Assume the regular linear model \(Y = X\beta + \varepsilon\), with \(\text{rank}(X) = p \le n\) and \(\varepsilon \sim N(0, \sigma^2 I_n)\). Let \(\alpha \in (0,1)\). Then:
+
+\begin{enumerate}
+    \item 
+    Let \(q_{F_{p, n-p},1-\alpha}\) be the \(1-\alpha\) quantile of the \(F_{p, n-p}\) distribution. Then the set
+    \[
+    C(Y, X) = \left\{\beta \in \mathbb{R}^p \mid \frac{||X (\beta - \hat{\beta}_{OLS})||^2}{p \hat{\sigma}^2} \le q_{F_{p, n-p},1-\alpha} \right\}
+    \]
+    is a \(1-\alpha\) confidence set for \(\beta\).
+    
+    \item 
+    For a specific linear combination \(\alpha = \langle \beta, v \rangle\) for some \(v \in \mathbb{R}^p\), a \(1-\alpha\) confidence interval is given by:
+    \[
+    C = C(Y, X) = \left\{ \alpha \in \mathbb{R} \mid \left| \frac{\alpha - \hat{\alpha}}{\hat{\sigma} \sqrt{v^T (X^TX)^{-1} v}} \right| < q \right\},
+    \]
+    where \(\hat{\alpha} = \langle \hat{\beta}_{OLS}, v \rangle\) and \(q\) is the \(1 - \frac{\alpha}{2}\) quantile of the \(t_{n-p}\) distribution.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+\begin{enumerate}
+    \item 
+    Consider the residual sum of squares under the null hypothesis \(H_0: \beta = \hat{\beta}_{OLS}\):
+    \[
+    RSS = ||Y - X\hat{\beta}_{OLS}||^2.
+    \]
+    The residual sum of squares under the alternative hypothesis is:
+    \[
+    RSS_{H_0} = ||Y - X\beta||^2.
+    \]
+    Given the orthonormal design and the properties of the Ridge estimator, we have:
+    \[
+    RSS_{H_0} - RSS = (K \hat{\beta}_{OLS} - d)^2 (K (X^TX)^{-1} K^T)^{-1},
+    \]
+    where \(K\) is the contrast matrix. Under \(H_0\), this difference follows a chi-squared distribution with \(r\) degrees of freedom:
+    \[
+    \frac{RSS_{H_0} - RSS}{\sigma^2} \sim \chi^2(r).
+    \]
+    Consequently, the ratio:
+    \[
+    \frac{RSS_{H_0} - RSS}{r \hat{\sigma}^2} \sim F(r, n - p).
+    \]
+    This establishes that:
+    \[
+    \frac{||X (\beta - \hat{\beta}_{OLS})||^2}{p \hat{\sigma}^2} \sim F(p, n - p),
+    \]
+    leading to the construction of the confidence set \(C(Y, X)\) as stated.
+
+    \item 
+    For the specific linear combination \(\alpha = \langle \beta, v \rangle\), the OLS estimator satisfies:
+    \[
+    \hat{\alpha} = \langle \hat{\beta}_{OLS}, v \rangle \sim N\left(\alpha, \sigma^2 v^T (X^TX)^{-1} v \right).
+    \]
+    The standardized statistic is:
+    \[
+    \frac{\alpha - \hat{\alpha}}{\sigma \sqrt{v^T (X^TX)^{-1} v}} \sim t_{n - p}.
+    \]
+    However, since \(\sigma^2\) is unknown and estimated by \(\hat{\sigma}^2\), the statistic becomes:
+    \[
+    \frac{\alpha - \hat{\alpha}}{\hat{\sigma} \sqrt{v^T (X^TX)^{-1} v}} \sim t_{n - p}.
+    \]
+    Thus, the confidence interval \(C\) is constructed by:
+    \[
+    \left| \frac{\alpha - \hat{\alpha}}{\hat{\sigma} \sqrt{v^T (X^TX)^{-1} v}} \right| < q,
+    \]
+    where \(q\) is the critical value from the \(t_{n - p}\) distribution corresponding to the desired confidence level.
+\end{enumerate}
+\end{proof}
+
+\subsection{The \(t\)- and \(F\)-Tests}
+
+Confidence sets facilitate hypothesis testing. Here, we outline the procedures for conducting \(t\)-tests and \(F\)-tests in the linear model context.
+
+\subsubsection*{Remark: Method (t-test)}
+
+In a regular linear model with \(\varepsilon \sim N(0, \sigma^2 I_n)\), consider the null hypothesis:
+\[
+H_0: \gamma = \gamma_0 \quad \text{vs} \quad H_1: \gamma \neq \gamma_0,
+\]
+where \(\gamma = \langle \beta, v \rangle\) for some \(v \in \mathbb{R}^p\).
+
+The two-sided \(t\)-test statistic is defined as:
+\[
+T_{\gamma_0, n - p} = \frac{\gamma_0 - \hat{\gamma}}{\hat{\sigma} \sqrt{v^T (X^TX)^{-1} v}},
+\]
+where \(\hat{\gamma} = \langle \hat{\beta}_{OLS}, v \rangle\).
+
+The corresponding test function is:
+\[
+\varphi_{\alpha_0}(Y, X) = \mathbf{1} \left( \left| T_{\gamma_0, n - p}(Y, X) \right| > q \right),
+\]
+where \(q\) is the critical value from the \(t_{n - p}\) distribution corresponding to the significance level \(\alpha_0\).
+
+\subsubsection*{Remark: Method (F-test)}
+
+For the same linear model setting, consider the null hypothesis:
+\[
+H_0: \beta = \beta_0 \quad \text{vs} \quad H_1: \beta \neq \beta_0,
+\]
+where \(\beta_0 \in \mathbb{R}^p\).
+
+The \(F\)-test statistic is defined as:
+\[
+F_{\beta_0, n - p}(Y, X) = \frac{||X (\beta - \hat{\beta}_{OLS})||^2}{p \hat{\sigma}^2},
+\]
+which follows an \(F_{p, n - p}\) distribution under \(H_0\).
+
+The corresponding test function is:
+\[
+\varphi_{\beta_0}(Y, X) = \mathbb{1} \left( |F_{\beta_0, n - p}(Y, X)| > q \right),
+\]
+where \(q\) is the critical value from the \(F_{p, n - p}\) distribution corresponding to the desired significance level.
+
+\subsection{General Linear Hypothesis Testing Problems}
+
+Beyond testing individual parameters, we often encounter more complex hypotheses involving multiple linear constraints on \(\beta\). This section addresses such scenarios.
+
+\begin{definition}
+A \textbf{linear hypothesis testing problem} is of the form:
+\[
+H_0: K\beta = d \quad \text{vs} \quad H_1: K\beta \neq d,
+\]
+where \(K \in \mathbb{R}^{r \times p}\) is a matrix with \(\text{rank}(K) = r \le p\) and \(d \in \mathbb{R}^r\). Essentially, this represents \(r\) linear constraints on the parameter vector \(\beta\). The matrix \(K\) is referred to as the \textbf{contrast matrix}.
+\end{definition}
+
+\begin{theorem}
+Assume the regular linear model \(Y = X\beta + \varepsilon\), with \(\text{rank}(X) = p \le n\) and \(\varepsilon \sim N(0, \sigma^2 I_n)\). Consider the hypothesis:
+\[
+H_0: K\beta = d \quad \text{vs} \quad H_1: K\beta \neq d.
+\]
+Define the residual sum of squares (RSS) as:
+\[
+RSS = ||Y - X\hat{\beta}_{OLS}||^2 \quad \text{and} \quad RSS_{H_0} = ||Y - X\hat{\beta}_{H_0}||^2,
+\]
+where \(\hat{\beta}_{H_0}\) is the estimator of \(\beta\) under the constraint \(K\beta = d\).
+
+Then:
+\begin{enumerate}
+    \item The constrained estimator is:
+    \[
+    \hat{\beta}_{H_0} = \hat{\beta}_{OLS} - (X^TX)^{-1} K^T (K (X^TX)^{-1} K^T)^{-1} (K\hat{\beta}_{OLS} - d).
+    \]
+    
+    \item The difference in RSS satisfies:
+    \[
+    RSS_{H_0} - RSS = (K \hat{\beta}_{OLS} - d)^T (K (X^TX)^{-1} K^T)^{-1} (K \hat{\beta}_{OLS} - d) \sim \sigma^2 \chi^2(r).
+    \]
+    
+    \item The test statistic:
+    \[
+    F = \frac{(RSS_{H_0} - RSS)/r}{RSS/(n - p)} \sim F_{r, n - p}
+    \]
+    under the null hypothesis \(H_0\).
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+\begin{enumerate}
+    \item 
+    The constrained estimator \(\hat{\beta}_{H_0}\) minimizes the RSS subject to \(K\beta = d\). By applying the method of Lagrange multipliers or directly solving the constrained optimization problem, we obtain:
+    \[
+    \hat{\beta}_{H_0} = \hat{\beta}_{OLS} - (X^TX)^{-1} K^T (K (X^TX)^{-1} K^T)^{-1} (K\hat{\beta}_{OLS} - d).
+    \]
+    
+    \item 
+    The difference in RSS between the unconstrained and constrained models is:
+    \[
+    RSS_{H_0} - RSS = (K \hat{\beta}_{OLS} - d)^T (K (X^TX)^{-1} K^T)^{-1} (K \hat{\beta}_{OLS} - d).
+    \]
+    Under \(H_0\), \(K\hat{\beta}_{OLS} \sim N(d, \sigma^2 K (X^TX)^{-1} K^T)\). Thus, the quadratic form above follows a chi-squared distribution with \(r\) degrees of freedom:
+    \[
+    \frac{RSS_{H_0} - RSS}{\sigma^2} \sim \chi^2(r).
+    \]
+    
+    \item 
+    Defining the \(F\)-statistic as:
+    \[
+    F = \frac{(RSS_{H_0} - RSS)/r}{RSS/(n - p)} = \frac{RSS_{H_0} - RSS}{r \hat{\sigma}^2} \sim F_{r, n - p},
+    \]
+    where \(\hat{\sigma}^2 = \frac{RSS}{n - p}\) is the unbiased estimator of \(\sigma^2\). Under \(H_0\), this statistic follows the \(F\)-distribution with \(r\) and \(n - p\) degrees of freedom.
+\end{enumerate}
+\end{proof}
+
+
+\subsection{The \(t\)- and \(F\)-Tests}
+
+\subsubsection*{Remark: \(t\)-Test Method}
+
+Consider a regular linear model where \(\varepsilon \sim N(0, \sigma^2 I_n)\). To test the null hypothesis \(H_0: \gamma = \gamma_0\) against the alternative \(H_1: \gamma \neq \gamma_0\), where \(\gamma = \langle \beta, v \rangle\) for some \(v \in \mathbb{R}^p\), we employ the two-sided \(t\)-test.
+
+The \(t\)-test statistic is defined as:
+\[
+T_{\gamma_0, n - p} = \frac{\gamma_0 - \hat{\gamma}}{\hat{\sigma} \sqrt{v^T (X^TX)^{-1} v}},
+\]
+where \(\hat{\gamma} = \langle \hat{\beta}_{OLS}, v \rangle\).
+
+The corresponding test function is:
+\[
+\varphi_{\alpha_0}(Y, X) = \mathbf{1} \left( \left| T_{\gamma_0, n - p}(Y, X) \right| > q \right),
+\]
+where \(q\) is the critical value from the \(t_{n - p}\) distribution corresponding to the significance level \(\alpha_0\).
+
+\subsubsection*{Remark: \(F\)-Test Method}
+
+In the same linear model setting, to test the null hypothesis \(H_0: \beta = \beta_0\) against \(H_1: \beta \neq \beta_0\), we use the \(F\)-test.
+
+The \(F\)-test statistic is defined as:
+\[
+F_{\beta_0, n - p}(Y, X) = \frac{||X (\beta - \hat{\beta}_{OLS})||^2}{p \hat{\sigma}^2},
+\]
+which follows an \(F_{p, n - p}\) distribution under \(H_0\).
+
+The corresponding test function is:
+\[
+\varphi_{\beta_0}(Y, X) = \mathbb{1} \left( |F_{\beta_0, n - p}(Y, X)| > q \right),
+\]
+where \(q\) is the critical value from the \(F_{p, n - p}\) distribution at the desired significance level.
+
+\subsection{General Linear Hypothesis Testing Problems}
+
+Beyond testing individual coefficients or simple contrasts, we often need to test more general linear hypotheses involving multiple parameters. This section formalizes such testing problems and provides the necessary statistical framework.
+
+\begin{definition}
+A \textbf{linear hypothesis testing problem} involves testing \(H_0: K\beta = d\) against \(H_1: K\beta \neq d\), where:
+\begin{itemize}
+    \item \(K \in \mathbb{R}^{r \times p}\) is the contrast matrix with \(\text{rank}(K) = r \le p\).
+    \item \(d \in \mathbb{R}^r\) is the vector of constants.
+\end{itemize}
+\end{definition}
+
+\begin{theorem}
+Assume the regular linear model \(Y = X\beta + \varepsilon\), with \(\text{rank}(X) = p \le n\) and \(\varepsilon \sim N(0, \sigma^2 I_n)\). Consider the linear hypothesis:
+\[
+H_0: K\beta = d \quad \text{vs} \quad H_1: K\beta \neq d.
+\]
+Define the residual sum of squares (RSS) under \(H_0\) as:
+\[
+RSS_{H_0} = ||Y - X\hat{\beta}_{H_0}||^2,
+\]
+where \(\hat{\beta}_{H_0}\) is the constrained estimator minimizing RSS subject to \(K\beta = d\).
+
+Then:
+\begin{enumerate}
+    \item 
+    The constrained estimator is:
+    \[
+    \hat{\beta}_{H_0} = \hat{\beta}_{OLS} - (X^TX)^{-1} K^T (K (X^TX)^{-1} K^T)^{-1} (K \hat{\beta}_{OLS} - d).
+    \]
+    
+    \item 
+    The difference in RSS is given by:
+    \[
+    RSS_{H_0} - RSS = (K \hat{\beta}_{OLS} - d)^T (K (X^TX)^{-1} K^T)^{-1} (K \hat{\beta}_{OLS} - d) \sim \sigma^2 \chi^2(r).
+    \]
+    
+    \item 
+    The \(F\)-statistic is defined as:
+    \[
+    F = \frac{RSS_{H_0} - RSS}{r \hat{\sigma}^2} \sim F_{r, n - p},
+    \]
+    under the null hypothesis \(H_0\).
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+\begin{enumerate}
+    \item 
+    To derive the constrained estimator \(\hat{\beta}_{H_0}\), we minimize the RSS subject to \(K\beta = d\). Utilizing the method of Lagrange multipliers or projecting the OLS estimator onto the constraint set, we obtain:
+    \[
+    \hat{\beta}_{H_0} = \hat{\beta}_{OLS} - (X^TX)^{-1} K^T (K (X^TX)^{-1} K^T)^{-1} (K \hat{\beta}_{OLS} - d).
+    \]
+    
+    \item 
+    The difference in RSS between the constrained and unconstrained models is a quadratic form:
+    \[
+    RSS_{H_0} - RSS = (K \hat{\beta}_{OLS} - d)^T (K (X^TX)^{-1} K^T)^{-1} (K \hat{\beta}_{OLS} - d).
+    \]
+    Under \(H_0\), \(K\hat{\beta}_{OLS}\) follows a normal distribution centered at \(d\), and the quadratic form follows a scaled chi-squared distribution:
+    \[
+    \frac{RSS_{H_0} - RSS}{\sigma^2} \sim \chi^2(r).
+    \]
+    
+    \item 
+    Defining the \(F\)-statistic as:
+    \[
+    F = \frac{RSS_{H_0} - RSS}{r \hat{\sigma}^2},
+    \]
+    and noting that \(\hat{\sigma}^2 = \frac{RSS}{n - p}\) is an unbiased estimator of \(\sigma^2\), we conclude:
+    \[
+    F \sim F_{r, n - p}.
+    \]
+    This completes the proof.
+\end{enumerate}
+\end{proof}
 
 
 

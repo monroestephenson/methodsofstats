@@ -1,30 +1,36 @@
-\contentsline {chapter}{\numberline {1}Intro and Disclaimer}{3}{chapter.1}%
-\contentsline {chapter}{\numberline {2}Basic Statistical Concepts}{4}{chapter.2}%
-\contentsline {chapter}{\numberline {3}Parameter Estimation}{6}{chapter.3}%
-\contentsline {section}{\numberline {3.1}Maximum Likelihood Principle}{8}{section.3.1}%
-\contentsline {section}{\numberline {3.2}Bayesian method}{9}{section.3.2}%
-\contentsline {paragraph}{\nonumberline Motivation}{9}{paragraph*.5}%
-\contentsline {chapter}{\numberline {4}Decision Theory}{13}{chapter.4}%
-\contentsline {section}{\numberline {4.1}Another optimality concept: Admissibility}{16}{section.4.1}%
-\contentsline {chapter}{\numberline {5}Confidence Sets}{18}{chapter.5}%
-\contentsline {paragraph}{\nonumberline Normal Approximation.}{19}{paragraph*.8}%
-\contentsline {section}{\numberline {5.1}Hypothesis Testing}{20}{section.5.1}%
-\contentsline {subsection}{\numberline {5.1.1}Basic Definitions}{20}{subsection.5.1.1}%
-\contentsline {subsection}{\numberline {5.1.2}Type I and Type II Errors}{20}{subsection.5.1.2}%
-\contentsline {subsection}{\numberline {5.1.3}Level and Uniformly Most Powerful Tests}{20}{subsection.5.1.3}%
-\contentsline {subsection}{\numberline {5.1.4}The Neyman-Pearson Lemma}{21}{subsection.5.1.4}%
-\contentsline {subsection}{\numberline {5.1.5}Proof of the Neyman-Pearson Lemma}{21}{subsection.5.1.5}%
-\contentsline {chapter}{\numberline {6}Lecture 6: Neyman-Pearson Lemma and Likelihood Ratio Tests}{23}{chapter.6}%
-\contentsline {chapter}{\numberline {7}Linear Models}{28}{chapter.7}%
-\contentsline {section}{\numberline {7.1}Introduction to Linear Regression Models}{28}{section.7.1}%
-\contentsline {section}{\numberline {7.2}Simple Linear Regression Model}{28}{section.7.2}%
-\contentsline {subsection}{\numberline {7.2.1}Statistical Model}{28}{subsection.7.2.1}%
-\contentsline {subsection}{\numberline {7.2.2}Likelihood Function}{29}{subsection.7.2.2}%
-\contentsline {subsection}{\numberline {7.2.3}Maximum Likelihood Estimation (MLE)}{29}{subsection.7.2.3}%
-\contentsline {section}{\numberline {7.3}General Linear Models}{30}{section.7.3}%
-\contentsline {section}{\numberline {7.4}Least Squares Estimation}{31}{section.7.4}%
-\contentsline {subsection}{\numberline {7.4.1}Geometric Interpretation}{31}{subsection.7.4.1}%
-\contentsline {section}{\numberline {7.5}Representation for the Least Squares Estimator}{32}{section.7.5}%
-\contentsline {section}{\numberline {7.6}Optimality of the Least Squares Estimator}{32}{section.7.6}%
-\contentsline {section}{\numberline {7.7}Conclusion}{35}{section.7.7}%
+\contentsline {chapter}{\numberline {1}Intro and Disclaimer}{4}{chapter.1}%
+\contentsline {chapter}{\numberline {2}Basic Statistical Concepts}{5}{chapter.2}%
+\contentsline {chapter}{\numberline {3}Parameter Estimation}{7}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Maximum Likelihood Principle}{9}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Bayesian method}{10}{section.3.2}%
+\contentsline {paragraph}{\nonumberline Motivation}{10}{paragraph*.5}%
+\contentsline {chapter}{\numberline {4}Decision Theory}{14}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Another optimality concept: Admissibility}{17}{section.4.1}%
+\contentsline {chapter}{\numberline {5}Confidence Sets}{19}{chapter.5}%
+\contentsline {paragraph}{\nonumberline Normal Approximation.}{20}{paragraph*.8}%
+\contentsline {section}{\numberline {5.1}Hypothesis Testing}{21}{section.5.1}%
+\contentsline {subsection}{\numberline {5.1.1}Basic Definitions}{21}{subsection.5.1.1}%
+\contentsline {subsection}{\numberline {5.1.2}Type I and Type II Errors}{21}{subsection.5.1.2}%
+\contentsline {subsection}{\numberline {5.1.3}Level and Uniformly Most Powerful Tests}{21}{subsection.5.1.3}%
+\contentsline {subsection}{\numberline {5.1.4}The Neyman-Pearson Lemma}{22}{subsection.5.1.4}%
+\contentsline {subsection}{\numberline {5.1.5}Proof of the Neyman-Pearson Lemma}{22}{subsection.5.1.5}%
+\contentsline {chapter}{\numberline {6}Lecture 6: Neyman-Pearson Lemma and Likelihood Ratio Tests}{24}{chapter.6}%
+\contentsline {chapter}{\numberline {7}Linear Models}{29}{chapter.7}%
+\contentsline {section}{\numberline {7.1}Introduction to Linear Regression Models}{29}{section.7.1}%
+\contentsline {section}{\numberline {7.2}Simple Linear Regression Model}{29}{section.7.2}%
+\contentsline {subsection}{\numberline {7.2.1}Statistical Model}{29}{subsection.7.2.1}%
+\contentsline {subsection}{\numberline {7.2.2}Likelihood Function}{30}{subsection.7.2.2}%
+\contentsline {subsection}{\numberline {7.2.3}Maximum Likelihood Estimation (MLE)}{30}{subsection.7.2.3}%
+\contentsline {section}{\numberline {7.3}General Linear Models}{31}{section.7.3}%
+\contentsline {section}{\numberline {7.4}Least Squares Estimation}{32}{section.7.4}%
+\contentsline {subsection}{\numberline {7.4.1}Geometric Interpretation}{32}{subsection.7.4.1}%
+\contentsline {section}{\numberline {7.5}Representation for the Least Squares Estimator}{33}{section.7.5}%
+\contentsline {section}{\numberline {7.6}Optimality of the Least Squares Estimator}{33}{section.7.6}%
+\contentsline {section}{\numberline {7.7}Conclusion}{36}{section.7.7}%
+\contentsline {chapter}{\numberline {8}Lecture 9: Ridge Regression and Its Properties}{37}{chapter.8}%
+\contentsline {chapter}{\numberline {9}Lecture 10: Confidence Sets and Hypothesis Testing in Linear Models}{45}{chapter.9}%
+\contentsline {subsection}{\numberline {9.0.1}The \(t\)- and \(F\)-Tests}{48}{subsection.9.0.1}%
+\contentsline {subsection}{\numberline {9.0.2}General Linear Hypothesis Testing Problems}{49}{subsection.9.0.2}%
+\contentsline {subsection}{\numberline {9.0.3}The \(t\)- and \(F\)-Tests}{51}{subsection.9.0.3}%
+\contentsline {subsection}{\numberline {9.0.4}General Linear Hypothesis Testing Problems}{51}{subsection.9.0.4}%
 \providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 
