@@ -6,6 +6,8 @@
 \geometry{a4paper, margin=1in}
 \pagestyle{fancy}
 \fancyhf{}
+\usepackage{amsmath, amssymb, bm}
+
 \fancyhead[L]{Methods of Statistics Notes}
 \fancyhead[R]{WS 2024/2025}
 \fancyfoot[C]{\thepage}
@@ -980,6 +982,264 @@ $\beta \mapsto ||Y-X\hat{\beta}||.$
     
 \end{proof}
 \end{proposition}
+\section{Lecture 9}
+
+\subsection*{Proof:}
+Take gradient of $\mathcal{J}(\bm{\beta})$ w.r.t. $\bm{\beta}$:
+\[
+\nabla_{\bm{\beta}} \mathcal{J}(\bm{\beta}) = 2 \bm{X}^\top (\bm{Y} - \bm{X} \bm{\beta}) + \frac{2\sigma^2}{\tau^2} \bm{\beta}
+\]
+Set $= 0$:
+\[
+\Rightarrow \nabla_{\bm{\beta}} \mathcal{J}(\bm{\beta}) = 2 (\bm{X}^\top \bm{X} + \frac{\sigma^2}{\tau^2} \bm{I}) \bm{\beta} - 2 \bm{X}^\top \bm{Y} = 0
+\]
+\[
+\Rightarrow \bm{\beta} = (\bm{X}^\top \bm{X} + \frac{\sigma^2}{\tau^2} \bm{I})^{-1} \bm{X}^\top \bm{Y}
+\]
+Posterior mean:
+\[
+\mu_{\text{post}} = \bm{\Sigma}_{\text{post}}^{-1} (\bm{X}^\top \bm{Y} + \bm{M}_0^{-1} \bm{\mu}_0)
+\]
+\[
+= (\sigma^{-2} \bm{X}^\top \bm{X} + \tau^{-2} \bm{I}_p)^{-1} \sigma^{-2} \bm{X}^\top \bm{Y}
+\]
+\[
+= (\bm{X}^\top \bm{X} + \frac{\sigma^2}{\tau^2} \bm{I})^{-1} \bm{X}^\top \bm{Y}
+\]
+
+\subsection*{Remark:}
+$\bm{\beta}$ is defined even if $\text{rank}(\bm{X}) < p$, in particular even for $n < p$.
+
+\subsection*{Definition:}
+\[
+\hat{\bm{\beta}}_{\text{ridge}} = \operatorname*{argmin}_{\bm{\beta} \in \mathbb{R}^p} \|\bm{Y} - \bm{X} \bm{\beta} \|^2 + \lambda \|\bm{\beta}\|^2,
+\]
+is called a \textbf{Ridge Regression} estimator. Here, $\lambda > 0$ is called a regularization parameter. $\hat{\bm{\beta}}_{\text{ridge}}$ is always uniquely defined.
+
+For $\bm{Y} = \bm{X} \bm{\beta} + \bm{\varepsilon}$, UM:
+\[
+\hat{\bm{\beta}}_{\text{ridge}} = (\bm{X}^\top \bm{X} + \lambda \bm{I}_p)^{-1} \bm{X}^\top \bm{Y}.
+\]
+Estimator independent of $\sigma^2$.
+
+\subsection*{Proposition:}
+MSE of $\hat{\bm{\beta}}_{\text{ridge}}$.
+
+Consider a linear model with $\bm{\varepsilon} \sim N(0, \sigma^2 \bm{I}_n)$, $\sigma^2 > 0$ known, and $\bm{X}^\top \bm{X} = n \bm{I}_p$ (orthonormal design).
+
+Let $\mathcal{J} := \langle \bm{\beta}, \bm{v} \rangle$ for $\bm{v} \in \mathbb{R}^p$, and:
+\[
+\delta_{\text{ridge}} = \langle \hat{\bm{\beta}}_{\text{ridge}}, \bm{v} \rangle.
+\]
+
+Then:
+\begin{enumerate}
+    \item 
+    \[
+    \mathbb{E}_{\bm{\beta}}[(\delta_{\text{ridge}} - \mathcal{J})^2] = (1 + \lambda)^{-2} \langle \bm{\beta}_v, \bm{v} \rangle^2 + \frac{\sigma^2}{n} \|\bm{v}\|^2 (1 + \lambda)^{-2}.
+    \]
+    \item 
+    \[
+    \mathbb{E}_{\bm{\beta}}[\|\hat{\bm{\beta}}_{\text{ridge}} - \bm{\beta}\|^2] = (1 + \lambda)^{-2} \|\bm{\beta}\|^2 + \frac{p \sigma^2}{n} \frac{1}{(1 + \lambda)^2}.
+    \]
+\end{enumerate}
+We have:
+\[
+\hat{\bm{\beta}}_{\text{ridge}} = (\bm{X}^\top \bm{X} + \lambda \bm{I}_p)^{-1} \bm{X}^\top \bm{Y}.
+\]
+\[
+= (\bm{n} \bm{I}_p + \lambda \bm{I}_p )^{-1} \bm{X}^\top \bm{Y}.
+\]
+\[
+= \frac{1}{(1 + \frac{\lambda}{n})} (\bm{X}^\top \bm{X} \bm{\beta} + \bm{X}^\top \bm{\varepsilon}),
+\]
+where \(\bm{\varepsilon} \sim N(0, \sigma^2 \bm{I}_n)\).
+
+\[
+= \frac{1}{1 + \frac{\lambda}{n}} (\bm{X}^\top \bm{X} \bm{\beta} + \bm{X}^\top \bm{\varepsilon}),
+\]
+\[
+= \frac{1}{1 + \frac{\lambda}{n}} \bm{\beta} + \frac{1}{1 + \frac{\lambda}{n}} \bm{X}^\top \bm{\varepsilon}.
+\]
+
+\subsection*{Bias-Variance Decomposition:}
+
+\[
+\mathbb{E}\left[(\hat{\bm{\beta}}_{\text{ridge}} - \mathcal{J})^2\right] = (\mathbb{E}[\hat{\bm{\beta}}_{\text{ridge}}] - \mathcal{J})^2 + \text{Var}(\hat{\bm{\beta}}_{\text{ridge}}).
+\]
+\[
+= ((1 + \frac{\lambda}{n})^{-1} \langle \bm{\beta}, \bm{v} \rangle)^2 + \frac{\lambda^2}{(1 + \lambda)^2} \text{Var}(\bm{X}^\top \bm{\varepsilon}, \nu).
+\]
+
+\textbf{Observe:}
+\[
+(1 + \frac{\lambda}{n})^{-1} = \frac{1}{(1 + \frac{\lambda}{n})}.
+\]
+
+\textbf{Also:}
+\[
+\text{Var}(\bm{X}^\top \bm{\varepsilon}, \bm{\nu}) = \bm{\nu}^\top \bm{X} \text{Cov}(\bm{\varepsilon}) \bm{X}^\top \bm{\nu} = \sigma^2 \|\bm{\nu}\|^2.
+\]
+
+\subsection*{Corollary:}
+
+Under the same assumptions:
+\[
+\mathbb{E}[\|\hat{\bm{\beta}}_{\text{ridge}} - \bm{\beta}\|^2] = \mathbb{E} \left[\sum_{k=1}^p (\langle \bm{\beta}, \bm{e}_k \rangle - \beta_k)^2 \right].
+\]
+\[
+= \frac{1}{(1 + \frac{\lambda}{n})^2} \|\bm{\beta}\|^2 + \frac{p \sigma^2}{n (1 + \frac{\lambda}{n})^2}.
+\]
+
+\subsection*{Remark:}
+
+For small \(\|\bm{\beta}\|\), Ridge $\to$ OLS. The optimal choice of $\lambda$ depends on $\|\bm{\beta}\|$.
+
+\subsection*{1.7 Confidence Sets \& Tests in Linear Model:}
+
+The estimators we studied are independent of \(\sigma^2\), but uncertainty quantification will depend on \(\sigma^2\)!
+
+Assume \(\bm{\varepsilon} \sim N(0, \sigma^2 \bm{I}_n)\) throughout.
+
+\subsubsection*{Easy Case:}
+
+For \(\sigma^2 > 0\) known:
+\[
+\hat{\bm{\beta}}_{\text{OLS}} \sim N(\bm{\beta}, (\bm{X}^\top \bm{X})^{-1}).
+\]
+
+Indeed:
+\[
+\text{Cov}((\bm{X}^\top \bm{X})^{-1} \bm{X}^\top \bm{\varepsilon}) = (\bm{X}^\top \bm{X})^{-1}.
+\]
+
+And for \(\mathcal{J} = \langle \bm{\beta}, \bm{\nu} \rangle\),
+\[
+\hat{\mathcal{J}} = \langle \hat{\bm{\beta}}_{\text{OLS}}, \bm{\nu} \rangle \sim N(\mathcal{J}, \sigma^2 \bm{\nu}^\top (\bm{X}^\top \bm{X})^{-1} \bm{\nu}).
+\]
+
+Then a 95\% confidence set for \(\mathcal{J}\) is:
+\[
+I_{95\%}(\mathcal{J}) = \left[ \hat{\mathcal{J}} \pm 1.96 \sqrt{\bm{\nu}^\top (\bm{X}^\top \bm{X})^{-1} \bm{\nu}} \right].
+\]
+\subsection*{Notes on \textit{t}- and \textit{F}-distributions:}
+
+\textbf{BUT:} Normally, $\sigma^2$ is unknown. Replace $\sigma$ by its estimator $\hat{\sigma}$.  
+We need the \textit{t}- and \textit{F}-distributions.
+
+\subsection*{Definitions:}
+
+\textbf{Definition (t-distribution):}  
+The \textit{t}-distribution with $n \geq 1$ degrees of freedom on $\mathbb{R}$ has density:
+\[
+f_n(x) = C_n \left( 1 + \frac{x^2}{n} \right)^{-\frac{n+1}{2}},
+\]
+where $C_n$ is the normalizing constant.
+
+\textbf{Note:} For $n = 1$:
+\[
+f_1(x) = C_1 \frac{1}{1 + x^2},
+\]
+which corresponds to the \textbf{Cauchy distribution}.
+
+\textbf{Definition (F-distribution):}  
+The $F$-distribution with $(m, n) \in \mathbb{N}^2$ degrees of freedom has density:
+\[
+f_{m,n}(x) = C_{m,n} \frac{x^{\frac{m}{2} - 1}}{(m x + n)^{\frac{m+n}{2}}}, \quad x \in (0, \infty),
+\]
+where $C_{m,n}$ is the normalizing constant.
+
+\subsection*{Why is this useful?}
+
+\textbf{Lemma:}  
+Let $X_1, \dots, X_n, Y_1, \dots, Y_n$ be i.i.d. $N(0, \Delta)$ random variables. Then:
+\begin{enumerate}
+    \item 
+    \[
+    T_n := \frac{X_n}{\sqrt{\frac{1}{n} \sum_{i=1}^n Y_i^2}} \sim t_n.
+    \]
+    \item 
+    \[
+    F_{m,n} := \frac{\frac{1}{m} \sum_{i=1}^m X_i^2}{\frac{1}{n} \sum_{j=1}^n Y_j^2} \sim F_{m,n}.
+    \]
+\end{enumerate}
+
+\subsection*{Remarks:}
+
+\begin{enumerate}
+    \item 
+    The \textit{t}-distribution arises when considering the "empirical mean" and "empirical variance."
+    \item 
+    For $n \to \infty$, $T_n \overset{d}{\to} N(0, 1)$.
+\end{enumerate}
+
+\subsection*{Proof:}
+
+\textbf{(b) Observe:}  
+\[
+T^2_n = F_{1,n}.
+\]
+By a change of measure ($y \mapsto y^2$ in $(0, \infty)$):
+\[
+f_{F_{m,n}}(x) = f_{F_{m,n}}(x^2) 2x, \quad x > 0.
+\]
+Since $t$ is symmetric around 0, we obtain for all $x \in \mathbb{R}$:
+\[
+f_{T_n}(x) = f_{F_{m,n}}(x^2) |x| = C_n \left( 1 + \frac{x^2}{n} \right)^{-\frac{n+1}{2}}.
+\]
+
+It remains to show the claim for $F_{m,n}$.
+
+Let:
+\[
+X = \sum_{i=1}^m X_i^2, \quad Y = \sum_{j=1}^n Y_j^2.
+\]
+Then:
+\[
+X \sim \chi^2_m, \quad Y \sim \chi^2_n,
+\]
+where the density of $\chi^2_m$ is:
+\[
+f(x) \propto x^{m/2 - 1} e^{-x/2}, \quad x > 0.
+\]
+\subsection*{Derivation:}
+
+Writing \( W = \frac{X}{Y} \), we have:
+\[
+\mathbb{P}\left(\frac{X}{Y} < z\right) = \int_0^\infty \int_0^{zy} 1 \, f_X(x) f_Y(y) \, dx \, dy.
+\]
+
+Substituting \( x = wy \), we get:
+\[
+= \int_0^\infty \int_0^z 1 \, f_X(wy) f_Y(y) \, y \, dw \, dy
+\]
+\[
+= \int_0^\infty f_X(zy) f_Y(y) \, y \, dy
+\]
+\[
+\propto \int_0^\infty (zy)^{\frac{m}{2} - 1} y^{\frac{n}{2} - 1} e^{-(z+y)/2} \, dy.
+\]
+
+\subsubsection*{Change of Variable:}
+Let \( a = \frac{z}{z+1}y \), then:
+\[
+\propto \int_0^\infty \left( \frac{z}{z+1} \right)^{\frac{m}{2}} a^{\frac{m}{2} - 1} e^{-\frac{z}{z+1} a} \frac{1}{z+1} da
+\]
+\[
+\propto z^{\frac{m}{2} - 1} (z+1)^{-\frac{m+n}{2}} \int_0^\infty a^{\frac{m}{2} - 1} e^{-a} da.
+\]
+
+It follows:
+\[
+\frac{\partial}{\partial z} \mathbb{P}\left(\frac{X}{Y} < z\right) = f_{X,Y}(z) = \int_0^\infty f_X(zy) f_Y(y) \frac{1}{y} dy
+\]
+\[
+\propto z^{\frac{m}{2} - 1} (z+1)^{-\frac{m+n}{2}}.
+\]
+
+\subsubsection*{Change of Variable:}
+Let \( F = \frac{X}{Y} \), given \( f_F(z) = \frac{m}{n} f_{X,Y} \left( \frac{m}{n} z \right) = f_{m,n}(z). \)
+
 \section{Lecture 10}
 $t$-distribution $\cdot$ $t_n(x)\propto \left(\frac{n^2}{n}+1\right)^{-(n+1)/2}$
 \par $F$ - $\cdot$ $f_{m,n}(x)\propto \frac{x^{m/2-1}}{(n+mx)^{(m+n)/2}}$
