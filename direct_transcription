@@ -1379,4 +1379,47 @@ Regularity Assumptions:
     \item $p_\theta(x)$ is twice differentiable, in particular, $U_\theta(x)$ is well defined.
     \item $E_\theta[||U_\theta (x)||^2_{\mathbb{R}^p}]< \infty$ for all $\theta \in \Theta$, so $I(\theta)$ is well defined. 
     \item $$\int h(x) \nabla_\theta p_\theta(x) \mu (dx)= \nabla_\theta \int h(x)$$ for relevant $h(x)$.
+\end{enumerate}
+\begin{lemma}
+    $(P_\theta \in \Theta)$ regular model (as above), \begin{enumerate}
+        \item $E_\theta (U_\theta (x))=0$
+        \item $I(\theta) = $Cov$(U_\theta)$
+    \end{enumerate}
+    \begin{proof}
+        $$E_\theta [ U_\theta (x)]= \int_X \frac{\nabla_\theta p_\theta (x)}{p_\theta (x)}p_\theta (x) d \mu (x)= \int_X \nabla_\theta p_\theta (x) d \mu (x)= \nabla_\theta [\theta \mapsto 1]=0$$
+    \end{proof}
+\end{lemma}
+\begin{definition}{Uniform minimum variance unbiased estimators (UMVUE)}
+    Let $p(\theta)\in \mathbb{R}$ be some quantity of interest, $T\colon X \to \mathbb{R}$ is a UMVUE if $E_\theta [T(x)] = g(\theta)$ and for all other unbiased estimators, $S\colon X\to \mathbb{R}$, $\text{Var}_\theta(T)\le \text{Var}_\theta (S)$ for all $\theta \in \Theta$.    
+\end{definition}
+\begin{remark}
+    \begin{enumerate}
+        \item UMUVE are the best possible among unbiased estimators.
+        \item Compare to Gauss Markov, $\hat{\beta}_{OLS}$ is UMVUE
+        \item $$E_\theta [||T(x)-\rho (\theta)||^2]=  \text{Bias}^2 +\text{Var}(T) = \text{Var}(T) \le E_\theta [|S(x)-\rho (\theta)|^2]$$
+    \end{enumerate}
+\end{remark}
+\begin{theorem}
+    Let $(P_\theta \mid \theta \in \theta)$ be regular. Let $\rho\colon \Theta \to \mathbb{R}$ continuous differentiable, then for any unbiased estimator $T$ of $S$, $E_\theta[T]=S(\theta)$, $$\text{Var}_\theta \ge \nabla_\theta \rho(\theta)^T I(\theta)^{-1} \nabla_\theta \rho (\theta)$$
+    \begin{remark}
+        If $\Theta=\mathbb{R}$, $\rho(\theta)=\theta$, $\text{Var}_\theta(T)\ge I(\theta)^{-1}$
+    \end{remark}
+    \begin{proof}
+        Let us assume $\Theta \subseteq \mathbb{R}$, 
+        $$\text{Cov}_{\theta}(U_\theta, T)= E_{\theta}[U_\theta T]- E_\theta [U_\theta]E_\theta[T]= E_{\theta}[U_\theta T]$$
+        More over, by Cauchy Swartz, $$\text{Cov}_\theta (U_\theta T) \le \text{Var}_\theta (U_\theta)^{1/2}\text{Var}_\theta (T)^{1/2} I(\theta)^{1/2}\text{Var}_\theta (T)^{1/2}$$
+        But then 
+        \begin{align*}
+            E_{\theta}[U_\theta T]& =\int_X \nabla_\theta \log p_\theta (x)T(x)p_\theta(x)d\mu(x)\\
+            & =\int_X T(x)\nabla_\theta p_\theta(x)d\mu(x) \\
+            & =\nabla_\theta \int \int_X T(x) p_\theta(x)d\mu(x)\\ 
+            &= E_\theta[T]
+            &=\rho'(\theta)
+        \end{align*}
+        Thus, $\text{Var}_\theta (T)\ge I(\theta)^{-1} \rho'(\theta)^2$
+
+    \end{proof}
+\end{theorem}
+Another regularity condition, $I(\theta)$ is invertible.
+
 \end{document}
