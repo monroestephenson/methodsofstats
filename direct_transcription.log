@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.11.5)  22 NOV 2024 08:51
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.11.5)  25 NOV 2024 16:12
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -435,7 +435,7 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `math shift' on input line 1288.
 
-[20] (./direct_transcription.aux)
+[20] [21] [22] (./direct_transcription.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-02-20>
@@ -447,14 +447,14 @@ Package rerunfilecheck Warning: File `direct_transcription.out' has changed.
 (rerunfilecheck)                or use package `bookmark'.
 
 Package rerunfilecheck Info: Checksums for `direct_transcription.out':
-(rerunfilecheck)             Before: D41D8CD98F00B204E9800998ECF8427E;0
-(rerunfilecheck)             After:  13EF819E000E5EB01C5F3961E2CAC067;2544.
+(rerunfilecheck)             Before: 13EF819E000E5EB01C5F3961E2CAC067;2544
+(rerunfilecheck)             After:  6AA1547CC22082163054D67F29752B66;2805.
  ) 
 Here is how much of TeX's memory you used:
- 9845 strings out of 474116
- 148168 string characters out of 5743682
- 1951187 words of memory out of 5000000
- 31927 multiletter control sequences out of 15000+600000
+ 9879 strings out of 474116
+ 148516 string characters out of 5743682
+ 1952187 words of memory out of 5000000
+ 31943 multiletter control sequences out of 15000+600000
  572282 words of font info for 87 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  75i,15n,79p,553b,663s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -480,10 +480,10 @@ exlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmti7.pfb></usr/local/tex
 live/2024/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local
 /texlive/2024/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm7.pfb></usr/lo
 cal/texlive/2024/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb>
-Output written on direct_transcription.pdf (20 pages, 353016 bytes).
+Output written on direct_transcription.pdf (22 pages, 361124 bytes).
 PDF statistics:
- 386 PDF objects out of 1000 (max. 8388607)
- 316 compressed objects within 4 object streams
- 167 named destinations out of 1000 (max. 500000)
- 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 460 PDF objects out of 1000 (max. 8388607)
+ 388 compressed objects within 4 object streams
+ 185 named destinations out of 1000 (max. 500000)
+ 121 words of extra memory for PDF output out of 10000 (max. 10000000)
 

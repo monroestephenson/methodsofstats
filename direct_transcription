@@ -1315,4 +1315,68 @@ $t$-distribution $\cdot$ $t_n(x)\propto \left(\frac{n^2}{n}+1\right)^{-(n+1)/2}$
         \end{proof}
     \end{theorem}
 \end{definition}
+\section{Lecture 12}
+ANOVA
+\par linear model, factor/category, $F$-test for equality of means, $Y_{i,j}=\mu_i+\varepsilon_{ij}$ for $i=1,\hdots, k$ and $j=1,\hdots, k$.
+\par First a note, $X^TX=||X||^2_{\mathbb{R}^n}$
+\begin{theorem}
+    In the ANOVA model with $\varepsilon_{ij}\sim N(0,\sigma^2)$:
+    \begin{enumerate}
+        \item The OLS estimate is $$\hat{\mu}=(\bar{y}_{1,\cdot },\hdots \bar{y}_{k,\cdot }) \quad \text{Recall }\bar{y}_{i,\cdot }=\frac{1}{n_i}\sum_{j=1}^{n_i} y_{ij}$$
+        \item $$\frac{SSW}{\sigma^2} =\frac{1}{\sigma^2}\sum_i \sum_j (y_{ij}- \bar{y}_{i,\cdot })^2\sim \chi^2(n-k)$$
+        \item Under $H_0$: $\mu_0=\mu_1=\hdots = \mu_k$, $\frac{SSB}{\sigma^2}=\frac{1}{\sigma^2}\sum_i n_i (\bar{y}_{i,\cdot} -\bar{y})\sim \chi^2(k-1)$
+        \item SSW and SSB are indepdendent and under $H_0$, $$\frac{n-k}{k-1}\frac{SSB}{SSW} \sim F(k-1, n-k)$$
+        \begin{proof}
+            \begin{enumerate}
+                \item We have $\hat{\mu}= (X^TX)^{-1}X^T Y$, with $$(X^TX)^{-1}=\begin{pmatrix}
+                    \frac{1}{n_1} & \dots & 0\\
+                    0 & \dots & 0\\
+                    0 & \dots & \frac{1}{n_k}\\
+                \end{pmatrix}$$
+                and this implies that $$\hat{\mu} = \begin{pmatrix}
+                    \frac{1}{n_1} & \dots & 0\\
+                    0 & \dots & 0\\
+                    0 & \dots & \frac{1}{n_k}\\
+                \end{pmatrix} \begin{pmatrix}
+                    [] & \dots & 0\\
+                    0 & \dots & 0\\
+                    0 & \dots & []\\
+                \end{pmatrix}Y = \begin{pmatrix}
+                    \frac{1}{n_1} & \dots & 0\\
+                    0 & \dots & 0\\
+                    0 & \dots & \frac{1}{n_k}\\
+                \end{pmatrix} \begin{pmatrix}  \sum_j Y_{1,j}  \\ \vdots \\ \sum_j Y_{k,j}   \end{pmatrix}=\begin{pmatrix}  \bar{Y_{1,j}}  \\ \vdots \\ \bar{Y_{k,j}}   \end{pmatrix}$$
+                \item $$SSW = ||Y-X\hat{\mu}||^2_{\mathbb{R}^n} = \sum_i \sum_j (y_j-y_{i,\cdot})^2=RSS \implies \frac{SSW}{\sigma^2}\sim \chi^2(n-k).$$
+                \item We know that $SSW= RSS$ and we know that $SSW+SSB=SST = \sum_{ij}(y_{ij} -\bar{y}_{i,\cdot})^2$.
+                \par We also know $\frac{RSS_{H_0}-RSS}{\sigma^2}\sim \chi^2(k-1)$ from before, it suffices to show $SST = RSS_{H_0}$, $$RSS_{H_0}=\min_{\mu \in \mathbb{R}}||Y-\mu||^2_{\mathbb{R}^2} = ||Y-\bar{Y_{\cdot \cdot}}_{\mathbb{R}^n}^2 =SST.$$
+                \item Follows from general lin hypotheses testing theorem, Theorem 2.2.30 in Methoden der Statistik book.
+            \end{enumerate}
+        \end{proof}
+    \end{enumerate}
+\end{theorem}
+\subsection{Exponential Families}
+$$\text{General Model} (P_\theta: \theta \in \Theta) \supseteq \text{Exp. families }\supseteq \text{Linear Model}$$
+Regularity Assumptions:
+\par Let $(P_\theta: \theta \in \Theta)$ be a statistical model 
+\begin{enumerate}
+    \item Dominated, there exists $\mu$ such that $P_\theta <<\mu $ for all $\theta\in \Theta$
+    \item $\Theta \in \mathbb{R}^p$ is an open set $p\ge 1$.
+    \item Likelihood $p_\theta(x)>0$ for all $\theta \in \Theta, x\in X$, in particular $\log p_\theta (x)$ is well defined.
+\end{enumerate}
+\begin{definition}{Score}
+    The score vector is $U_{\theta}(x)= \nabla_\theta \log p_\theta (x) = \begin{pmatrix}
+        \frac{\partial }{\partial \theta_1}\log p_\theta (x)\\
+        \vdots\\ 
+        \frac{\partial }{\partial \theta_p}\log p_\theta (x)
+    \end{pmatrix}$    
+    whenever it exists
+\end{definition}
+\begin{definition}{Fisher Information}
+    For $\theta \in \Theta$, the FI, whenever it exists, is $I(\theta)=E(U_\theta (x)U_\theta (x)^T)\in \mathbb{R}^{p\times p}$
+\end{definition}
+\par More Regularity Assumptions
+\begin{enumerate}
+    \item $p_\theta(x)$ is twice differentiable, in particular, $U_\theta(x)$ is well defined.
+    \item $E_\theta[||U_\theta (x)||^2_{\mathbb{R}^p}]< \infty$ for all $\theta \in \Theta$, so $I(\theta)$ is well defined. 
+    \item $$\int h(x) \nabla_\theta p_\theta(x) \mu (dx)= \nabla_\theta \int h(x)$$ for relevant $h(x)$.
 \end{document}

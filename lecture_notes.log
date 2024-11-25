@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.11.5)  22 NOV 2024 09:19
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.11.5)  25 NOV 2024 16:11
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1685,7 +1685,7 @@ Package logreq Info: Writing requests to 'lecture_notes.run.xml'.
 Here is how much of TeX's memory you used:
  36955 strings out of 474116
  709101 string characters out of 5743682
- 1944187 words of memory out of 5000000
+ 1945187 words of memory out of 5000000
  58472 multiletter control sequences out of 15000+600000
  642509 words of font info for 105 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -1709,7 +1709,7 @@ type1/public/lm/lmr8.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public
 24/texmf-dist/fonts/type1/public/lm/lmsy8.pfb></usr/local/texlive/2024/texmf-di
 st/fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/local/texlive/2024/texm
 f-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on lecture_notes.pdf (53 pages, 538488 bytes).
+Output written on lecture_notes.pdf (53 pages, 538391 bytes).
 PDF statistics:
  783 PDF objects out of 1000 (max. 8388607)
  674 compressed objects within 7 object streams
