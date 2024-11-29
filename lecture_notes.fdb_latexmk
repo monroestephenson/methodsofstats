@@ -1,12 +1,12 @@
 # Fdb version 4
-["biber lecture_notes"] 1731072825.18485 "lecture_notes.bcf" "lecture_notes.bbl" "lecture_notes" 1732873763.40235 0
-  "lecture_notes.bcf" 1732873763.21105 107265 29815f19bc5a8420ced634f436b4a6e3 "pdflatex"
+["biber lecture_notes"] 1732874004.72548 "lecture_notes.bcf" "lecture_notes.bbl" "lecture_notes" 1732874034.37968 0
+  "lecture_notes.bcf" 1732874034.18343 107265 29815f19bc5a8420ced634f436b4a6e3 "pdflatex"
   (generated)
   "lecture_notes.bbl"
   "lecture_notes.blg"
   (rewritten before read)
-["pdflatex"] 1732873760.65739 "/Users/monroestephenson/Downloads/Script/lecture_notes.tex" "lecture_notes.pdf" "lecture_notes" 1732873763.40323 0
-  "/Users/monroestephenson/Downloads/Script/lecture_notes.tex" 1732873757.55361 119426 ab3bb7542bb1ed031c2bd4bd2e9572ef ""
+["pdflatex"] 1732874031.45296 "/Users/monroestephenson/Downloads/Script/lecture_notes.tex" "lecture_notes.pdf" "lecture_notes" 1732874034.38052 0
+  "/Users/monroestephenson/Downloads/Script/lecture_notes.tex" 1732874020.01569 136009 d64faf2a9584db7831d734d37d86a924 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc" 1202520719 3486 c7eadf5dcc57b3b2d11736679f6636ba ""
   "/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc" 1202520719 2405 5dcf2c1b967ee25cc46c58cd52244aed ""
   "/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc" 1202520719 2840 216e6e45ad352e2456e1149f28885bee ""
@@ -266,11 +266,11 @@
   "0_macros.tex" 1730733022 3068 19bd0b74cf1ab8cd549e886001789760 ""
   "0_titlepage.tex" 1731338774.63 736 0e45e2d1c3bcf7a6a89b12ae925964b4 ""
   "bilder/hu-logo.pdf" 1730733022 61122 fac3f48345854210bf43ac67b65f5147 ""
-  "lecture_notes.aux" 1732873763.19886 42453 57ce322ba70d53eb6fd3497a9952281c "pdflatex"
-  "lecture_notes.bbl" 1731338774.66414 466 ee04f40f768daeed26442158e95aba61 "biber lecture_notes"
-  "lecture_notes.run.xml" 1732873763.21224 2378 f63da22c2683fb9e8fd7868e99d9402d "pdflatex"
-  "lecture_notes.tex" 1732873757.55361 119426 ab3bb7542bb1ed031c2bd4bd2e9572ef ""
-  "lecture_notes.toc" 1732873763.21251 6148 0c54534138548108f9d960d179b4dc71 "pdflatex"
+  "lecture_notes.aux" 1732874034.1711 44184 624ffa4b10e3922a2e431598337eafb3 "pdflatex"
+  "lecture_notes.bbl" 1732874028.22397 466 ee04f40f768daeed26442158e95aba61 "biber lecture_notes"
+  "lecture_notes.run.xml" 1732874034.18507 2378 f63da22c2683fb9e8fd7868e99d9402d "pdflatex"
+  "lecture_notes.tex" 1732874020.01569 136009 d64faf2a9584db7831d734d37d86a924 ""
+  "lecture_notes.toc" 1732874034.18517 6218 b61dbe4aaac4ca7716644afa67002968 "pdflatex"
   (generated)
   "lecture_notes.aux"
   "lecture_notes.bcf"

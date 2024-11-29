@@ -1,0 +1,9 @@
+[0] Config.pm:307> INFO - This is Biber 2.19
+[0] Config.pm:310> INFO - Logfile is 'lecture_notes.blg'
+[47] biber-darwin:340> INFO - === Fri Nov 29, 2024, 10:53:48
+[58] Biber.pm:419> INFO - Reading 'lecture_notes.bcf'
+[112] Biber.pm:979> INFO - Found 0 citekeys in bib section 0
+[121] bbl.pm:660> INFO - Writing 'lecture_notes.bbl' with encoding 'UTF-8'
+[121] bbl.pm:763> INFO - Output to lecture_notes.bbl
+[122] Biber.pm:131> WARN - The file 'lecture_notes.bcf' does not contain any citations!
+[122] Biber.pm:133> INFO - WARNINGS: 1

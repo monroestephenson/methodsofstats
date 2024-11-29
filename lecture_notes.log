@@ -1205,12 +1205,11 @@ Package biblatex Info: Automatic encoding selection.
 \openout3 = `lecture_notes.bcf'.
 
 Package biblatex Info: Trying to load bibliographic data...
-Package biblatex Info: ... file 'lecture_notes.bbl' not found.
-
-No file lecture_notes.bbl.
+Package biblatex Info: ... file 'lecture_notes.bbl' found.
+ (./lecture_notes.bbl)
 Package biblatex Info: Reference section=0 on input line 49.
 Package biblatex Info: Reference segment=0 on input line 49.
-(/usr/local/texlive/2024/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+ (/usr/local/texlive/2024/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count543
 \scratchdimen=\dimen320
@@ -1432,10 +1431,10 @@ Package logreq Info: Writing requests to 'lecture_notes.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 37127 strings out of 474116
- 710744 string characters out of 5743682
+ 37130 strings out of 474116
+ 710810 string characters out of 5743682
  1945187 words of memory out of 5000000
- 58507 multiletter control sequences out of 15000+600000
+ 58508 multiletter control sequences out of 15000+600000
  642509 words of font info for 105 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  125i,18n,121p,10949b,852s stack positions out of 10000i,1000n,20000p,200000b,200000s
