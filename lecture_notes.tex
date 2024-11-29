@@ -2086,7 +2086,649 @@ Then:
     This completes the proof.
 \end{enumerate}
 \end{proof}
+\chapter{Lecture 11}
+\section{Introduction}
 
+In this lecture, we delve into hypothesis testing within the framework of regular linear models (LM) and explore the Analysis of Variance (ANOVA). We will cover the derivation and proof of key theorems related to the F-test in linear models and the decomposition of the Residual Sum of Squares (RSS) in ANOVA.
+
+\section{Hypothesis Testing in Linear Models}
+
+Consider the standard linear model:
+\[
+Y = X\beta + \varepsilon,
+\]
+where:
+\begin{itemize}
+    \item $Y \in \mathbb{R}^n$ is the response vector,
+    \item $X \in \mathbb{R}^{n \times p}$ is the design matrix,
+    \item $\beta \in \mathbb{R}^p$ is the parameter vector,
+    \item $\varepsilon \sim N(0, \sigma^2 I_n)$ is the error term.
+\end{itemize}
+
+We are interested in testing linear hypotheses of the form:
+\[
+H_0: K \beta = d \quad \text{vs.} \quad H_1: K \beta \neq d,
+\]
+where $K \in \mathbb{R}^{m \times p}$ is a known matrix and $d \in \mathbb{R}^m$ is a known vector.
+
+\subsection{Residual Sum of Squares (RSS)}
+
+Define the Residual Sum of Squares as:
+\[
+RSS = \|Y - X \beta \|^2,
+\]
+and the RSS under the null hypothesis $H_0$ as:
+\[
+RSS_{H_0} = \|Y - X \beta_{H_0}\|^2,
+\]
+where $\beta_{H_0}$ is the Ordinary Least Squares (OLS) estimator constrained by $K \beta = d$. The constrained estimator $\beta_{H_0}$ is given by:
+\[
+\beta_{H_0} = \hat{\beta} - (X^\top X)^{-1} K^\top \left(K (X^\top X)^{-1} K^\top \right)^{-1} (K \hat{\beta} - d),
+\]
+where $\hat{\beta} = (X^\top X)^{-1} X^\top Y$ is the unconstrained OLS estimator.
+
+\subsection{The F-Test Theorem}
+
+\textbf{Theorem:} Assume a regular linear model with $\varepsilon \sim N(0, \sigma^2 I_n)$. Consider the hypotheses:
+\[
+H_0: K \beta = d \quad \text{vs.} \quad H_1: K \beta \neq d.
+\]
+Define:
+\[
+F = \frac{1}{p} \frac{RSS_{H_0} - RSS}{RSS/n}.
+\]
+Under $H_0$, $F$ follows an $F$-distribution with $m$ and $n - p$ degrees of freedom:
+\[
+F \sim F_{m, n-p}.
+\]
+
+\textbf{Proof:}
+
+\begin{enumerate}
+    \item \textbf{Relation between $RSS_{H_0}$ and $RSS$} \\
+    We first show that:
+    \[
+    RSS_{H_0} - RSS = \|X (\beta_{H_0} - \hat{\beta})\|^2 = (K \hat{\beta} - d)^\top \left(K (X^\top X)^{-1} K^\top \right)^{-1} (K \hat{\beta} - d).
+    \]
+    
+    Since $\beta_{H_0}$ minimizes $RSS$ subject to $K \beta = d$, it follows that:
+    \[
+    K \beta_{H_0} = d.
+    \]
+    Substituting the expression for $\beta_{H_0}$:
+    \[
+    K \beta_{H_0} = K \hat{\beta} - K (X^\top X)^{-1} K^\top \left(K (X^\top X)^{-1} K^\top \right)^{-1} (K \hat{\beta} - d) = d.
+    \]
+    
+    \item \textbf{Distribution under $H_0$} \\
+    Under $H_0$, we have:
+    \[
+    RSS_{H_0} \sim \sigma^2 \chi^2(n - m).
+    \]
+    Additionally, the difference $RSS_{H_0} - RSS$ is:
+    \[
+    RSS_{H_0} - RSS = \|X (\beta_{H_0} - \hat{\beta})\|^2.
+    \]
+    Let $Z = K \hat{\beta} - d$. Then:
+    \[
+    \mathbb{E}[Z] = K \mathbb{E}[\hat{\beta}] - d = K \beta - d = 0 \quad \text{under } H_0.
+    \]
+    The variance of $Z$ is:
+    \[
+    \text{Var}(Z) = \sigma^2 K (X^\top X)^{-1} K^\top.
+    \]
+    Therefore:
+    \[
+    Z \sim \mathcal{N}(0, \sigma^2 K (X^\top X)^{-1} K^\top).
+    \]
+    Consequently:
+    \[
+    \frac{RSS_{H_0} - RSS}{\sigma^2} = \frac{Z^\top \left(K (X^\top X)^{-1} K^\top \right)^{-1} Z}{\sigma^2} \sim \chi^2(m).
+    \]
+    
+    Also, under $H_0$:
+    \[
+    RSS \sim \sigma^2 \chi^2(n - p).
+    \]
+    
+    \item \textbf{Construction of the F-statistic} \\
+    Combining the results, we define the F-statistic as:
+    \[
+    F = \frac{\frac{RSS_{H_0} - RSS}{m}}{\frac{RSS}{n - p}}.
+    \]
+    Under $H_0$, since $RSS_{H_0} - RSS$ and $RSS$ are independent,
+    \[
+    F \sim F_{m, n - p}.
+    \]
+\end{enumerate}
+
+This concludes the proof of the F-test theorem.
+
+\section{Analysis of Variance (ANOVA)}
+
+ANOVA is a statistical method used to compare means across multiple groups to determine if at least one group mean is different from the others. It decomposes the total variability in the data into components attributable to different sources.
+
+\subsection{Motivation}
+
+Suppose we have data from $k$ different groups. We aim to test whether the means of these groups are equal.
+
+\subsection{Model Specification}
+
+We are given data:
+\[
+Y_{ij} = \mu_i + \varepsilon_{ij}, \quad i = 1, \ldots, k, \quad j = 1, \ldots, n_i,
+\]
+where:
+\begin{itemize}
+    \item $Y_{ij}$ is the observation in the $i$-th group and $j$-th replicate,
+    \item $\mu_i$ is the mean of the $i$-th group,
+    \item $\varepsilon_{ij} \sim \mathcal{N}(0, \sigma^2)$ are independent error terms.
+\end{itemize}
+
+\subsection{Factor Model}
+
+ANOVA can be viewed as a special case of a linear model known as the \textit{factor model} with one categorical predictor (factor). The index $i = 1, \ldots, k$ represents different levels (groups) of the factor.
+
+\begin{itemize}
+    \item $n = \sum_{i=1}^k n_i$ is the total sample size.
+    \item The design is \textbf{balanced} if all groups have the same number of observations, i.e., $n_1 = n_2 = \ldots = n_k$.
+\end{itemize}
+
+\textbf{Remark:} ANOVA can be expressed in matrix form as:
+\[
+\begin{pmatrix}
+Y_{1,1} \\
+Y_{1,2} \\
+\vdots \\
+Y_{k,n_k}
+\end{pmatrix}
+=
+\begin{pmatrix}
+\mathbf{1}_{n_1} & 0 & \cdots & 0 \\
+0 & \mathbf{1}_{n_2} & \cdots & 0 \\
+\vdots & \vdots & \ddots & \vdots \\
+0 & 0 & \cdots & \mathbf{1}_{n_k}
+\end{pmatrix}
+\begin{pmatrix}
+\mu_1 \\
+\mu_2 \\
+\vdots \\
+\mu_k
+\end{pmatrix}
++
+\varepsilon,
+\]
+where $\mathbf{1}_{n_i}$ is a column vector of ones of length $n_i$.
+
+\subsection{Hypothesis Testing in ANOVA}
+
+We aim to test:
+\[
+H_0: \mu_1 = \mu_2 = \ldots = \mu_k \quad \text{vs.} \quad H_a: \exists i, j \text{ with } \mu_i \neq \mu_j.
+\]
+
+\subsection{Decomposition of RSS}
+
+To perform ANOVA, we decompose the Total Sum of Squares (SST) into the Sum of Squares Between Groups (SSB) and the Sum of Squares Within Groups (SSW).
+
+\textbf{Definitions:}
+\begin{align*}
+\bar{Y}_{i.} &= \frac{1}{n_i} \sum_{j=1}^{n_i} Y_{ij}, \quad i = 1, \ldots, k \quad \text{(Group Means)}, \\
+\bar{Y}_{..} &= \frac{1}{n} \sum_{i=1}^k \sum_{j=1}^{n_i} Y_{ij} \quad \text{(Overall Mean)}.
+\end{align*}
+
+\textbf{Sum of Squares:}
+\begin{align*}
+SSB &= \sum_{i=1}^k n_i (\bar{Y}_{i.} - \bar{Y}_{..})^2 \quad \text{(Sum of Squares Between Groups)}, \\
+SSW &= \sum_{i=1}^k \sum_{j=1}^{n_i} (Y_{ij} - \bar{Y}_{i.})^2 \quad \text{(Sum of Squares Within Groups)}.
+\end{align*}
+
+\textbf{Total Sum of Squares:}
+\[
+SST = \sum_{i=1}^k \sum_{j=1}^{n_i} (Y_{ij} - \bar{Y}_{..})^2.
+\]
+
+\textbf{Theorem (Decomposition of RSS):} 
+\[
+SST = SSB + SSW.
+\]
+
+\textbf{Proof:}
+
+\begin{align*}
+SST &= \sum_{i=1}^k \sum_{j=1}^{n_i} (Y_{ij} - \bar{Y}_{..})^2 \\
+&= \sum_{i=1}^k \sum_{j=1}^{n_i} \left[(Y_{ij} - \bar{Y}_{i.}) + (\bar{Y}_{i.} - \bar{Y}_{..})\right]^2 \\
+&= \sum_{i=1}^k \sum_{j=1}^{n_i} \left[(Y_{ij} - \bar{Y}_{i.})^2 + (\bar{Y}_{i.} - \bar{Y}_{..})^2 + 2(Y_{ij} - \bar{Y}_{i.})(\bar{Y}_{i.} - \bar{Y}_{..})\right] \\
+&= \sum_{i=1}^k \sum_{j=1}^{n_i} (Y_{ij} - \bar{Y}_{i.})^2 + \sum_{i=1}^k \sum_{j=1}^{n_i} (\bar{Y}_{i.} - \bar{Y}_{..})^2 + 2 \sum_{i=1}^k \sum_{j=1}^{n_i} (Y_{ij} - \bar{Y}_{i.})(\bar{Y}_{i.} - \bar{Y}_{..}) \\
+&= SSW + SSB + C,
+\end{align*}
+where:
+\[
+C = 2 \sum_{i=1}^k (\bar{Y}_{i.} - \bar{Y}_{..}) \sum_{j=1}^{n_i} (Y_{ij} - \bar{Y}_{i.}).
+\]
+Since:
+\[
+\sum_{j=1}^{n_i} (Y_{ij} - \bar{Y}_{i.}) = 0 \quad \text{for each } i,
+\]
+it follows that:
+\[
+C = 0.
+\]
+Thus:
+\[
+SST = SSB + SSW.
+\]
+
+\subsection{ANOVA F-Test}
+
+\textbf{Theorem:}
+\begin{enumerate}
+    \item The least squares estimator for $\mu = (\mu_1, \ldots, \mu_k)^\top \in \mathbb{R}^k$ is:
+    \[
+    \hat{\mu} = (\bar{Y}_{1.}, \ldots, \bar{Y}_{k.})^\top.
+    \]
+    
+    \item Under $H_0$:
+    \[
+    \frac{SSW}{\sigma^2} \sim \chi^2(n - k).
+    \]
+    
+    \item Under $H_0$:
+    \[
+    \frac{SSB}{\sigma^2} \sim \chi^2(k - 1).
+    \]
+    
+    \item $SSW$ and $SSB$ are independent under $H_0$, and the F-statistic defined by:
+    \[
+    F = \frac{\frac{SSB}{k - 1}}{\frac{SSW}{n - k}} \sim F(k - 1, n - k) \quad \text{under } H_0.
+    \]
+\end{enumerate}
+
+\textbf{Proof:}
+
+\begin{enumerate}
+    \item \textbf{Estimator for $\mu$} \\
+    The least squares estimator minimizes $SSW$. Taking derivatives with respect to $\mu_i$ and setting them to zero yields:
+    \[
+    \hat{\mu}_i = \bar{Y}_{i.} \quad \text{for each } i = 1, \ldots, k.
+    \]
+    
+    \item \textbf{Distribution of SSW under $H_0$} \\
+    Under $H_0$, all group means are equal to the overall mean $\bar{Y}_{..}$. Therefore, $SSW$ represents the variability within groups:
+    \[
+    SSW = \sum_{i=1}^k \sum_{j=1}^{n_i} (Y_{ij} - \bar{Y}_{i.})^2.
+    \]
+    Each term $(Y_{ij} - \bar{Y}_{i.})^2$ is chi-squared distributed with 1 degree of freedom. Summing over all groups and observations, we have:
+    \[
+    \frac{SSW}{\sigma^2} \sim \chi^2(n - k).
+    \]
+    
+    \item \textbf{Distribution of SSB under $H_0$} \\
+    Under $H_0$, the between-group variability $SSB$ is based on deviations of group means from the overall mean:
+    \[
+    SSB = \sum_{i=1}^k n_i (\bar{Y}_{i.} - \bar{Y}_{..})^2.
+    \]
+    Each term $n_i (\bar{Y}_{i.} - \bar{Y}_{..})^2 / \sigma^2$ follows a chi-squared distribution with 1 degree of freedom. Summing over $k$ groups, we obtain:
+    \[
+    \frac{SSB}{\sigma^2} \sim \chi^2(k - 1).
+    \]
+    
+    \item \textbf{Independence of SSB and SSW and F-Statistic Distribution} \\
+    Under $H_0$, $SSB$ and $SSW$ are independent because $SSB$ depends only on the group means, while $SSW$ depends on the deviations within groups, which are orthogonal to the group means.
+    
+    The F-statistic is defined as:
+    \[
+    F = \frac{\frac{SSB}{k - 1}}{\frac{SSW}{n - k}}.
+    \]
+    Since $\frac{SSB}{\sigma^2} \sim \chi^2(k - 1)$ and $\frac{SSW}{\sigma^2} \sim \chi^2(n - k)$, and they are independent, it follows that:
+    \[
+    F \sim F(k - 1, n - k) \quad \text{under } H_0.
+    \]
+\end{enumerate}
+
+\section{Conclusion}
+
+In this lecture, we established the foundational theorems for hypothesis testing in linear models and ANOVA. We derived the distribution of the F-statistic under the null hypothesis, which allows us to test the equality of multiple group means. Understanding these concepts is crucial for analyzing variance and making informed statistical inferences in various applied contexts.
+
+\chapter{Lecture 12}
+\section{Analysis of Variance (ANOVA)}
+
+ANOVA is a statistical method used to compare the means of three or more groups to determine if at least one group mean is different from the others. It is particularly useful when dealing with experimental data where multiple treatments or conditions are being tested.
+
+\subsection{Linear Model for ANOVA}
+
+Consider a linear model where we have $k$ groups (or factors/categories), each with $n_i$ observations. The model can be expressed as:
+\[
+Y_{i,j} = \mu_i + \varepsilon_{ij} \quad \text{for } i = 1, \dots, k \text{ and } j = 1, \dots, n_i
+\]
+where:
+\begin{itemize}
+    \item $Y_{i,j}$ is the $j$-th observation in the $i$-th group.
+    \item $\mu_i$ is the mean of the $i$-th group.
+    \item $\varepsilon_{ij}$ are the random errors, assumed to be normally distributed with mean $0$ and variance $\sigma^2$, i.e., $\varepsilon_{ij} \sim N(0, \sigma^2)$.
+\end{itemize}
+
+\subsection{Ordinary Least Squares (OLS) Estimation}
+
+In the context of ANOVA, the OLS estimates of the group means $\mu_i$ can be derived. Let $X$ be the design matrix for the linear model. A key note is that:
+\[
+X^T X = \|X\|^2_{\mathbb{R}^n}
+\]
+This relationship is fundamental in deriving the OLS estimates.
+
+\subsection{Theorem: Properties of the ANOVA Model}
+
+\begin{theorem}
+In the ANOVA model with $\varepsilon_{ij} \sim N(0, \sigma^2)$, the following properties hold:
+\begin{enumerate}
+    \item The OLS estimate of the group means is given by:
+    \[
+    \hat{\mu} = \left(\bar{y}_{1,\cdot}, \dots, \bar{y}_{k,\cdot}\right) \quad \text{where} \quad \bar{y}_{i,\cdot} = \frac{1}{n_i} \sum_{j=1}^{n_i} y_{ij}
+    \]
+    
+    \item The Within-Group Sum of Squares (SSW) scaled by $\sigma^2$ follows a chi-squared distribution:
+    \[
+    \frac{SSW}{\sigma^2} = \frac{1}{\sigma^2} \sum_{i=1}^k \sum_{j=1}^{n_i} \left(y_{ij} - \bar{y}_{i,\cdot}\right)^2 \sim \chi^2(n - k)
+    \]
+    where $n = \sum_{i=1}^k n_i$ is the total number of observations.
+    
+    \item Under the null hypothesis $H_0: \mu_1 = \mu_2 = \dots = \mu_k$, the Between-Group Sum of Squares (SSB) scaled by $\sigma^2$ follows a chi-squared distribution:
+    \[
+    \frac{SSB}{\sigma^2} = \frac{1}{\sigma^2} \sum_{i=1}^k n_i \left(\bar{y}_{i,\cdot} - \bar{y}\right)^2 \sim \chi^2(k - 1)
+    \]
+    where $\bar{y} = \frac{1}{n} \sum_{i=1}^k \sum_{j=1}^{n_i} y_{ij}$ is the overall mean.
+    
+    \item SSW and SSB are independent. Under $H_0$, the ratio
+    \[
+    \frac{(n - k)SSB}{(k - 1)SSW} \sim F(k - 1, n - k)
+    \]
+    follows an $F$-distribution with $(k - 1, n - k)$ degrees of freedom.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+We will prove each part of the theorem sequentially.
+
+\begin{enumerate}
+    \item \textbf{OLS Estimate of $\mu$}: The OLS estimator is given by
+    \[
+    \hat{\mu} = (X^T X)^{-1} X^T Y
+    \]
+    Given the structure of $X^T X$, we have:
+    \[
+    (X^T X)^{-1} = \begin{pmatrix}
+        \frac{1}{n_1} & \dots & 0 \\
+        \vdots & \ddots & \vdots \\
+        0 & \dots & \frac{1}{n_k}
+    \end{pmatrix}
+    \]
+    Multiplying this with $X^T Y$, we get:
+    \[
+    \hat{\mu} = \begin{pmatrix}
+        \frac{1}{n_1} & \dots & 0 \\
+        \vdots & \ddots & \vdots \\
+        0 & \dots & \frac{1}{n_k}
+    \end{pmatrix}
+    \begin{pmatrix}
+        \sum_{j=1}^{n_1} Y_{1,j} \\
+        \vdots \\
+        \sum_{j=1}^{n_k} Y_{k,j}
+    \end{pmatrix}
+    = \begin{pmatrix}
+        \bar{Y}_{1,\cdot} \\
+        \vdots \\
+        \bar{Y}_{k,\cdot}
+    \end{pmatrix}
+    \]
+    where $\bar{Y}_{i,\cdot} = \frac{1}{n_i} \sum_{j=1}^{n_i} Y_{i,j}$.
+    
+    \item \textbf{Distribution of SSW}: The Within-Group Sum of Squares is defined as
+    \[
+    SSW = \|Y - X\hat{\mu}\|^2_{\mathbb{R}^n} = \sum_{i=1}^k \sum_{j=1}^{n_i} \left(Y_{ij} - \bar{Y}_{i,\cdot}\right)^2
+    \]
+    Since $\varepsilon_{ij} \sim N(0, \sigma^2)$, each squared deviation $\left(Y_{ij} - \bar{Y}_{i,\cdot}\right)^2$ follows a scaled chi-squared distribution. Aggregating over all groups and observations, we have:
+    \[
+    \frac{SSW}{\sigma^2} \sim \chi^2(n - k)
+    \]
+    where $n - k$ degrees of freedom account for the estimation of $k$ group means.
+    
+    \item \textbf{Distribution of SSB under $H_0$}: Under the null hypothesis $H_0: \mu_1 = \mu_2 = \dots = \mu_k$, the Between-Group Sum of Squares is given by
+    \[
+    SSB = \sum_{i=1}^k n_i \left(\bar{Y}_{i,\cdot} - \bar{Y}\right)^2
+    \]
+    Under $H_0$, all group means are equal to the overall mean $\bar{Y}$. Therefore, $SSB$ measures the deviation of each group mean from the overall mean. The distribution of $SSB$ scaled by $\sigma^2$ is:
+    \[
+    \frac{SSB}{\sigma^2} \sim \chi^2(k - 1)
+    \]
+    This follows from the properties of chi-squared distributions and the fact that there are $k - 1$ independent comparisons among the $k$ group means.
+    
+    \item \textbf{F-Statistic and Independence of SSW and SSB}: The total sum of squares (SST) can be decomposed as:
+    \[
+    SST = SSW + SSB
+    \]
+    Under $H_0$, SSW and SSB are independent because the residuals within groups do not provide information about the between-group variability. The ratio of the scaled sums of squares follows an $F$-distribution:
+    \[
+    \frac{(n - k)SSB}{(k - 1)SSW} \sim F(k - 1, n - k)
+    \]
+    This result is derived from the general linear hypothesis testing framework, specifically Theorem 2.2.30 in \textit{Methoden der Statistik}.
+\end{enumerate}
+\end{proof}
+
+\section{Exponential Families}
+
+Exponential families encompass a wide range of probability distributions and include many of the common distributions used in statistics. They also generalize linear models, making them a fundamental concept in statistical theory.
+
+\subsection{General Model and Hierarchy}
+
+\[
+\text{General Model} \supseteq \text{Exponential Families} \supseteq \text{Linear Models}
+\]
+This hierarchy indicates that exponential families are a subset of general statistical models and that linear models are a subset of exponential families.
+
+\subsection{Regularity Assumptions}
+
+For the theory to hold, certain regularity conditions must be satisfied by the statistical model $(P_\theta : \theta \in \Theta)$:
+
+\begin{enumerate}
+    \item \textbf{Dominated Model}: There exists a measure $\mu$ such that every $P_\theta$ is absolutely continuous with respect to $\mu$, denoted as $P_\theta \ll \mu$ for all $\theta \in \Theta$.
+    
+    \item \textbf{Parameter Space}: The parameter space $\Theta \subseteq \mathbb{R}^p$ is an open set with $p \geq 1$.
+    
+    \item \textbf{Likelihood Function}: The likelihood function $p_\theta(x) > 0$ for all $\theta \in \Theta$ and $x \in X$, ensuring that $\log p_\theta(x)$ is well-defined.
+\end{enumerate}
+
+\subsection{Score Function}
+
+\begin{definition}[Score]
+The score vector is defined as the gradient of the log-likelihood with respect to the parameter $\theta$:
+\[
+U_{\theta}(x) = \nabla_\theta \log p_\theta(x) = \begin{pmatrix}
+    \frac{\partial}{\partial \theta_1} \log p_\theta(x) \\
+    \vdots \\
+    \frac{\partial}{\partial \theta_p} \log p_\theta(x)
+\end{pmatrix}
+\]
+whenever it exists.
+\end{definition}
+
+\subsection{Fisher Information}
+
+\begin{definition}[Fisher Information]
+For $\theta \in \Theta$, the Fisher Information (FI) matrix is defined as:
+\[
+I(\theta) = \mathbb{E}\left[ U_\theta(x) U_\theta(x)^T \right] \in \mathbb{R}^{p \times p}
+\]
+whenever the expectation exists.
+\end{definition}
+
+\subsection{Additional Regularity Assumptions}
+
+To further develop the theory, we impose additional regularity conditions:
+
+\begin{enumerate}
+    \item \textbf{Twice Differentiable Likelihood}: The likelihood function $p_\theta(x)$ is twice differentiable with respect to $\theta$, ensuring that the score function $U_\theta(x)$ is well-defined.
+    
+    \item \textbf{Finite Fisher Information}: For all $\theta \in \Theta$,
+    \[
+    \mathbb{E}_\theta \left[ \| U_\theta(x) \|^2_{\mathbb{R}^p} \right] < \infty
+    \]
+    ensuring that the Fisher Information matrix $I(\theta)$ is well-defined.
+    
+    \item \textbf{Interchange of Integration and Differentiation}: For relevant functions $h(x)$,
+    \[
+    \int h(x) \nabla_\theta p_\theta(x) \, \mu(dx) = \nabla_\theta \int h(x) p_\theta(x) \, \mu(dx)
+    \]
+    allowing the differentiation under the integral sign.
+\end{enumerate}
+
+\subsection{Properties of the Score and Fisher Information}
+
+\begin{lemma}
+Let $(P_\theta : \theta \in \Theta)$ be a regular statistical model as defined above. Then:
+\begin{enumerate}
+    \item The expected value of the score function is zero:
+    \[
+    \mathbb{E}_\theta \left[ U_\theta(x) \right] = 0
+    \]
+    
+    \item The Fisher Information matrix is equal to the covariance matrix of the score function:
+    \[
+    I(\theta) = \text{Cov}\left( U_\theta(x) \right)
+    \]
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+\begin{enumerate}
+    \item \textbf{Expected Score is Zero}: 
+    \[
+    \mathbb{E}_\theta \left[ U_\theta(x) \right] = \int_X \nabla_\theta \log p_\theta(x) \, p_\theta(x) \, \mu(dx) = \int_X \frac{\nabla_\theta p_\theta(x)}{p_\theta(x)} p_\theta(x) \, \mu(dx) = \int_X \nabla_\theta p_\theta(x) \, \mu(dx)
+    \]
+    Since $\int_X p_\theta(x) \, \mu(dx) = 1$ for all $\theta$, differentiating both sides with respect to $\theta$ gives:
+    \[
+    \nabla_\theta \int_X p_\theta(x) \, \mu(dx) = \int_X \nabla_\theta p_\theta(x) \, \mu(dx) = 0
+    \]
+    Therefore, $\mathbb{E}_\theta \left[ U_\theta(x) \right] = 0$.
+    
+    \item \textbf{Fisher Information as Covariance}: 
+    By definition,
+    \[
+    I(\theta) = \mathbb{E}\left[ U_\theta(x) U_\theta(x)^T \right]
+    \]
+    Since $\mathbb{E}_\theta \left[ U_\theta(x) \right] = 0$, the covariance matrix is:
+    \[
+    \text{Cov}\left( U_\theta(x) \right) = \mathbb{E}\left[ U_\theta(x) U_\theta(x)^T \right] - \mathbb{E}\left[ U_\theta(x) \right] \mathbb{E}\left[ U_\theta(x)^T \right] = I(\theta)
+    \]
+\end{enumerate}
+\end{proof}
+
+\section{Uniformly Minimum Variance Unbiased Estimators (UMVUE)}
+
+In statistical estimation, an unbiased estimator is one whose expected value equals the parameter it estimates. Among all unbiased estimators, the UMVUE is the one with the smallest variance, making it the most efficient unbiased estimator.
+
+\subsection{Definition}
+
+\begin{definition}[UMVUE]
+Let $p(\theta) \in \mathbb{R}$ be a parameter of interest. A statistic $T: X \to \mathbb{R}$ is called a Uniformly Minimum Variance Unbiased Estimator (UMVUE) of $p(\theta)$ if:
+\begin{itemize}
+    \item $T$ is unbiased for $p(\theta)$, i.e., $\mathbb{E}_\theta[T(x)] = p(\theta)$ for all $\theta \in \Theta$.
+    \item For any other unbiased estimator $S: X \to \mathbb{R}$ of $p(\theta)$, the variance of $T$ is less than or equal to the variance of $S$ for all $\theta \in \Theta$, i.e.,
+    \[
+    \text{Var}_\theta(T) \leq \text{Var}_\theta(S) \quad \forall \theta \in \Theta
+    \]
+\end{itemize}
+\end{definition}
+
+\subsection{Remarks}
+
+\begin{enumerate}
+    \item UMVUEs are the best possible unbiased estimators in terms of variance.
+    
+    \item Analogous to the Gauss-Markov theorem where the OLS estimator $\hat{\beta}_{OLS}$ is the best linear unbiased estimator (BLUE), the UMVUE is the best unbiased estimator without the linearity constraint.
+    
+    \item The Mean Squared Error (MSE) of an estimator $T$ can be decomposed as:
+    \[
+    \mathbb{E}_\theta \left[ \| T(x) - \rho(\theta) \|^2 \right] = \text{Bias}^2(T) + \text{Var}(T)
+    \]
+    For unbiased estimators, $\text{Bias}(T) = 0$, hence:
+    \[
+    \mathbb{E}_\theta \left[ \| T(x) - \rho(\theta) \|^2 \right] = \text{Var}(T) \leq \mathbb{E}_\theta \left[ \| S(x) - \rho(\theta) \|^2 \right] = \text{Var}(S)
+    \]
+\end{enumerate}
+
+\subsection{Cramér-Rao Lower Bound}
+
+The Cramér-Rao Lower Bound provides a lower bound on the variance of unbiased estimators. It is a fundamental result in estimation theory that helps identify the efficiency of estimators.
+
+\begin{theorem}[Cramér-Rao Lower Bound]
+Let $(P_\theta : \theta \in \Theta)$ be a regular statistical model. Let $\rho: \Theta \to \mathbb{R}$ be a continuously differentiable function of the parameter $\theta$. For any unbiased estimator $T$ of $\rho(\theta)$, i.e., $\mathbb{E}_\theta[T] = \rho(\theta)$, the variance of $T$ satisfies:
+\[
+\text{Var}_\theta(T) \geq \nabla_\theta \rho(\theta)^T I(\theta)^{-1} \nabla_\theta \rho(\theta)
+\]
+\end{theorem}
+
+\begin{remark}
+If the parameter space is one-dimensional ($\Theta \subseteq \mathbb{R}$) and $\rho(\theta) = \theta$, then the Cramér-Rao bound simplifies to:
+\[
+\text{Var}_\theta(T) \geq \frac{1}{I(\theta)}
+\]
+where $I(\theta)$ is the Fisher Information.
+\end{remark}
+
+\begin{proof}
+Assume that $\Theta \subseteq \mathbb{R}$. Let $T$ be an unbiased estimator of $\rho(\theta)$, so $\mathbb{E}_\theta[T] = \rho(\theta)$. 
+
+Consider the covariance between the score function $U_\theta(x)$ and the estimator $T(x)$:
+\[
+\text{Cov}_\theta(U_\theta, T) = \mathbb{E}_\theta[U_\theta T] - \mathbb{E}_\theta[U_\theta] \mathbb{E}_\theta[T] = \mathbb{E}_\theta[U_\theta T]
+\]
+since $\mathbb{E}_\theta[U_\theta] = 0$.
+
+By the Cauchy-Schwarz inequality:
+\[
+|\text{Cov}_\theta(U_\theta, T)|^2 \leq \text{Var}_\theta(U_\theta) \cdot \text{Var}_\theta(T)
+\]
+which implies:
+\[
+\text{Var}_\theta(T) \geq \frac{|\text{Cov}_\theta(U_\theta, T)|^2}{\text{Var}_\theta(U_\theta)}
+\]
+
+Next, compute the covariance:
+\[
+\text{Cov}_\theta(U_\theta, T) = \mathbb{E}_\theta[U_\theta T] = \int_X U_\theta(x) T(x) p_\theta(x) \, \mu(dx) = \int_X \nabla_\theta \log p_\theta(x) T(x) p_\theta(x) \, \mu(dx)
+\]
+\[
+= \int_X T(x) \nabla_\theta p_\theta(x) \, \mu(dx) = \nabla_\theta \int_X T(x) p_\theta(x) \, \mu(dx) = \nabla_\theta \mathbb{E}_\theta[T(x)] = \nabla_\theta \rho(\theta)
+\]
+since $T$ is unbiased.
+
+Therefore:
+\[
+\text{Cov}_\theta(U_\theta, T) = \rho'(\theta)
+\]
+and:
+\[
+\text{Var}_\theta(U_\theta) = I(\theta)
+\]
+Substituting these into the inequality:
+\[
+\text{Var}_\theta(T) \geq \frac{(\rho'(\theta))^2}{I(\theta)}
+\]
+In higher dimensions, this generalizes to:
+\[
+\text{Var}_\theta(T) \geq \nabla_\theta \rho(\theta)^T I(\theta)^{-1} \nabla_\theta \rho(\theta)
+\]
+\end{proof}
+
+\subsection{Invertibility of the Fisher Information Matrix}
+
+An important regularity condition for the Cramér-Rao Lower Bound and related results is that the Fisher Information matrix $I(\theta)$ is invertible. This ensures that the lower bound on the variance of unbiased estimators is well-defined and finite.
+
+\section{Conclusion}
+
+In this lecture, we delved into the foundations of ANOVA, exploring the linear model framework, OLS estimation, and the distributional properties of the sum of squares under various hypotheses. We also introduced exponential families, discussing their place within the broader context of statistical models and the regularity conditions required for their analysis. Furthermore, we examined the concept of UMVUEs and established the Cramér-Rao Lower Bound, providing essential tools for assessing the efficiency of estimators.
+
+Understanding these concepts is crucial for conducting rigorous statistical analysis and for developing efficient estimation procedures in various applications.
 
 
 
@@ -2136,5 +2778,4 @@ Then:
 \fi 
 
 \medskip
-\printbibliography[heading=bibintoc,title={References}] % you can change the title however you want
 \end{document}

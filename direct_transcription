@@ -325,7 +325,7 @@ R(\delta | X = x) = E[L(\theta, \delta(X)) | X = x]
 \]
 
 Suppose \( \delta^* \) is an estimator that minimizes the posterior risk, \( \delta^*(x) = E[\theta | X = x] \). Then it also minimizes the Bayes risk.
-
+ec
 If \( L(x, y) = (x - y)^2 \), the Bayes optimal estimator \( \delta(x) \) is the posterior mean.
 
 We want to construct \( C(x) \) s.t. \( P_\theta (\theta \in C(x)) \geq 1 - \alpha, \, \forall \theta \in [0,1] \)
@@ -1315,6 +1315,231 @@ $t$-distribution $\cdot$ $t_n(x)\propto \left(\frac{n^2}{n}+1\right)^{-(n+1)/2}$
         \end{proof}
     \end{theorem}
 \end{definition}
+\section{Lecture 11}
+
+\textbf{Theorem:} \\
+Assume regular LM, $\varepsilon \sim N(0, \sigma^2 I_n)$, and consider:
+\[
+H_0: K \beta = d \quad \text{vs.} \quad H_1: K \beta \neq d
+\]
+Define:
+\[
+RSS = \|Y - X \beta \|^2, \quad RSS_{H_0} = \|Y - X \beta_{H_0}\|^2
+\]
+where $\beta_{H_0}$ is the OLS estimator over $K \beta = d$:
+\[
+\beta_{H_0} = \hat{\beta} - (X^\top X)^{-1} K^\top \left(K (X^\top X)^{-1} K^\top \right)^{-1} (K \hat{\beta} - d)
+\]
+1. 
+\[
+RSS_{H_0} - RSS = \|X (\beta_{H_0} - \hat{\beta})\|^2 = (K \hat{\beta} - d)^\top \left(K (X^\top X)^{-1} K^\top \right)^{-1} (K \hat{\beta} - d)
+\]
+2. Under $H_0$:
+\[
+RSS_{H_0} \sim \chi^2(n)
+\]
+3. Define:
+\[
+F = \frac{1}{p} \frac{RSS_{H_0} - RSS}{RSS/n} = \frac{RSS_{H_0} - RSS}{c \cdot RSS}
+\]
+Under $H_0$: 
+\[
+F \sim F_{n-p}
+\]
+
+\textbf{Proof:} \\
+1. To show $K \hat{\beta}_{H_0} = d$, note that $\beta_{H_0}$ is the minimizer. \\
+Observe:
+\[
+K \beta_{H_0} - K \beta = K (X^\top X)^{-1} K^\top \left(K (X^\top X)^{-1} K^\top \right)^{-1} (K \beta - d) - K \beta - (K \beta - d) = d
+\]
+
+Second part: Let $Y \in \mathbb{R}^n$, $K \beta = d$. By Pythagoras:
+\[
+\|Y - X \hat{\beta}\|^2 = \|Y - X \beta_{H_0}\|^2 + \|X (\beta - \beta_{H_0})\|^2
+\]
+where:
+\[
+A = \left(X (\hat{\beta} - \beta_{H_0})\right)^\top X \beta_{H_0} - Y = (K \hat{\beta} - d)^\top \left(K (X^\top X)^{-1} K^\top \right)^{-1} K (X^\top X)^{-1} (X^\top Y)
+\]
+This implies:
+\[
+(K \hat{\beta} - d)^\top \left(K (X^\top X)^{-1} K^\top \right)^{-1} (K \hat{\beta} - d) = 0
+\]
+
+Overall:
+\[
+\|Y - X \beta_{H_0}\|^2 = \|Y - X \hat{\beta}\|^2 + \|X (\hat{\beta} - \beta_{H_0})\|^2 \geq 0
+\]
+
+\textbf{Continuation:}
+
+2) Under $H_0$:
+\[
+RSS_{H_0} - RSS = \|Y - X \beta_{H_0}\|^2 - \|Y - X \hat{\beta}\|^2
+\]
+\[
+= \|X (\hat{\beta} - \beta_{H_0})\|^2 = (K \hat{\beta} - d)^\top \left(K (X^\top X)^{-1} K^\top \right)^{-1} (K \hat{\beta} - d)
+\]
+
+Let $Z = K \hat{\beta} - d$. Then:
+\[
+\mathbb{E}[Z] = \mathbb{E}[K \hat{\beta} - d] = K \mathbb{E}[\hat{\beta}] - d = K (X^\top X)^{-1} X^\top Y - d
+\]
+\[
+\text{(Substitute $K \beta = d$ into the expectation)}
+\]
+
+\[
+\text{Var}(Z) = K \text{Var}(\hat{\beta}) K^\top = \sigma^2 K (X^\top X)^{-1} K^\top
+\]
+
+Thus:
+\[
+Z \sim \mathcal{N}(0, \sigma^2 K (X^\top X)^{-1} K^\top)
+\]
+
+Finally:
+\[
+RSS_{H_0} - RSS = \|X (\hat{\beta} - \beta_{H_0})\|^2 = Z^\top (\sigma^2 K (X^\top X)^{-1} K^\top)^{-1} Z
+\]
+\[
+\sim \chi^2(p)
+\]
+
+\[
+RSS \sim \sigma^2 \chi^2(n-p), \quad RSS_{H_0} \sim \sigma^2 \chi^2(n).
+\]
+
+3) We know:
+\[
+\frac{RSS_{H_0} - RSS}{\sigma^2} \sim \chi^2(p), \quad \frac{RSS}{\sigma^2} \sim \chi^2(n-p)
+\]
+
+To show independence:
+We have:
+\[
+RSS_{H_0} \perp Y \quad \text{while} \quad RSS_{H_0} - RSS \text{ only depends on } \hat{\beta}.
+\]
+(Since $\hat{\beta} \propto X^\top Y$ and $T_n = 0$ by the lemma from last time, independence follows.)
+
+\section*{ANOVA (Analysis of Variance)}
+
+\textbf{Motivation:} We have data from $k$ different groups. Are the means equal?
+
+\textbf{Definition:} ANOVA
+
+We are given data:
+\[
+Y_{ij} = \mu_i + \varepsilon_{ij}, \quad i = 1, \ldots, k, \quad j = 1, \ldots, n_i
+\]
+
+Assume:
+\[
+\varepsilon_{ij} \sim \mathcal{N}(0, \sigma^2)
+\]
+\section*{ANOVA (Analysis of Variance)}
+
+\textbf{Index:} $i = 1, \ldots, k$ is called the factor. \\
+The model is a \textit{factor model} with 1 categorical variable. \\
+$n = \sum_{i=1}^k n_i$ is the total sample size. \\
+The model is balanced (design) if $n_1 = n_2 = \ldots = n_k$.
+
+\textbf{Remark:} ANOVA is a linear model:
+\[
+\begin{pmatrix}
+Y_{1,1} \\
+Y_{1,2} \\
+\vdots \\
+Y_{k,n_k}
+\end{pmatrix}
+=
+\begin{pmatrix}
+\mathbf{1}_{n_1} & 0 \\
+0 & \mathbf{1}_{n_k}
+\end{pmatrix}
+\begin{pmatrix}
+\mu_1 \\
+\mu_k
+\end{pmatrix}
++
+\varepsilon
+\]
+
+\subsection*{Hypothesis Testing:}
+\[
+H_0: \mu_1 = \ldots = \mu_k \quad \text{vs.} \quad H_a: \exists i, j \text{ with } \mu_i \neq \mu_j
+\]
+
+\textbf{Basic Idea:} Compare variation within groups vs. variation across groups.
+
+\textbf{Theorem (Decomposition of RSS):} Define the group means:
+\[
+\bar{Y}_{i.} = \frac{1}{n_i} \sum_{j=1}^{n_i} Y_{ij}, \quad i = 1, \ldots, k
+\]
+and the overall mean:
+\[
+\bar{Y}_{..} = \frac{1}{n} \sum_{i,j} Y_{ij}.
+\]
+
+Furthermore, let:
+\[
+SSB = \sum_{i=1}^k n_i (\bar{Y}_{i.} - \bar{Y}_{..})^2 \quad \text{(Sum of squares between groups)},
+\]
+\[
+SSW = \sum_{i=1}^k \sum_{j=1}^{n_i} (Y_{ij} - \bar{Y}_{i.})^2 \quad \text{(Sum of squares within groups)}.
+\]
+
+Then:
+\[
+SST = \sum_{i=1}^k \sum_{j=1}^{n_i} (Y_{ij} - \bar{Y}_{..})^2 = SSB + SSW,
+\]
+where $SST$ is the total sum of squares.
+
+\textbf{Proof:} \\
+\[
+SST = \sum_{i=1}^k \sum_{j=1}^{n_i} (Y_{ij} - \bar{Y}_{i.} + \bar{Y}_{i.} - \bar{Y}_{..})^2
+\]
+\[
+= \sum_{i,j} (Y_{ij} - \bar{Y}_{i.})^2 + (\bar{Y}_{i.} - \bar{Y}_{..})^2 + 2 (Y_{ij} - \bar{Y}_{i.})(\bar{Y}_{i.} - \bar{Y}_{..})
+\]
+\[
+= SSB + SSW + C,
+\]
+where:
+\[
+C = \sum_{i=1}^k (\bar{Y}_{i.} - \bar{Y}_{..}) \sum_{j=1}^{n_i} (Y_{ij} - \bar{Y}_{i.}).
+\]
+
+By construction:
+\[
+\sum_{j=1}^{n_i} (Y_{ij} - \bar{Y}_{i.}) = 0 \quad \text{for each } i,
+\]
+so:
+\[
+C = 0.
+\]
+
+\section*{Theorem:}
+1. The least square estimator for $\mu = (\mu_1, \ldots, \mu_k) \in \mathbb{R}^k$ is:
+\[
+\hat{\mu} = (\bar{Y}_{1.}, \ldots, \bar{Y}_{k.})^\top.
+\]
+
+2. Under $H_0$:
+\[
+\frac{SSW}{\sigma^2} \sim \chi^2(n - k).
+\]
+
+3. Under $H_0$:
+\[
+\frac{SSB}{\sigma^2} \sim \chi^2(k - 1).
+\]
+
+4. $SSW$ and $SSB$ are independent under $H_0$, and:
+\[
+F = \frac{\frac{n - k}{k - 1} SSB}{SSW} \stackrel{H_0}{\sim} F(k - 1, n - k).
+\]
 \section{Lecture 12}
 ANOVA
 \par linear model, factor/category, $F$-test for equality of means, $Y_{i,j}=\mu_i+\varepsilon_{ij}$ for $i=1,\hdots, k$ and $j=1,\hdots, k$.
@@ -1422,4 +1647,161 @@ Regularity Assumptions:
 \end{theorem}
 Another regularity condition, $I(\theta)$ is invertible.
 
+\section*{Lecture 13}
+
+\subsection*{Regular Stat Model}
+\begin{itemize}
+    \item $\Theta \subset \mathbb{R}^p$ open
+    \item $p_\vartheta(x) > 0 \ \text{for all } \vartheta \in \Theta, \ x \in \mathcal{X}$ and $p_\vartheta$ is continuously differentiable.
+\end{itemize}
+
+\[
+I(\vartheta) = \mathbb{E}_\vartheta \left[ \nabla_\vartheta \log p_\vartheta(x) \ \nabla_\vartheta \log p_\vartheta(x)^T \right]
+\]
+exists $\forall \vartheta \in \Theta$, and $I(\vartheta)$ is positive definite ($\Rightarrow I(\vartheta)^{-1}$ exists).
+
+\textit{Interchange $\nabla_\vartheta$ and $\int$.}
+
+\subsection*{Theorem}
+($p_\vartheta, \vartheta \in \Theta$ regular.) Let $g: \Theta \to \mathbb{R}$ be continuously differentiable.
+
+Let $T: \mathcal{X} \to \mathbb{R}$ be an unbiased estimator, $\mathbb{E}_\vartheta [T] = g(\vartheta) \ \forall \vartheta \in \Theta$.
+
+Then
+\[
+\text{Var}_\vartheta(T) \geq \left( g'(\vartheta) \right)^T I(\vartheta)^{-1} g'(\vartheta) \quad \forall \vartheta \in \Theta.
+\]
+
+\begin{center}
+\textbf{Cramér-Rao / Information Inequality}
+\end{center}
+
+\subsection*{Score Vector}
+\[
+U_\vartheta(x) = \nabla_\vartheta \log p_\vartheta(x)
+\]
+
+\begin{center}
+\textbf{Fisher Information Matrix}
+\end{center}
+
+\subsection*{Remarks}
+\begin{itemize}
+    \item If $I(\vartheta)$ is large, better estimation seems possible: ``more information contained in the data.''
+    \item Another interpretation.
+\end{itemize}
+
+\subsection*{Derivation}
+Let $\Theta \subseteq \mathbb{R}$. Suppose $p_\vartheta$ is twice differentiable in $\vartheta$:
+\[
+\left( \log p_\vartheta(x) \right)' = \frac{p_\vartheta'(x)}{p_\vartheta(x)}
+\]
+\[
+\left( \log p_\vartheta(x) \right)'' = \frac{p_\vartheta''(x)p_\vartheta(x) - \left( p_\vartheta'(x) \right)^2}{p_\vartheta(x)^2}
+\]
+
+\[
+\mathbb{E}_\vartheta \left[ \left( \log p_\vartheta(x) \right)' \right] = \int_x \frac{p_\vartheta'(x)}{p_\vartheta(x)} p_\vartheta(x) dx = \int_x p_\vartheta'(x) dx = \frac{d}{d\vartheta} \int_x p_\vartheta(x) dx = 0.
+\]
+
+Thus,
+\[
+\mathbb{E}_\vartheta \left[ \left( \log p_\vartheta(x) \right)^2 \right] = - \mathbb{E}_\vartheta \left[ \left( \log p_\vartheta(x) \right)'' \right] = - \mathbb{E}_\vartheta \left[ U_\vartheta(x)^2 \right] = - I(\vartheta).
+\]
+\begin{theorem}
+    Let $(P_\theta, \theta\in \Theta)$ be a regular model, $\Theta\subseteq \mathbb{R}$ and let $\rho:\Theta \to \mathbb{R}$, be a continuous differentiable function, an unbiased estimator $T$, $E_\theta[T]=\rho (\theta)$ attains equality in the CR-bound iff and only if 
+    $$T(x)=\rho (\theta)+\rho'(\theta)I(\theta)^{-1}U_\theta (x)$$ 
+    almost surely for all $\theta \in \Theta$
+    \begin{proof}
+        Define $v(\theta) =\rho'(\theta)I(\theta)^{-1}$, then let $T$ as above, 
+        $$0 \le \text{var}(T-v(\theta)U_\theta)= \text{var} (T)+ v(\theta)^2 E_\theta [U_\theta^2]-2v(\theta)\underbrace{\text{Cov}_\theta (T,U_\theta)}_{\rho'(\theta)}$$
+        $$=\text{Var}-\rho'(\theta)^2 I(\theta)^{-1}=0$$
+        This implies $$T- v(\theta) U_\theta =Constant$$
+        Since $T$ is unbiased we have $E_\theta[T]=\rho(\theta)$ so, $T =\rho (\theta)+v(\theta)U_\theta$ almost surely. This shows $\implies$, $\impliedby$ is a straightforward computation.
+    \end{proof} 
+\end{theorem}
+\begin{remark}
+    \begin{enumerate}
+        \item $T(x)$ is nto always a measureable feature of $x$ in the equation above. 
+        \item If $T$ attains the CR-bound, we say that $T$ is the Cramer-Rao coefficent
+    \end{enumerate}
+\end{remark}
+\begin{corollary}
+    Assume previous scaling and assume $\rho(\theta)\neq 0$ for all $\theta \in \Theta$
+    then the likelihood can be written in the form $$p_\theta(x)= c(x)\exp (n(\theta)T(x) -\Psi (\theta))$$
+    where $n: \theta \to \mathbb{R}$, such that $n'(\theta)= \frac{I(\theta)}{\rho'(\theta)}$
+    and $c(x)$ and $\Psi(\theta)$ are invertible. 
+    \begin{proof}
+        By the above equation, from the last theorem, we have $$T(x) = \rho (\theta)+\rho(\theta)I^{-1}(\theta) (\log p_{\theta}(x))'$$
+        and this implies 
+        $$(T(x) - \rho (\theta))\frac{I(\theta)}{\rho(\theta)}= (\log p_{\theta}(x))'$$
+        and then we get $$T(x) \int_{\theta_0}^\theta \frac{I(\theta)}{\rho(\theta)}dt + \Psi (\theta) = \log(p_\theta (\theta))+constant$$
+        which implies $$p_\theta (x)= \exp (constant(x))=\exp (n(\theta)T(x)-\Psi (\theta))$$
+    \end{proof} 
+\end{corollary}
+\begin{definition}{Exponential Families}
+    A regular model $(P_\theta : \theta\in \Theta)$ is called the $k$-parameter Exponential family $(k\ge 1)$ if there exists measurable functions
+    \begin{enumerate}
+        \item $n:\Theta \to \mathbb{R}^k$
+        \item $T:C \to \mathbb{R}^k$
+        \item $c:X\to [0,\infty)$
+    \end{enumerate}
+    such that 
+    $$p_\theta(x) = \frac{dP_\theta}{d\mu}(x)= c(x)\exp (\langle n(\theta)T(x)\rangle_{\mathbb{R}^k} -\Psi (\theta))$$
+    for all $\theta, x$
+    where $$\Psi(\theta)=\log\left(\int_X c(x) \exp\left(\langle n(\theta)T(x)\rangle_{\mathbb{R}^k}\right)d \mu(x)\right)$$
+\end{definition}
+\begin{remark}
+    \begin{enumerate}
+        \item Key features is the factorization of $\langle n(\theta)T(x)\rangle_{\mathbb{R}^k}$.
+        \item Exponential forms are motivated by finding general models in which CR-efficent procedures exists.
+    \end{enumerate}
+\end{remark}
+\begin{example}{Binomial}
+    $p_\theta = \text{Bin}(n, \theta)$
+    \begin{align*}
+        p_\theta(k)= \binom{n}{k}\theta^k (1-\theta)^{n-k}\\ 
+        &=\binom{n}{k}\exp (k \log \theta +(n+k)\log(1-\theta))\\ 
+        &= \underbrace{\binom{n}{k}}_(c(k))\exp (\underbrace{k}_{T(k)} \underbrace{\log \frac{\theta}{n-\theta}}_{n(\theta)} +\underbrace{n \log(n-k)}_{\Psi(\theta)})
+    \end{align*}
+\end{example}
+\begin{example}{Normal}
+    $\theta = (\mu, \sigma^2) \in \mathbb{R} \times (0,\infty)$, $p_\theta = N(\mu, \sigma^2)$
+    \begin{align*}
+        p_{\mu,\sigma^2}&= \frac{1}{\sqrt{2 \pi \sigma^2}}\exp\left(-\frac{x^2 -2x\mu -\mu^2}{2\sigma^2}\right)
+    \end{align*}
+    Take $T(x) =\binom{x^2}{x},$ $n(\theta)= \binom{-\frac{1}{2\sigma^2}}{\frac{\mu}{\sigma^2}}$ for $k=2$, then 
+    $$p_{\mu, \sigma^2}(x)=\frac{1}{\sqrt{2 \pi \sigma^2}}\exp\left(\langle n(\theta),T(x)\rangle - \frac{\mu^2}{2\sigma^2}\right)$$
+\end{example}
+\begin{example}{Poisson}
+    $X=\{0,1,\hdots\}$, $p_\theta = Poisson(\theta)$, $\theta>0$, $$p_\theta (k)=e^{-\theta} \frac{\theta^k}{k!} = \exp(-\theta +k \log \theta)\frac{1}{k!}$$
+    Take $n (v)= \log \theta$, $T(k)=k$, $c(k)=\frac{1}{k!}$, $\Psi (\theta)=\theta$.    
+\end{example}
+\begin{definition}{Natural Exponential Family}
+    Define $$\Xi =\left\{n\in \mathbb{R}^k \mid \int_X c(x) \exp\left(\langle n(\theta)T(x)\rangle_{\mathbb{R}^k}\right)d \mu(x) <\infty\right\}$$
+    A model $(P_n \mid n\in \theta)$ is called an natural Exponential family if $\Theta =\Xi$,  
+    $$\frac{dP_n}{d\mu}=c(x) \exp(\langle n, T(x)\rangle_{\mathbb{R}^k}-\Psi(n))$$
+    for all $x\in X, n \in \Xi$.
+\end{definition}
+\begin{remark}
+    A natural Exponential family is specificed by $c(x)$, $T(x)$, and $\Xi$.
+\end{remark}
+\begin{lemma}
+    Let $(P_n \mid n \in \Xi)$ be a $1$-parameter natural Exponential form. For all $n \in \text{int}(\Xi) $
+    \begin{enumerate}
+        \item $\Psi'(n) =E_n[T]$
+        \item $\Psi'' (n)=\text{var}_n[T]$
+    \end{enumerate}
+    \begin{proof}
+        Let $n\in \text{int}(\Xi)$, and define $$\gamma (n) = e^{\Psi(n)}=\int_X c(x) \exp(nT(x))d\mu(x).$$
+        We show that $\gamma$ is infinitely differentiable at $n$.
+        Observe that $$\frac{d}{d n}(c(x)\exp(nT(x)))=c(x) T(x) \exp(nT(x))$$
+        To use dominated convergence theorem, we want $$\sup_{t} |c(x)T(x) \exp (n+t)T(x)|$$ is integrable for some $\varepsilon>0$.
+        But for some $\varepsilon$ small enough, $n \neq t \in text{int}(\Xi)$ and $$T(x)\exp(n T(x))\le C \exp((n+\varepsilon)T(x))$$
+        for some constant $C>0$, using that $x\le Ce^{\varepsilon x}$ for all $\varepsilon$.
+        \par Thus, by using DCT 
+        $$\frac{d}{d\mu }\gamma(n) - \int_X c(x) T(x) \exp(nT(x))d \mu (x),$$
+        $$\frac{d}{d n}\Psi(n)=\frac{d}{d n} \log\gamma(n)=\frac{\gamma' (n)}{\gamma (n)}=E_n [T].$$
+    \end{proof}
+\end{lemma}
 \end{document}
