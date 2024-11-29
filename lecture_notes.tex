@@ -2729,6 +2729,362 @@ An important regularity condition for the Cramér-Rao Lower Bound and related re
 In this lecture, we delved into the foundations of ANOVA, exploring the linear model framework, OLS estimation, and the distributional properties of the sum of squares under various hypotheses. We also introduced exponential families, discussing their place within the broader context of statistical models and the regularity conditions required for their analysis. Furthermore, we examined the concept of UMVUEs and established the Cramér-Rao Lower Bound, providing essential tools for assessing the efficiency of estimators.
 
 Understanding these concepts is crucial for conducting rigorous statistical analysis and for developing efficient estimation procedures in various applications.
+\chapter{Lecture 13}
+
+
+\section*{Regular Statistical Models}
+
+In this lecture, we delve into the framework of regular statistical models, explore the Cramér-Rao (CR) Inequality, and examine the structure of exponential families. We will begin by defining regular statistical models and proceed to establish foundational results, including the Fisher Information Matrix and the CR Inequality. Finally, we will explore the properties and examples of exponential families.
+
+\subsection*{Definition of a Regular Statistical Model}
+
+A \textbf{regular statistical model} is characterized by a parameter space and a family of probability density functions that satisfy certain smoothness and positivity conditions. Formally, a statistical model is regular if it satisfies the following:
+
+\begin{itemize}
+    \item \(\Theta \subset \mathbb{R}^p\) is an open set, where \(p\) denotes the number of parameters.
+    \item For every \(\vartheta \in \Theta\) and \(x \in \mathcal{X}\), the density \(p_\vartheta(x)\) is strictly positive, i.e., \(p_\vartheta(x) > 0\).
+    \item The density \(p_\vartheta(x)\) is continuously differentiable with respect to the parameter \(\vartheta\).
+\end{itemize}
+
+These conditions ensure that the model is smooth enough to allow for the interchange of differentiation and integration, which is crucial for deriving key statistical properties.
+
+\subsection*{Fisher Information Matrix}
+
+Given a regular statistical model, the \textbf{Fisher Information Matrix} quantifies the amount of information that an observable random variable \(X\) carries about the unknown parameter \(\vartheta\). It is defined as:
+
+\[
+I(\vartheta) = \mathbb{E}_\vartheta \left[ \nabla_\vartheta \log p_\vartheta(X) \cdot \nabla_\vartheta \log p_\vartheta(X)^T \right]
+\]
+
+Here, \(\nabla_\vartheta\) denotes the gradient with respect to the parameter vector \(\vartheta\), and the expectation is taken with respect to the distribution \(p_\vartheta\).
+
+\begin{itemize}
+    \item The Fisher Information Matrix \(I(\vartheta)\) exists for all \(\vartheta \in \Theta\).
+    \item \(I(\vartheta)\) is positive definite, which implies that its inverse \(I(\vartheta)^{-1}\) exists.
+\end{itemize}
+
+The positivity and invertibility of \(I(\vartheta)\) are critical for deriving lower bounds on the variance of unbiased estimators, as we will see next.
+
+\subsection*{Cramér-Rao / Information Inequality}
+
+The Cramér-Rao Inequality provides a lower bound on the variance of unbiased estimators of a parameter. This fundamental result connects the variance of an estimator to the Fisher Information, establishing a benchmark for the efficiency of estimators.
+
+\begin{theorem}[Cramér-Rao Inequality]
+    Let \((p_\vartheta, \vartheta \in \Theta)\) be a regular statistical model. Suppose \(g: \Theta \to \mathbb{R}\) is a continuously differentiable function. Let \(T: \mathcal{X} \to \mathbb{R}\) be an unbiased estimator of \(g(\vartheta)\), meaning that \(\mathbb{E}_\vartheta[T] = g(\vartheta)\) for all \(\vartheta \in \Theta\).
+
+    Then, for all \(\vartheta \in \Theta\),
+    \[
+    \text{Var}_\vartheta(T) \geq \left( g'(\vartheta) \right)^T I(\vartheta)^{-1} g'(\vartheta).
+    \]
+    This inequality is known as the \textbf{Cramér-Rao / Information Inequality}.
+\end{theorem}
+
+\subsection*{Score Vector}
+
+The \textbf{Score Vector} plays a pivotal role in the analysis of statistical models. It is defined as the gradient of the log-likelihood function with respect to the parameter vector.
+
+\[
+U_\vartheta(x) = \nabla_\vartheta \log p_\vartheta(x)
+\]
+
+The Score Vector captures the sensitivity of the log-likelihood to changes in the parameter \(\vartheta\).
+
+\subsection*{Remarks}
+
+\begin{itemize}
+    \item If the Fisher Information Matrix \(I(\vartheta)\) is large, it suggests that more information is contained in the data about the parameter \(\vartheta\), thereby enabling better estimation.
+    \item The Fisher Information Matrix provides another interpretation related to the curvature of the log-likelihood function, linking it to the precision of parameter estimates.
+\end{itemize}
+
+\subsection*{Derivation of the Fisher Information}
+
+Consider the case where the parameter space \(\Theta\) is one-dimensional, i.e., \(\Theta \subseteq \mathbb{R}\). Suppose that the density \(p_\vartheta(x)\) is twice differentiable with respect to \(\vartheta\). We derive expressions for the first and second derivatives of the log-likelihood function.
+
+\[
+\left( \log p_\vartheta(x) \right)' = \frac{p_\vartheta'(x)}{p_\vartheta(x)}
+\]
+
+\[
+\left( \log p_\vartheta(x) \right)'' = \frac{p_\vartheta''(x)p_\vartheta(x) - \left( p_\vartheta'(x) \right)^2}{p_\vartheta(x)^2}
+\]
+
+Taking the expectation of the first derivative:
+
+\[
+\mathbb{E}_\vartheta \left[ \left( \log p_\vartheta(x) \right)' \right] = \int_x \frac{p_\vartheta'(x)}{p_\vartheta(x)} p_\vartheta(x) dx = \int_x p_\vartheta'(x) dx = \frac{d}{d\vartheta} \int_x p_\vartheta(x) dx = 0.
+\]
+
+This result follows from the fact that the integral of a probability density function over its entire support is always 1, and hence its derivative with respect to \(\vartheta\) is zero.
+
+Next, we compute the expectation of the square of the first derivative:
+
+\[
+\mathbb{E}_\vartheta \left[ \left( \log p_\vartheta(x) \right)^2 \right] = - \mathbb{E}_\vartheta \left[ \left( \log p_\vartheta(x) \right)'' \right] = - \mathbb{E}_\vartheta \left[ U_\vartheta(x)^2 \right] = - I(\vartheta).
+\]
+
+This establishes the relationship between the second derivative of the log-likelihood and the Fisher Information.
+
+\subsection*{Attaining the Cramér-Rao Bound}
+
+The Cramér-Rao Inequality provides a lower bound on the variance of unbiased estimators. However, it is often of interest to determine when this bound is attained. The following theorem characterizes the conditions under which an estimator achieves the Cramér-Rao bound.
+
+\begin{theorem}
+    Let \((P_\theta, \theta \in \Theta)\) be a regular model with \(\Theta \subseteq \mathbb{R}\). Let \(\rho: \Theta \to \mathbb{R}\) be a continuously differentiable function, and let \(T\) be an unbiased estimator of \(\rho(\theta)\), i.e., \(\mathbb{E}_\theta[T] = \rho(\theta)\) for all \(\theta \in \Theta\).
+
+    Then, \(T\) attains equality in the Cramér-Rao bound if and only if
+    \[
+    T(x) = \rho(\theta) + \rho'(\theta) I(\theta)^{-1} U_\theta(x)
+    \]
+    almost surely for all \(\theta \in \Theta\).
+\end{theorem}
+
+\begin{proof}
+    Define \(v(\theta) = \rho'(\theta) I(\theta)^{-1}\). Consider the estimator \(T\) as given. We analyze the variance:
+
+    \[
+    0 \leq \text{Var}(T - v(\theta) U_\theta) = \text{Var}(T) + v(\theta)^2 \mathbb{E}_\theta[U_\theta^2] - 2 v(\theta) \text{Cov}_\theta(T, U_\theta)
+    \]
+
+    Substituting the definitions, we have:
+
+    \[
+    \text{Var}(T) - \rho'(\theta)^2 I(\theta)^{-1} \geq 0
+    \]
+
+    Equality holds if and only if:
+
+    \[
+    T - v(\theta) U_\theta = \text{Constant}
+    \]
+
+    Since \(T\) is unbiased, we have \(\mathbb{E}_\theta[T] = \rho(\theta)\), which implies that the constant must be \(\rho(\theta)\). Therefore:
+
+    \[
+    T = \rho(\theta) + v(\theta) U_\theta
+    \]
+
+    This establishes the necessary and sufficient condition for \(T\) to attain the Cramér-Rao bound.
+\end{proof}
+
+\begin{remark}
+    \begin{enumerate}
+        \item The estimator \(T(x)\) in the above equation is not always a measurable function of \(x\).
+        \item If \(T\) attains the Cramér-Rao bound, we say that \(T\) is a \textbf{Cramér-Rao efficient} estimator.
+    \end{enumerate}
+\end{remark}
+
+\subsection*{Corollary: Exponential Family Representation}
+
+Under certain scaling conditions, the likelihood can be expressed in the form of an exponential family. Specifically, we have the following corollary.
+
+\begin{corollary}
+    Assume the previous scaling conditions and that \(\rho(\theta) \neq 0\) for all \(\theta \in \Theta\). Then, the likelihood can be written as:
+    \[
+    p_\theta(x) = c(x) \exp\left( n(\theta) T(x) - \Psi(\theta) \right)
+    \]
+    where:
+    \begin{itemize}
+        \item \(n: \Theta \to \mathbb{R}\) satisfies \(n'(\theta) = \frac{I(\theta)}{\rho'(\theta)}\).
+        \item \(c(x)\) and \(\Psi(\theta)\) are functions that ensure the equality holds.
+    \end{itemize}
+\end{corollary}
+
+\begin{proof}
+    From the previous theorem, we have:
+    \[
+    T(x) = \rho(\theta) + \rho'(\theta) I^{-1}(\theta) U_\theta(x)
+    \]
+    Substituting \(U_\theta(x) = \frac{d}{d\theta} \log p_\theta(x)\), we obtain:
+    \[
+    T(x) = \rho(\theta) + \rho'(\theta) I^{-1}(\theta) \frac{d}{d\theta} \log p_\theta(x)
+    \]
+    Rearranging terms, we get:
+    \[
+    \left( T(x) - \rho(\theta) \right) \frac{I(\theta)}{\rho'(\theta)} = \frac{d}{d\theta} \log p_\theta(x)
+    \]
+    Integrating both sides with respect to \(\theta\) yields:
+    \[
+    \log p_\theta(x) = n(\theta) T(x) - \Psi(\theta) + \text{constant}(x)
+    \]
+    Exponentiating both sides gives:
+    \[
+    p_\theta(x) = c(x) \exp\left( n(\theta) T(x) - \Psi(\theta) \right)
+    \]
+    where \(c(x) = \exp(\text{constant}(x))\) and \(\Psi(\theta)\) absorbs any remaining terms.
+\end{proof}
+
+\subsection*{Exponential Families}
+
+Exponential families are a broad class of probability distributions that have a particular structure, allowing for elegant mathematical properties and ease of analysis. They are central to many areas of statistics, including generalized linear models and Bayesian statistics.
+
+\begin{definition}[Exponential Families]
+    A regular statistical model \((P_\theta : \theta \in \Theta)\) is called a \textbf{$k$-parameter Exponential Family} (\(k \geq 1\)) if there exist measurable functions:
+    \begin{enumerate}
+        \item \(n: \Theta \to \mathbb{R}^k\)
+        \item \(T: \mathcal{X} \to \mathbb{R}^k\)
+        \item \(c: \mathcal{X} \to [0, \infty)\)
+    \end{enumerate}
+    such that the density can be expressed as:
+    \[
+    p_\theta(x) = c(x) \exp\left( \langle n(\theta), T(x) \rangle_{\mathbb{R}^k} - \Psi(\theta) \right)
+    \]
+    for all \(\theta \in \Theta\) and \(x \in \mathcal{X}\), where:
+    \[
+    \Psi(\theta) = \log \left( \int_{\mathcal{X}} c(x) \exp\left( \langle n(\theta), T(x) \rangle_{\mathbb{R}^k} \right) d\mu(x) \right)
+    \]
+\end{definition}
+
+\begin{remark}
+    \begin{enumerate}
+        \item A key feature of exponential families is the factorization of the term \(\langle n(\theta), T(x) \rangle_{\mathbb{R}^k}\), which allows for the derivation of sufficient statistics and facilitates the computation of maximum likelihood estimates.
+        \item Exponential forms are motivated by the quest to find general models where Cramér-Rao efficient procedures exist, leveraging the structure provided by the exponential family.
+    \end{enumerate}
+\end{remark}
+
+\subsection*{Examples of Exponential Families}
+
+\subsubsection*{Example 1: Binomial Distribution}
+
+Consider the Binomial distribution with parameters \(n\) (number of trials) and \(\theta\) (probability of success). The probability mass function is:
+
+\[
+p_\theta(k) = \binom{n}{k} \theta^k (1 - \theta)^{n - k}
+\]
+
+This can be rewritten in exponential family form as:
+
+\begin{align*}
+p_\theta(k) &= \binom{n}{k} \exp\left( k \log \theta + (n - k) \log(1 - \theta) \right) \\
+&= \underbrace{\binom{n}{k}}_{c(k)} \exp\left( \underbrace{k}_{T(k)} \underbrace{\log \left( \frac{\theta}{1 - \theta} \right)}_{n(\theta)} + \underbrace{n \log(1 - \theta)}_{\Psi(\theta)} \right)
+\end{align*}
+
+Here, we identify:
+\begin{itemize}
+    \item \(c(k) = \binom{n}{k}\)
+    \item \(T(k) = k\)
+    \item \(n(\theta) = \log \left( \frac{\theta}{1 - \theta} \right)\)
+    \item \(\Psi(\theta) = n \log(1 - \theta)\)
+\end{itemize}
+
+\subsubsection*{Example 2: Normal Distribution}
+
+Consider the Normal distribution with parameters \(\mu\) (mean) and \(\sigma^2\) (variance), denoted as \(N(\mu, \sigma^2)\). The probability density function is:
+
+\[
+p_{\mu, \sigma^2}(x) = \frac{1}{\sqrt{2\pi \sigma^2}} \exp\left( -\frac{(x - \mu)^2}{2\sigma^2} \right)
+\]
+
+This can be expressed in exponential family form by expanding the exponent:
+
+\[
+p_{\mu, \sigma^2}(x) = \frac{1}{\sqrt{2\pi \sigma^2}} \exp\left( \frac{x^2 - 2x\mu + \mu^2}{2\sigma^2} \right)
+\]
+
+By identifying appropriate functions, we have:
+
+\[
+p_{\mu, \sigma^2}(x) = \underbrace{\frac{1}{\sqrt{2\pi \sigma^2}}}_{c(x)} \exp\left( \langle n(\theta), T(x) \rangle - \Psi(\theta) \right)
+\]
+
+where:
+\begin{itemize}
+    \item \(T(x) = \begin{pmatrix} x^2 \\ x \end{pmatrix}\)
+    \item \(n(\theta) = \begin{pmatrix} -\frac{1}{2\sigma^2} \\ \frac{\mu}{\sigma^2} \end{pmatrix}\)
+    \item \(\Psi(\theta) = \frac{\mu^2}{2\sigma^2} + \frac{1}{2} \log(2\pi \sigma^2)\)
+\end{itemize}
+
+\subsubsection*{Example 3: Poisson Distribution}
+
+Consider the Poisson distribution with parameter \(\theta > 0\). The probability mass function is:
+
+\[
+p_\theta(k) = e^{-\theta} \frac{\theta^k}{k!}
+\]
+
+This can be written in exponential family form as:
+
+\[
+p_\theta(k) = \underbrace{\frac{1}{k!}}_{c(k)} \exp\left( k \log \theta - \theta \right)
+\]
+
+Here, we identify:
+\begin{itemize}
+    \item \(c(k) = \frac{1}{k!}\)
+    \item \(T(k) = k\)
+    \item \(n(\theta) = \log \theta\)
+    \item \(\Psi(\theta) = \theta\)
+\end{itemize}
+
+\subsection*{Natural Exponential Families}
+
+Natural exponential families are a subclass of exponential families where the natural parameter space coincides with the interior of the set where the log-partition function is finite.
+
+\begin{definition}[Natural Exponential Family]
+    Define:
+    \[
+    \Xi = \left\{ n \in \mathbb{R}^k \ \bigg| \ \int_{\mathcal{X}} c(x) \exp\left( \langle n, T(x) \rangle_{\mathbb{R}^k} \right) d\mu(x) < \infty \right\}
+    \]
+    A model \((P_n \mid n \in \Xi)\) is called a \textbf{Natural Exponential Family} if:
+    \begin{itemize}
+        \item \(\Theta = \Xi\)
+        \item The density can be written as:
+        \[
+        \frac{dP_n}{d\mu}(x) = c(x) \exp\left( \langle n, T(x) \rangle_{\mathbb{R}^k} - \Psi(n) \right)
+        \]
+        for all \(x \in \mathcal{X}\) and \(n \in \Xi\).
+    \end{itemize}
+\end{definition}
+
+\begin{remark}
+    A natural exponential family is fully specified by the functions \(c(x)\), \(T(x)\), and the natural parameter space \(\Xi\). This structure facilitates the derivation of properties such as sufficient statistics and conjugate priors in Bayesian analysis.
+\end{remark}
+
+\subsection*{Properties of Natural Exponential Families}
+
+We explore some key properties of natural exponential families, particularly focusing on the relationship between the log-partition function and moments of the sufficient statistic.
+
+\begin{lemma}
+    Let \((P_n \mid n \in \Xi)\) be a 1-parameter natural exponential family. For all \(n \in \text{int}(\Xi)\),
+    \begin{enumerate}
+        \item \(\Psi'(n) = \mathbb{E}_n[T]\)
+        \item \(\Psi''(n) = \text{Var}_n[T]\)
+    \end{enumerate}
+\end{lemma}
+
+\begin{proof}
+    Let \(n \in \text{int}(\Xi)\) and define:
+    \[
+    \gamma(n) = e^{\Psi(n)} = \int_{\mathcal{X}} c(x) \exp(n T(x)) d\mu(x)
+    \]
+    We first show that \(\gamma\) is infinitely differentiable at \(n\). Observe that:
+    \[
+    \frac{d}{dn} \left( c(x) \exp(n T(x)) \right) = c(x) T(x) \exp(n T(x))
+    \]
+    To apply the Dominated Convergence Theorem (DCT), we require that for some \(\varepsilon > 0\), the function \(c(x) T(x) \exp(n T(x))\) is dominated by an integrable function. Specifically, for sufficiently small \(\varepsilon\), we have:
+    \[
+    T(x) \exp(n T(x)) \leq C \exp((n + \varepsilon) T(x))
+    \]
+    for some constant \(C > 0\), ensuring integrability.
+
+    Applying DCT, we differentiate \(\gamma(n)\):
+    \[
+    \gamma'(n) = \int_{\mathcal{X}} c(x) T(x) \exp(n T(x)) d\mu(x) = \mathbb{E}_n[T]
+    \]
+    Therefore, the derivative of \(\Psi(n)\) is:
+    \[
+    \Psi'(n) = \frac{d}{dn} \log \gamma(n) = \frac{\gamma'(n)}{\gamma(n)} = \mathbb{E}_n[T]
+    \]
+
+    Differentiating again, we obtain:
+    \[
+    \Psi''(n) = \frac{d}{dn} \mathbb{E}_n[T] = \text{Var}_n[T]
+    \]
+    This follows from the properties of exponential families, where the second derivative of the log-partition function corresponds to the variance of the sufficient statistic.
+\end{proof}
+
+\begin{remark}
+    The lemma highlights the intimate connection between the derivatives of the log-partition function \(\Psi(n)\) and the moments of the sufficient statistic \(T\). Specifically, the first derivative gives the mean, and the second derivative gives the variance, providing a direct link between the parameters of the exponential family and the moments of the data.
+\end{remark}
 
 
 
