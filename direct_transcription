@@ -1804,4 +1804,104 @@ Thus,
         $$\frac{d}{d n}\Psi(n)=\frac{d}{d n} \log\gamma(n)=\frac{\gamma' (n)}{\gamma (n)}=E_n [T].$$
     \end{proof}
 \end{lemma}
+\section{Lecture 14}
+\par Exponential Families: Assume $\Theta \subseteq \mathbb{R}$ open, 
+\begin{enumerate}
+    \item $p_\theta (x)= c(x)\exp \{n(\theta) T(x) - \Psi(\theta)\}$
+    \item Natural EF: $p_n(x) = c(x) \exp\{n T(x)- \Psi(n)\}$
+    \item Natural Parameter Space: $\Xi = \{t\mid\underbrace{ \int_X c(x) \exp(tT(x))d\mu(x)}_{e^{\Psi (n)}} < \infty \}$
+    we need to check that $\Xi$ is an open interval.
+    \item $p_\theta(x)$ satisfies the regularity assumptions.
+\end{enumerate}
+\begin{lemma}
+    $(P_n)_{n\in \Xi}$ a natural and regular EF, then for every $n\in \Xi= \Xi_0$,
+    \begin{enumerate}
+        \item $\varphi'(n) = E_n[T]$
+        \item $\varphi''(n) = \text{Var}_n(T)$
+    \end{enumerate} 
+    \begin{proof}
+        \begin{enumerate}
+            \item Done in last Lecture
+            \item Recall that $\alpha(n)= \int_X c(x) \exp(nT(x))d\mu(x) =e^{\Psi (n)}$ we had shown that $\alpha$ is $C^\infty$ on this natural parameter space $\Xi$.
+            as well as $\Psi'(n) =\frac{\alpha '(n)}{\alpha(n)}= E_n[T]$. Similarly, $$\Psi''(n)=\frac{\alpha''(n)}{\alpha(n)}- \frac{\alpha'(n)^2}{\alpha(n)^2}= \int_X c(x) T(x)^2 \exp(nT(x))d\mu(x)- E_n[T]^2 = E_n[T^2]- E_n[T]^2 =\text{Var}_n(T)$$
+        \end{enumerate}
+    \end{proof}
+\end{lemma}
+\begin{example}
+    Often $T(x)=x$, like with the Poisson, Normal, etc.
+    \begin{enumerate}
+        \item $P_\theta=\text{Bin}(n, \theta)$, $T(k)=k$, $n =\log \frac{\theta}{1- \theta}$
+        \par Recall $p_\theta(k)= \binom{n}{k}\theta^k (1-\theta)^{n-k}=\binom{n}{k}\exp\left(k \log \frac{\theta}{1-\theta}+n\log (1-\theta)\right)$
+        \begin{align*}
+            \Psi(n)= -n\log(1-\theta)&= -n\log \left(1- \frac{e^n}{1+e^n}\right)\\
+            \theta &= \frac{e^n}{1+e^n}\\ 
+            &= -n \log \left( \frac{1}{1+e^n}\right)= n\log (1+e^n)
+        \end{align*}
+        Hence, $$\Psi'(n)= n \frac{e^n}{1+ e^n} = n\theta = E_n [T] = \text{Mean of Bin}(n, \theta)$$
+        $\Psi(n)= \text{Var}_n[T]= n \theta (1-\theta)$
+        \item $P_\lambda= \text{Poisson}(\lambda),$
+        $$P_\lambda (k)= e^{-\lambda} \frac{\lambda^k }{k!} =\frac{1}{k!}\exp(\underbrace{k}_{T(k)}\underbrace{\log \lambda}_{n} - \underbrace{\lambda}_{\Psi(n)})$$
+        with $\Psi(n)=e^n$, then $\Psi'=\Psi''=e^n.$ Hence, $$E_n[T]=e^n = \lambda , \text{Var}_n (T) = e^n =\lambda$$
+    \end{enumerate}
+\end{example}
+\begin{theorem}{MLEs in Internal EF and UMVUE Estimators}
+    Let $(P_\theta)_{n \in \Xi}$ be a natural 1-parameter regular EF, then 
+    \begin{enumerate}
+        \item If a unique MLE $\hat{n}_{MLE}$ exists then $(\Psi')^{-1}(T)=\hat{n}_{MLE}$
+        \item Define $\rho(n) = E_n[T]$ where $T$ is the UMVUE for $\rho(n)$
+    \end{enumerate}
+    \begin{proof}
+        \begin{enumerate}
+            \item \begin{align*}
+                \hat{n}_{MLE}= \hat{n}&= \arg\max_{n \in \Xi} p_n(x)\\
+                &=\arg \max_n \log p_n(x)\\ 
+                &= \arg \max_n n T(x)- \Psi(n)
+            \end{align*}
+            Therefore, $$\frac{d}{d\mu} \left( nT(x)- \Psi(n)\right)\bigg |_{n = \hat{n}} =0 \implies T(x) = \Psi' (\hat{n})$$
+            Moreover, $\Psi''(n)= \text{Var}_n(T)>0$ results from inverting $\Psi'$.
+            \item Recall CR lower bound $\text{Var}_n(S)\ge \rho' (n)^2 I'(n)$ for any unbiased estimator $S$. It holds that 
+            $$\rho'(n) = \frac{d}{dn}(E_{n}[T]) = \Psi''[n]$$
+            where $I(n)=E_n [\log p_n(x)'^2]= -E_n [\log p_n(x)'']$
+            Then $$(\log p_n(x))' = (nT(x) - \Psi(n))' = T(x)- \Psi'(n) = T(x) -E_n[T(x)]$$
+            $$E_n[(\log p_n(x))'^2]=\text{Var}_n(T)=\Psi''(n).$$
+            Therefore the CR-bound $\text{Var}_n(S)\ge \Psi(n)=\text{Var}_n(T)$
+        \end{enumerate}
+    \end{proof}
+\end{theorem}
+\section{Generalized Linear Models (GLMs)}
+$\underbrace{\text{Linear models}}_{\text{establish relations}, \\x_i\to y_i,\\ X\beta+\varepsilon=Y} + \underbrace{\text{Exponential Families}}_{\text{flexible classes}\\ \text{continuous (normal)}\\ \text{discrete (Poisson)}\\\text{Binomial (Bernoulli)}} \to   \text{GLMs}$.
+\par Note, General $(X,F)$ are allowed, but $\Theta$ will still be an open set in $\mathbb{R}^p$
+\begin{example}
+    Suppose we have binary data, $Y_i\in \{ 0,1\}$, $i=1,\hdots, n$
+    \begin{enumerate}
+        \item Covariates $X_i \in \mathbb{R}^p$
+        \item Logistic Regression for $\beta\in \mathbb{R}^p$, 
+        $$p_\beta (Y_i=1|X_i)=\frac{\exp(X_i^T\beta)}{1+\exp(X_i^T \beta)}$$
+        Equivalently, $$X_i^T \beta=\log \left( \frac{P_\beta(Y_i =1 |X_i)}{1-P_\beta(Y_i =1|X_i)}\right)= \log it (P_\beta (Y_i=1|X)).$$
+    \end{enumerate}
+\end{example}
+\begin{example}{Poisson Regression}
+    \begin{enumerate}
+        \item $Y_i\sim \text{Poission} (\lambda_i),$ $\lambda_i >0.$
+        \item $\log \lambda_i= X_i^T \beta$ 
+        \item $X_i\in \mathbb{R}^p$, $\beta\in \mathbb{R}^p$
+        \item Used for count data
+    \end{enumerate}
+\end{example}
+\begin{definition}{Generalized Linear Models}
+    We have the data $(X_i, Y_i) \in \mathbb{R}^p \times \mathbb{R}$
+    In a GLM, $$d P_{n_i}^{Y_i}(y_i)= c(y_i)\exp(n_i y_i -\Psi(n_i))$$
+    where $n_i$ and $x_i$ are linked through some link function $$g\colon \mathbb{R}\to \mathbb{R},$$
+    $$g(E_{n_i} [Y_i]) = X_i^T \beta.$$
+    Intuition, $n_i \iff E_{n_i} [Y_i] = \mu_i \iff X_i^T \beta$ with $g' >0$.
+    \par When $g(E_{n_i}[Y_i])=n_i$, then $g$ is called the canonical link, or the natural link function. 
+\end{definition}
+\begin{remark}
+    \begin{enumerate}
+        \item  Under the canonical link, $$p_\beta^{Y_i}(Y_i)=c(y_i) \exp(Y_i X_i^T \beta -\Psi(X_i^T \beta)).$$
+        \item Link function links the linear predictors $X_i$ to the mean of the outcome. 
+        $$E[Y_i |X_i,\beta]= g^{-1}(X_i^T \beta)$$
+
+    \end{enumerate}
+\end{remark}
 \end{document}
