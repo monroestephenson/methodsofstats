@@ -85,3 +85,9 @@
 \contentsline {lemma}{{Lemma}{5}{}}{78}{lemma.5}%
 \contentsline {proof}{{\proofname }{18}{}}{79}{proof.18}%
 \contentsline {remark}{{Remark}{18}{}}{79}{remark.18}%
+\contentsline {lemma}{{Lemma}{6}{}}{81}{lemma.6}%
+\contentsline {proof}{{\proofname }{19}{}}{81}{proof.19}%
+\contentsline {theorem}{{Theorem}{10}{MLEs in Natural Exponential Families and UMVUE Estimators}}{83}{theorem.10}%
+\contentsline {proof}{{\proofname }{20}{}}{83}{proof.20}%
+\contentsline {example}{{Example}{6}{Logistic Regression}}{86}{example.6}%
+\contentsline {example}{{Example}{7}{Poisson Regression}}{86}{example.7}%

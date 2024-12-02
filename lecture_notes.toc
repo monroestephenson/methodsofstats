@@ -65,4 +65,22 @@
 \contentsline {subsection}{\numberline {11.3.4}Invertibility of the Fisher Information Matrix}{70}{subsection.11.3.4}%
 \contentsline {section}{\numberline {11.4}Conclusion}{70}{section.11.4}%
 \contentsline {chapter}{\numberline {12}Lecture 13}{71}{chapter.12}%
+\contentsline {chapter}{\numberline {13}Lecture 14: Exponential Families and Generalized Linear Models}{80}{chapter.13}%
+\contentsline {section}{\numberline {13.1}Exponential Families}{80}{section.13.1}%
+\contentsline {subsection}{\numberline {13.1.1}Definition}{80}{subsection.13.1.1}%
+\contentsline {subsection}{\numberline {13.1.2}Properties}{80}{subsection.13.1.2}%
+\contentsline {subsection}{\numberline {13.1.3}Lemma}{81}{subsection.13.1.3}%
+\contentsline {subsection}{\numberline {13.1.4}Examples}{82}{subsection.13.1.4}%
+\contentsline {section}{\numberline {13.2}Maximum Likelihood Estimators and UMVUE in Exponential Families}{83}{section.13.2}%
+\contentsline {subsection}{\numberline {13.2.1}Theorem}{83}{subsection.13.2.1}%
+\contentsline {section}{\numberline {13.3}Generalized Linear Models (GLMs)}{85}{section.13.3}%
+\contentsline {subsection}{\numberline {13.3.1}Motivation}{85}{subsection.13.3.1}%
+\contentsline {subsection}{\numberline {13.3.2}Definition}{85}{subsection.13.3.2}%
+\contentsline {subsection}{\numberline {13.3.3}Remarks}{85}{subsection.13.3.3}%
+\contentsline {subsection}{\numberline {13.3.4}Examples}{86}{subsection.13.3.4}%
+\contentsline {subsection}{\numberline {13.3.5}Link Functions}{87}{subsection.13.3.5}%
+\contentsline {subsection}{\numberline {13.3.6}Estimation in GLMs}{87}{subsection.13.3.6}%
+\contentsline {subsection}{\numberline {13.3.7}Inference in GLMs}{87}{subsection.13.3.7}%
+\contentsline {subsection}{\numberline {13.3.8}Advantages of GLMs}{87}{subsection.13.3.8}%
+\contentsline {section}{\numberline {13.4}Conclusion}{88}{section.13.4}%
 \providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 

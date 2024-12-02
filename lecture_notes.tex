@@ -3086,9 +3086,325 @@ We explore some key properties of natural exponential families, particularly foc
     The lemma highlights the intimate connection between the derivatives of the log-partition function \(\Psi(n)\) and the moments of the sufficient statistic \(T\). Specifically, the first derivative gives the mean, and the second derivative gives the variance, providing a direct link between the parameters of the exponential family and the moments of the data.
 \end{remark}
 
+\chapter{Lecture 14: Exponential Families and Generalized Linear Models}
 
+\section{Exponential Families}
 
+In statistical theory, exponential families play a central role due to their rich mathematical structure and wide applicability. They encompass many of the commonly used statistical distributions and offer convenient properties for estimation and inference.
 
+\subsection{Definition}
+
+Let $\Theta \subseteq \mathbb{R}$ be an open set. A family of probability distributions $\{P_\theta\}_{\theta \in \Theta}$ on a measurable space $(X, \mathcal{A})$ is called an \textbf{exponential family} if the probability density function (with respect to a measure $\mu$) can be expressed in the form:
+
+\begin{equation}
+p_\theta(x) = c(x) \exp\{ n(\theta) T(x) - \Psi(\theta) \},
+\end{equation}
+
+where:
+
+\begin{itemize}
+    \item $c(x)$ is a non-negative function that does not depend on $\theta$,
+    \item $n(\theta)$ is a real-valued function of $\theta$,
+    \item $T(x)$ is a sufficient statistic,
+    \item $\Psi(\theta)$ is the log-partition function ensuring that the density integrates to one.
+\end{itemize}
+
+\subsection{Properties}
+
+\begin{enumerate}
+    \item \textbf{Natural Exponential Family (NEF)}: When the density takes the form
+    \begin{equation}
+    p_n(x) = c(x) \exp\{ n T(x) - \Psi(n) \},
+    \end{equation}
+    the family is called a \emph{natural} exponential family. Here, the parameter $n$ is known as the \emph{natural parameter}.
+
+    \item \textbf{Natural Parameter Space}: The set of all values $t$ for which the integral converges is known as the natural parameter space $\Xi$:
+    \begin{equation}
+    \Xi = \left\{ t \in \mathbb{R} \ \bigg| \ \int_X c(x) \exp\left( t T(x) \right) d\mu(x) = e^{\Psi(t)} < \infty \right\}.
+    \end{equation}
+    It is important to verify that $\Xi$ is an open interval in $\mathbb{R}$.
+
+    \item \textbf{Regularity Assumptions}: For statistical inference, we often require that $p_\theta(x)$ satisfies certain regularity conditions, such as differentiability with respect to $\theta$, to ensure the validity of results like the Cramér-Rao lower bound.
+\end{enumerate}
+
+\subsection{Lemma}
+
+\begin{lemma}
+Let $(P_n)_{n \in \Xi}$ be a natural and regular exponential family. Then, for every $n \in \Xi$:
+\begin{enumerate}
+    \item $\Psi'(n) = E_n[T]$,
+    \item $\Psi''(n) = \operatorname{Var}_n(T)$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+\begin{enumerate}
+    \item This result was established in the previous lecture. Briefly, differentiating $\Psi(n)$ with respect to $n$, we obtain the expected value of the sufficient statistic $T$ under $P_n$:
+    \[
+    \Psi'(n) = \frac{d}{dn} \Psi(n) = E_n[T].
+    \]
+
+    \item Recall that the log-partition function $\Psi(n)$ is given by
+    \[
+    \Psi(n) = \log \int_X c(x) \exp\left( n T(x) \right) d\mu(x) = \log \alpha(n),
+    \]
+    where
+    \[
+    \alpha(n) = \int_X c(x) \exp\left( n T(x) \right) d\mu(x).
+    \]
+    We have previously shown that $\alpha(n)$ is a $C^\infty$ (infinitely differentiable) function on $\Xi$. Differentiating $\Psi(n)$ twice with respect to $n$, we get:
+    \begin{align*}
+    \Psi''(n) &= \frac{d^2}{dn^2} \log \alpha(n) = \frac{\alpha''(n)}{\alpha(n)} - \left( \frac{\alpha'(n)}{\alpha(n)} \right)^2 \\
+    &= \int_X c(x) T(x)^2 \exp\left( n T(x) \right) d\mu(x) - \left( \int_X c(x) T(x) \exp\left( n T(x) \right) d\mu(x) \right)^2 \\
+    &= E_n[T^2] - (E_n[T])^2 = \operatorname{Var}_n(T).
+    \end{align*}
+\end{enumerate}
+\end{proof}
+
+\subsection{Examples}
+
+Exponential families include many common distributions. Often, the sufficient statistic $T(x)$ is a simple function, such as $T(x) = x$. Let's consider two examples:
+
+\begin{enumerate}
+    \item \textbf{Binomial Distribution}:
+
+    Let $X \sim \operatorname{Bin}(n, \theta)$, where $\theta \in (0,1)$. The probability mass function is
+    \[
+    p_\theta(k) = \binom{n}{k} \theta^k (1 - \theta)^{n - k}.
+    \]
+    We can express this in exponential family form by setting $T(k) = k$ and $n = \log \left( \frac{\theta}{1 - \theta} \right)$. Then,
+    \begin{align*}
+    p_\theta(k) &= \binom{n}{k} \exp\left( k \log \frac{\theta}{1 - \theta} + n \log(1 - \theta) \right) \\
+    &= \binom{n}{k} \exp\left( k n - n \log \left( \frac{1}{1 - \theta} \right) \right).
+    \end{align*}
+    The log-partition function is
+    \begin{align*}
+    \Psi(n) &= -n \log(1 - \theta) = -n \log\left( 1 - \frac{e^n}{1 + e^n} \right) \\
+    &= -n \log\left( \frac{1}{1 + e^n} \right) = n \log(1 + e^n).
+    \end{align*}
+    We can compute the first and second derivatives:
+    \[
+    \Psi'(n) = \frac{d}{dn} \Psi(n) = n \frac{e^n}{1 + e^n} = n \theta = E_n[T],
+    \]
+    which corresponds to the mean of the binomial distribution $E_n[T] = n \theta$. Similarly,
+    \[
+    \Psi''(n) = \operatorname{Var}_n(T) = n \theta (1 - \theta),
+    \]
+    which is the variance of the binomial distribution.
+
+    \item \textbf{Poisson Distribution}:
+
+    Let $X \sim \operatorname{Poisson}(\lambda)$, with $\lambda > 0$. The probability mass function is
+    \[
+    p_\lambda(k) = e^{-\lambda} \frac{\lambda^k}{k!}.
+    \]
+    This can be rewritten in exponential family form by setting $T(k) = k$, $n = \log \lambda$, and $\Psi(n) = e^n$. Then,
+    \[
+    p_n(k) = \frac{1}{k!} \exp\left( k n - e^n \right).
+    \]
+    The derivatives of $\Psi(n)$ are
+    \[
+    \Psi'(n) = e^n, \quad \Psi''(n) = e^n.
+    \]
+    Therefore,
+    \[
+    E_n[T] = \Psi'(n) = e^n = \lambda, \quad \operatorname{Var}_n(T) = \Psi''(n) = e^n = \lambda.
+    \]
+\end{enumerate}
+
+\section{Maximum Likelihood Estimators and UMVUE in Exponential Families}
+
+Exponential families have convenient properties for estimation, particularly for maximum likelihood estimators (MLEs) and uniformly minimum variance unbiased estimators (UMVUE).
+
+\subsection{Theorem}
+
+\begin{theorem}[MLEs in Natural Exponential Families and UMVUE Estimators]
+Let $(P_\theta)_{\theta \in \Xi}$ be a natural one-parameter regular exponential family. Then:
+\begin{enumerate}
+    \item If a unique maximum likelihood estimator $\hat{\theta}_{\text{MLE}}$ exists, then it is given by
+    \[
+    \hat{\theta}_{\text{MLE}} = (\Psi')^{-1}(T).
+    \]
+    \item For a function $\rho(\theta) = E_\theta[T]$, the statistic $T$ is the uniformly minimum variance unbiased estimator (UMVUE) for $\rho(\theta)$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+\begin{enumerate}
+    \item The maximum likelihood estimator $\hat{\theta}_{\text{MLE}}$ maximizes the likelihood function. Considering the logarithm of the likelihood for a single observation (since the family is regular and observations are independent), we have:
+    \begin{align*}
+    \hat{\theta}_{\text{MLE}} &= \arg\max_{\theta \in \Xi} p_\theta(x) \\
+    &= \arg\max_{\theta} \log p_\theta(x) \\
+    &= \arg\max_{\theta} \left( \theta T(x) - \Psi(\theta) \right).
+    \end{align*}
+    Differentiating with respect to $\theta$ and setting the derivative to zero yields:
+    \[
+    \frac{d}{d\theta} \left( \theta T(x) - \Psi(\theta) \right) \bigg|_{\theta = \hat{\theta}} = 0 \implies T(x) = \Psi'(\hat{\theta}).
+    \]
+    Since $\Psi''(\theta) = \operatorname{Var}_\theta(T) > 0$, $\Psi'$ is strictly increasing, and thus invertible. Therefore, the MLE is given by
+    \[
+    \hat{\theta}_{\text{MLE}} = (\Psi')^{-1}(T(x)).
+    \]
+
+    \item To show that $T$ is the UMVUE for $\rho(\theta) = E_\theta[T]$, we utilize the Cramér-Rao lower bound. For any unbiased estimator $S$ of $\rho(\theta)$, the variance satisfies
+    \[
+    \operatorname{Var}_\theta(S) \geq \frac{(\rho'(\theta))^2}{I(\theta)},
+    \]
+    where $I(\theta)$ is the Fisher information, and $\rho'(\theta)$ is the derivative of $\rho(\theta)$ with respect to $\theta$.
+
+    In the exponential family, we have:
+    \[
+    \rho'(\theta) = \frac{d}{d\theta} E_\theta[T] = \Psi''(\theta) = \operatorname{Var}_\theta(T).
+    \]
+    The score function is:
+    \[
+    \ell'(\theta; x) = \frac{\partial}{\partial \theta} \left( \theta T(x) - \Psi(\theta) \right) = T(x) - \Psi'(\theta).
+    \]
+    The Fisher information is:
+    \[
+    I(\theta) = E_\theta \left[ \left( \ell'(\theta; X) \right)^2 \right] = \operatorname{Var}_\theta(T).
+    \]
+    Therefore, the Cramér-Rao lower bound becomes:
+    \[
+    \operatorname{Var}_\theta(S) \geq \frac{(\operatorname{Var}_\theta(T))^2}{\operatorname{Var}_\theta(T)} = \operatorname{Var}_\theta(T).
+    \]
+    Since $T$ achieves this bound (its variance equals the lower bound), it is the UMVUE for $\rho(\theta) = E_\theta[T]$.
+\end{enumerate}
+\end{proof}
+
+\section{Generalized Linear Models (GLMs)}
+
+Generalized Linear Models extend traditional linear models to accommodate response variables that have error distribution models other than a normal distribution. They are particularly useful when dealing with non-normal data, such as binary or count data.
+
+\subsection{Motivation}
+
+Traditional linear models establish a relationship between a dependent variable $Y$ and independent variables $X$, assuming that the residuals are normally distributed. However, many types of data (e.g., binary outcomes, counts) do not satisfy this assumption.
+
+By combining linear models with exponential families, we obtain GLMs, which allow for:
+
+\begin{itemize}
+    \item Establishing relations between predictors and responses ($X_i \rightarrow Y_i$),
+    \item Modeling different types of data (continuous, discrete),
+    \item Using link functions to relate the mean of the distribution to the linear predictors.
+\end{itemize}
+
+\subsection{Definition}
+
+Given data $(X_i, Y_i)$, where $X_i \in \mathbb{R}^p$ are covariates and $Y_i$ are responses, a GLM assumes:
+
+\begin{enumerate}
+    \item The distribution of $Y_i$ belongs to an exponential family with density:
+    \[
+    p_{\theta_i}(y_i) = c(y_i) \exp\left( \theta_i y_i - \Psi(\theta_i) \right),
+    \]
+    where $\theta_i$ is the natural parameter associated with $Y_i$.
+
+    \item A link function $g$ relates the expected value $\mu_i = E[Y_i | X_i]$ to the linear predictors:
+    \[
+    g(\mu_i) = X_i^\top \beta.
+    \]
+\end{enumerate}
+
+The function $g: \mathbb{R} \rightarrow \mathbb{R}$ is known as the \textbf{link function}. When $g(\mu_i) = \theta_i$, it is called the \textbf{canonical link function}.
+
+\subsection{Remarks}
+
+\begin{enumerate}
+    \item Under the canonical link function, the density simplifies to:
+    \[
+    p_\beta(y_i) = c(y_i) \exp\left( y_i X_i^\top \beta - \Psi(X_i^\top \beta) \right).
+    \]
+    \item The link function connects the linear predictors to the mean of the response variable:
+    \[
+    E[Y_i | X_i, \beta] = g^{-1}(X_i^\top \beta).
+    \]
+\end{enumerate}
+
+\subsection{Examples}
+
+\begin{example}[Logistic Regression]
+Suppose we have binary response data $Y_i \in \{0, 1\}$ and covariates $X_i \in \mathbb{R}^p$.
+
+\begin{enumerate}
+    \item The distribution of $Y_i$ given $X_i$ is Bernoulli with probability $p_i$:
+    \[
+    P(Y_i = 1 | X_i) = p_i.
+    \]
+    \item The logistic regression model uses the logit link function:
+    \[
+    \log\left( \frac{p_i}{1 - p_i} \right) = X_i^\top \beta.
+    \]
+    Equivalently,
+    \[
+    p_i = \frac{\exp(X_i^\top \beta)}{1 + \exp(X_i^\top \beta)}.
+    \]
+    \item The natural parameter is $\theta_i = \log\left( \frac{p_i}{1 - p_i} \right)$, and the canonical link function is the logit function.
+\end{enumerate}
+\end{example}
+
+\begin{example}[Poisson Regression]
+Suppose we have count data $Y_i \in \{0, 1, 2, \dots\}$ and covariates $X_i \in \mathbb{R}^p$.
+
+\begin{enumerate}
+    \item The distribution of $Y_i$ given $X_i$ is Poisson with mean $\lambda_i$:
+    \[
+    P(Y_i = k | X_i) = \frac{e^{-\lambda_i} \lambda_i^k}{k!}.
+    \]
+    \item The Poisson regression model uses the log link function:
+    \[
+    \log \lambda_i = X_i^\top \beta.
+    \]
+    Equivalently,
+    \[
+    \lambda_i = \exp(X_i^\top \beta).
+    \]
+    \item The natural parameter is $\theta_i = \log \lambda_i$, and the canonical link function is the logarithm.
+    \item This model is commonly used for modeling count data, such as the number of events occurring in a fixed interval.
+\end{enumerate}
+\end{example}
+
+\subsection{Link Functions}
+
+The choice of the link function $g$ is critical in GLMs. It should be chosen based on the nature of the response variable and the desired relationship between the mean of the response and the linear predictors.
+
+\begin{itemize}
+    \item \textbf{Canonical Link Function}: The link function that sets $g(\mu_i) = \theta_i$. It often simplifies calculations and has desirable statistical properties.
+    \item \textbf{Common Link Functions}:
+    \begin{itemize}
+        \item \textbf{Identity Link}: $g(\mu) = \mu$, used in linear regression.
+        \item \textbf{Logit Link}: $g(\mu) = \log\left( \frac{\mu}{1 - \mu} \right)$, used in logistic regression.
+        \item \textbf{Log Link}: $g(\mu) = \log(\mu)$, used in Poisson regression.
+        \item \textbf{Probit Link}: $g(\mu) = \Phi^{-1}(\mu)$, where $\Phi$ is the cumulative distribution function of the standard normal distribution.
+    \end{itemize}
+\end{itemize}
+
+\subsection{Estimation in GLMs}
+
+Estimation of the parameter vector $\beta$ in GLMs is typically performed using maximum likelihood estimation. Due to the nonlinear nature of the link functions, closed-form solutions are rare, and iterative algorithms such as Newton-Raphson or Fisher scoring are employed.
+
+\subsection{Inference in GLMs}
+
+Statistical inference in GLMs involves:
+
+\begin{itemize}
+    \item \textbf{Hypothesis Testing}: Testing hypotheses about the parameters $\beta$, such as testing whether a particular predictor has a significant effect.
+    \item \textbf{Confidence Intervals}: Constructing confidence intervals for the parameters.
+    \item \textbf{Model Diagnostics}: Assessing the goodness-of-fit of the model and checking model assumptions.
+\end{itemize}
+
+\subsection{Advantages of GLMs}
+
+GLMs offer several advantages:
+
+\begin{itemize}
+    \item Flexibility in modeling different types of data (binary, count, continuous).
+    \item Ability to handle non-normal error distributions.
+    \item Unified framework for estimation and inference.
+\end{itemize}
+
+\section{Conclusion}
+
+Exponential families provide a powerful and flexible class of probability distributions with properties that facilitate statistical inference. Generalized Linear Models extend the linear modeling framework to accommodate response variables that are not normally distributed, leveraging the structure of exponential families. Understanding these concepts is essential for modeling a wide range of data types and for conducting effective statistical analysis in various fields.
 
 
 

@@ -1,12 +1,12 @@
 # Fdb version 4
-["biber lecture_notes"] 1732874004.72548 "lecture_notes.bcf" "lecture_notes.bbl" "lecture_notes" 1732874034.37968 0
-  "lecture_notes.bcf" 1732874034.18343 107265 29815f19bc5a8420ced634f436b4a6e3 "pdflatex"
+["biber lecture_notes"] 1732874004.72548 "lecture_notes.bcf" "lecture_notes.bbl" "lecture_notes" 1733163976.29786 0
+  "lecture_notes.bcf" 1733163976.08794 107265 29815f19bc5a8420ced634f436b4a6e3 "pdflatex"
   (generated)
   "lecture_notes.bbl"
   "lecture_notes.blg"
   (rewritten before read)
-["pdflatex"] 1732874031.45296 "/Users/monroestephenson/Downloads/Script/lecture_notes.tex" "lecture_notes.pdf" "lecture_notes" 1732874034.38052 0
-  "/Users/monroestephenson/Downloads/Script/lecture_notes.tex" 1732874020.01569 136009 d64faf2a9584db7831d734d37d86a924 ""
+["pdflatex"] 1733163973.22509 "/Users/monroestephenson/Downloads/Script/lecture_notes.tex" "lecture_notes.pdf" "lecture_notes" 1733163976.29853 0
+  "/Users/monroestephenson/Downloads/Script/lecture_notes.tex" 1733163961.00289 150659 1b2eccfa13f43c62d5e8f885d7a551ea ""
   "/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc" 1202520719 3486 c7eadf5dcc57b3b2d11736679f6636ba ""
   "/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc" 1202520719 2405 5dcf2c1b967ee25cc46c58cd52244aed ""
   "/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc" 1202520719 2840 216e6e45ad352e2456e1149f28885bee ""
@@ -46,6 +46,7 @@
   "/usr/local/texlive/2024/texmf-dist/fonts/tfm/public/lm/rm-lmr7.tfm" 1254269338 11852 5a9022f105fd1ee2797df861e79ae9a0 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/tfm/public/lm/rm-lmr8.tfm" 1254269338 11864 309fd7f43e4a0ba39f6f7644d76e8edf ""
   "/usr/local/texlive/2024/texmf-dist/fonts/tfm/public/lm/rm-lmri10.tfm" 1254269338 16968 1b588d0f410bd67a83eaecf8c64b2a43 ""
+  "/usr/local/texlive/2024/texmf-dist/fonts/tfm/public/lm/rm-lmri8.tfm" 1254269338 16976 7228e7c7bc486e2318fc496e0de33875 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/tfm/public/lm/rm-lmss10.tfm" 1254269338 10976 59d4d2acacc56ba9abc92645023932ec ""
   "/usr/local/texlive/2024/texmf-dist/fonts/tfm/public/lm/rm-lmssbo10.tfm" 1254269338 11100 63e3ab1ae1c36b6ee8fe1fb950fbc47f ""
   "/usr/local/texlive/2024/texmf-dist/fonts/tfm/public/lm/rm-lmssbx10.tfm" 1254269338 10956 dad25672db463289a56f0700c0488a86 ""
@@ -66,6 +67,7 @@
   "/usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmr6.pfb" 1255129361 123394 d390152bb30feeb496aaaa93299ee9ba ""
   "/usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmr8.pfb" 1255129361 122174 a7a08406857c9530a0320a2517f60370 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmri10.pfb" 1255129361 112593 fda2373ba4420af33949610de4c28fe8 ""
+  "/usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmri8.pfb" 1255129361 109952 3dd76c0c5c680d519bb6d59a066c0826 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmssbo10.pfb" 1255129361 137678 2aaabe8e92a4a04077c932d1efd80d4b ""
   "/usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmssbx10.pfb" 1255129361 119663 e82fa1a58f98ccd89bdbd77311ac9cf1 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmsy10.pfb" 1254269338 27863 09ce3735688ffde955e72da27c95b61a ""
@@ -266,11 +268,11 @@
   "0_macros.tex" 1730733022 3068 19bd0b74cf1ab8cd549e886001789760 ""
   "0_titlepage.tex" 1731338774.63 736 0e45e2d1c3bcf7a6a89b12ae925964b4 ""
   "bilder/hu-logo.pdf" 1730733022 61122 fac3f48345854210bf43ac67b65f5147 ""
-  "lecture_notes.aux" 1732874034.1711 44184 624ffa4b10e3922a2e431598337eafb3 "pdflatex"
+  "lecture_notes.aux" 1733163976.07498 52410 a98a7314a598bee0da10facb8632906d "pdflatex"
   "lecture_notes.bbl" 1732874028.22397 466 ee04f40f768daeed26442158e95aba61 "biber lecture_notes"
-  "lecture_notes.run.xml" 1732874034.18507 2378 f63da22c2683fb9e8fd7868e99d9402d "pdflatex"
-  "lecture_notes.tex" 1732874020.01569 136009 d64faf2a9584db7831d734d37d86a924 ""
-  "lecture_notes.toc" 1732874034.18517 6218 b61dbe4aaac4ca7716644afa67002968 "pdflatex"
+  "lecture_notes.run.xml" 1733163976.08956 2378 f63da22c2683fb9e8fd7868e99d9402d "pdflatex"
+  "lecture_notes.tex" 1733163961.00289 150659 1b2eccfa13f43c62d5e8f885d7a551ea ""
+  "lecture_notes.toc" 1733163976.08963 7807 f95aa00769ce284673e1adfb5f4f570a "pdflatex"
   (generated)
   "lecture_notes.aux"
   "lecture_notes.bcf"
