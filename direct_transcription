@@ -1904,4 +1904,134 @@ $\underbrace{\text{Linear models}}_{\text{establish relations}, \\x_i\to y_i,\\ 
 
     \end{enumerate}
 \end{remark}
+\section*{Lecture 15: GLMs \& Model Selection}
+
+\subsection*{Natural Exponential Family (Nat. EF)}
+
+\[
+P_\eta(x) = c(x)\exp\big(\eta T(x) - \Psi(\eta)\big), \quad \eta \in \mathbb{R}
+\]
+
+\begin{itemize}
+    \item What is the Fisher information?
+    \item Is the Cramer-Rao lower bound attained?
+    \[
+    \mathbb{E}_\eta[T] = \Psi'(\eta)
+    \]
+    \item What happens if \( T = \text{const. a.s.} \)?
+\end{itemize}
+
+\subsection*{Generalized Linear Models (GLM)}
+
+\begin{itemize}
+    \item Parameter: \( \beta \in \mathbb{R}^p \)
+    \item Design matrix: \( X \in \mathbb{R}^{n \times p} \)
+    \item Data: \( Y_i \sim c(y)\exp\big(yX_i^\top \beta - \Psi(X_i^\top \beta)\big) \)
+    \item \[
+    g\big(\mathbb{E}[Y_i \mid X_i, \beta]\big) = X_i^\top \beta
+    \]
+    \item (Natural) link function: \( g: \mathbb{R} \to \mathbb{R} \)
+\end{itemize}
+
+\subsection*{Example: Logistic Regression}
+
+\[
+Y_i \in \{0, 1\}, \quad \mathbb{E}[Y_i] = P(Y_i = 1) = p_i
+\]
+
+\begin{itemize}
+    \item Natural link function:
+    \[
+    g(p_i) = \log \frac{p_i}{1 - p_i}, \quad g^{-1}(X_i^\top \beta) = \frac{\exp(X_i^\top \beta)}{1 + \exp(X_i^\top \beta)}
+    \]
+    \item 
+    \[
+    P_\beta(Y_i) = p_i^{Y_i}(1 - p_i)^{1 - Y_i}
+    \]
+    \[
+    = \exp\big(Y_i \log p_i + (1 - Y_i)\log(1 - p_i)\big)
+    \]
+    \[
+    = \exp\big(Y_i \log \frac{p_i}{1 - p_i} + \log(1 - p_i)\big)
+    \]
+    \[
+    = \exp\big(Y_i X_i^\top \beta - \Psi(X_i^\top \beta)\big), \quad \Psi(X_i^\top \beta) = \log(1 + \exp(X_i^\top \beta))
+    \]
+\end{itemize}
+
+\subsection*{MLE in Logistic Regression}
+
+\textbf{Goal:} Find \( \hat{\beta} \in \arg\max_{\beta \in \mathbb{R}^p} P_\beta(Y) \).
+
+
+\begin{align*}
+    \log p_\beta(Y)&= \sum_{i=1}^{n} \log p_i^{Y_i}(1-p_i)^{1-Y_i}\\
+    &=\sum_{i=1}^{n} Y_i\log \frac{p_i}{1- p_i}\log (1-p_i)\\
+    &= \sum_{i=1}^{n} y_i \underbrace{\eta_i}_{X_i^T\beta} +\log \frac{1}{1+e^{\eta^t}}\\
+    \nabla_\beta \log p_\beta(Y) &= \sum_{i=1}^{n} Y_i \nabla_\beta \eta_i - \frac{1}{1+e^{\eta_i}} e^{\eta_i}\nabla_\beta \eta_i\\
+    &=\sum_{i=1}^{n} \nabla_\beta \eta_i \left(Y_i -\underbrace{\frac{e^{\eta_i}}{1+e^{\eta_i}}}_{p_i}\right)= \sum_{i=1}^{n} (Y_i -p_i)X_i^T\\
+    &= X^T (y-p)\in \mathbb{R}^p
+\end{align*}
+MLE in Logistic regression, $$X^T(Y-p)\neq 0$$
+where $p =(p_1,\hdots, p_n)$ is $p_i = \frac{e^{X_i^T \beta}}{1+e^{X_i^T \beta}}$
+\par Caustion, $\hat{\beta}$ is not always defined.
+\par We know $E[Y_i]= P(Y_i =1) = \frac{e^{X_i^T \beta}}{1+e^{X_i^T \beta}}.$
+\begin{remark}
+    $\hat{\beta}$ the MLE in GLMs are not given in closed form, and have to be computed using optimization methods (e.g. gradient decent, Newton's Method)
+\end{remark}
+\begin{lemma}{Score and FI in GLMs}
+    Consider a GLM with canonical links. Then, 
+    $$\nabla_\beta \log p_\beta (Y)= \sum_{i=1}^{n} Y_i - \Psi ' (X^T_i \beta)X_i^T$$
+    $$I(\beta) = \sum_{i=1}^{n} \Psi '' (X_i^T \beta) X_i X_i^T \in \mathbb{R}^p$$
+    \begin{proof}
+        \begin{align*}
+            \log p_\beta(Y)&=  \sum_{i=1}^{n} \log c(y_i)+ y_i X_i^T - \Psi (X_i^T \beta )\\
+            \implies \nabla_\beta \log p_\beta (Y) &= \sum_{i=1}^{n} Y_i X_i^T - \Psi'(X_i^T \beta)X_i^T = \sum_{i=1}^{n} (Y_i - \psi '(X_i^T \beta))X_i^T
+        \end{align*}
+        Once checks that $$\frac{\partial^2}{\partial \beta_k \beta_\ell}\log p_\beta(Y)= \sum_{i=1}^{n} -\Psi ''{}\Psi''(X^T_i \beta) (x_i)_k (x_i)_\ell x$$
+        Since $I(\beta)= E_\beta[- \nabla_\beta (\log p_\beta(x))]$, the claim follows.
+    \end{proof}
+\end{lemma}
+\begin{remark}
+    \begin{enumerate}
+        \item In natural ER and in GLMs, the curvature of $\log p_\beta$ is independent of the data!
+        \item If $\hat{\beta}$ MLE exists in $\mathbb{R}^p$ and $I(\beta)$ is positive defininate, then $\hat{\beta}$ is unique (not clear in general)
+    \end{enumerate}
+
+\end{remark}
+\subsection{Model Selection}
+\textbf{Setting}: Suppose we observe $Y\in \mathbb{R}^n$ of the form, $Y= \mu +\varepsilon$
+with unknown $\mu \in \mathbb{R}^n, \varepsilon \sim N(0, \sigma^2 I_n)$, $\sigma^2$ unknown.
+\par For $k =1, \hdots, K \le n$, suppose we have linear models for $\mu$, 
+$$X^{(k)} \beta^{(k)}, \beta^{(k)}\in \mathbb{R}^k$$
+where $X^{(k)}\in \mathbb{R}^{n \times k}$ with rank $k$. 
+\begin{example}
+    Full design matrix, $$X^{(k)}=\text{first k columns of }X \text{ where }X \text{ is a k by n matrix}$$
+\end{example}
+We can ask ourselves, what's the best model. 
+\par Fro example, $$\hat{\beta}^{(k)} = ((X^{k})^T X^{(k)})^{-1} X^{(k)^T}Y = \arg \min_{\beta^{(k)}\in \mathbb{R}^k} \| Y- X^{(k)} \beta^{(k)}\|$$
+Which has the least MSE. $$\|\underbrace{ \mu - X^{(k)} \hat{\beta}^{(k)}}_{\hat{\mu}^{(k)}}\|^2$$
+We calculate, 
+\begin{align*}
+    E\| \mu - \hat{\mu}^{(k)}\|^2_{\mathbb{R}^k}&= (\mu - E[\hat{\mu}^{(k)}])^2 +E[(\mu^{(k)}- E[\hat{\mu}^{(k)}])^2]- 2 \underbrace{E[\langle \mu - E[\hat{\mu}^{(k)}], \hat{\mu}^{(k)} - E[\hat{\mu}^{(k)}]\rangle]}_{=0}
+\end{align*}
+Moreover,
+$$E[\hat{mu}^{(k)}] = E[\Pi^{(k)}Y] = E[\Pi^{(k)} (\mu +\varepsilon)]= \Pi^{(k)}\mu$$
+So then, $$\hat{\mu}^{(k)}- E[\hat{\mu}^{(k)}]= \Pi^{(k)} \varepsilon$$
+$$ \implies E\| \mu - \hat{\mu}^{(k)}\|^2_{\mathbb{R}^k} = \| (I_n-\Pi^{(k)}) \mu \|^2 +\underbrace{E[\Pi^{\varepsilon}]^2}_{\sigma^2 \chi^2(k)}$$
+and all of this is equal to $$= \| (I_n - \Pi^{(k)})\mu \|^2 +k\sigma^2 =\text{ BIAS + VARIANCE with k}$$
+How well is $\mu$ approximated by $\text{col}(X^{(k)})$
+We'd like to pick $$\hat{k}= \arg \min_{k= 1,\hdots K}\underbrace{\| (I_n - \Pi^{(k)})\mu \|}_{\text{Unknown} }+k\sigma^2$$ 
+To estimate the first term, we consider RSS, 
+\begin{align*}
+    E\| \underbrace{Y- X^{(k)}\hat{\beta}^{(k)}}_{\text{Data Driven}}\|^2&=E\| (I_n - \Pi^{(k)})(\mu+\varepsilon)\|^2\\ 
+    &= E\| (I_n - \Pi^{(k)})(\mu)\|^2+ E\| (I_n - \Pi^{(k)})(\varepsilon)\|^2+ E[\langle \underbrace{(I_n - \Pi^{(k)})\mu}_{detm},\underbrace{(I_n - \Pi^{(k)})\varepsilon}_{E[]=0} \rangle ]\\ 
+    &= \|(I_n - \Pi^{(k)}) \mu\|^2 + \sigma^2 (n-k)
+\end{align*}
+Which implies 
+$$\|Y- X^{(k)}\hat{\beta}^{(k)}\|^2 - \sigma^2 (n-k)+\sigma^2 k $$
+is unbiased risk estimator for risk, $E\|\mu -\hat{\mu}^{(k)}\|^2$
+\par \textbf{Method} (Mallow's Cp)
+\par Pick $\hat{k}= \arg \min_{k =1,\hdots, K}\|Y-X^{(k)\hat{\beta}^{(k)}}\|^2+2\sigma^2 k$
+\par Next time we will generalize this idea to Alaike's Information Criterion. (AIC).
 \end{document}
