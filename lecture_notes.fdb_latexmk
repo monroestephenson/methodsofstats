@@ -1,12 +1,12 @@
 # Fdb version 4
-["biber lecture_notes"] 1732874004.72548 "lecture_notes.bcf" "lecture_notes.bbl" "lecture_notes" 1733163976.29786 0
-  "lecture_notes.bcf" 1733163976.08794 107265 29815f19bc5a8420ced634f436b4a6e3 "pdflatex"
+["biber lecture_notes"] 1732874004.72548 "lecture_notes.bcf" "lecture_notes.bbl" "lecture_notes" 1733483450.78186 0
+  "lecture_notes.bcf" 1733483450.5863 107265 29815f19bc5a8420ced634f436b4a6e3 "pdflatex"
   (generated)
   "lecture_notes.bbl"
   "lecture_notes.blg"
   (rewritten before read)
-["pdflatex"] 1733163973.22509 "/Users/monroestephenson/Downloads/Script/lecture_notes.tex" "lecture_notes.pdf" "lecture_notes" 1733163976.29853 0
-  "/Users/monroestephenson/Downloads/Script/lecture_notes.tex" 1733163961.00289 150659 1b2eccfa13f43c62d5e8f885d7a551ea ""
+["pdflatex"] 1733483447.74202 "/Users/monroestephenson/Downloads/Script/lecture_notes.tex" "lecture_notes.pdf" "lecture_notes" 1733483450.78259 0
+  "/Users/monroestephenson/Downloads/Script/lecture_notes.tex" 1733483434.84079 158572 b114023de9530d3e7c1ef3306f8bf46f ""
   "/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc" 1202520719 3486 c7eadf5dcc57b3b2d11736679f6636ba ""
   "/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc" 1202520719 2405 5dcf2c1b967ee25cc46c58cd52244aed ""
   "/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc" 1202520719 2840 216e6e45ad352e2456e1149f28885bee ""
@@ -268,11 +268,11 @@
   "0_macros.tex" 1730733022 3068 19bd0b74cf1ab8cd549e886001789760 ""
   "0_titlepage.tex" 1731338774.63 736 0e45e2d1c3bcf7a6a89b12ae925964b4 ""
   "bilder/hu-logo.pdf" 1730733022 61122 fac3f48345854210bf43ac67b65f5147 ""
-  "lecture_notes.aux" 1733163976.07498 52410 a98a7314a598bee0da10facb8632906d "pdflatex"
+  "lecture_notes.aux" 1733483450.57034 53933 db0306a579a442088a2dc82a83f8d713 "pdflatex"
   "lecture_notes.bbl" 1732874028.22397 466 ee04f40f768daeed26442158e95aba61 "biber lecture_notes"
-  "lecture_notes.run.xml" 1733163976.08956 2378 f63da22c2683fb9e8fd7868e99d9402d "pdflatex"
-  "lecture_notes.tex" 1733163961.00289 150659 1b2eccfa13f43c62d5e8f885d7a551ea ""
-  "lecture_notes.toc" 1733163976.08963 7807 f95aa00769ce284673e1adfb5f4f570a "pdflatex"
+  "lecture_notes.run.xml" 1733483450.5877 2378 f63da22c2683fb9e8fd7868e99d9402d "pdflatex"
+  "lecture_notes.tex" 1733483434.84079 158572 b114023de9530d3e7c1ef3306f8bf46f ""
+  "lecture_notes.toc" 1733483450.5878 7979 6194c5e1db4964807fd98d224be9a4a2 "pdflatex"
   (generated)
   "lecture_notes.aux"
   "lecture_notes.bcf"

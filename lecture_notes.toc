@@ -83,4 +83,6 @@
 \contentsline {subsection}{\numberline {13.3.7}Inference in GLMs}{87}{subsection.13.3.7}%
 \contentsline {subsection}{\numberline {13.3.8}Advantages of GLMs}{87}{subsection.13.3.8}%
 \contentsline {section}{\numberline {13.4}Conclusion}{88}{section.13.4}%
+\contentsline {chapter}{\numberline {14}Lecture 15: GLMs \& Model Selection}{89}{chapter.14}%
+\contentsline {section}{\numberline {14.1}Model Selection}{92}{section.14.1}%
 \providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 
