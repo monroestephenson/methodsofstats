@@ -2034,4 +2034,99 @@ is unbiased risk estimator for risk, $E\|\mu -\hat{\mu}^{(k)}\|^2$
 \par \textbf{Method} (Mallow's Cp)
 \par Pick $\hat{k}= \arg \min_{k =1,\hdots, K}\|Y-X^{(k)\hat{\beta}^{(k)}}\|^2+2\sigma^2 k$
 \par Next time we will generalize this idea to Alaike's Information Criterion. (AIC).
+\section{Lecture 20: Bayes Classifier}
+$C^*(x)=\arg \max_k P(Y=L|X=x)$
+$$R(C^*)=P(C(X)\neq Y)=\inf_C R(C).$$
+Now let us focus on the binary classification, $Y\in \{0,1\}$.
+For $k\in \{\0,1\}$, let $$P_k=P_{X|Y=k}(x)$$
+Let $$\eta(x)=P_{Y=1|X=x}=\frac{\Pi_1 p_1(x)}{\Pi_0 p_0(x)+\Pi_1 p_1(x)}$$
+where $\pi_k=P(Y=k)$, $k\in \{0,1\}$.
+Of course $C^*(x)=1(\eta(x)>1/2)$. 
+\begin{definition}{Excess Risk}
+    Given $C:X\to \{0,1\}$, the excess risk is defined as 
+    $$\mathcal{E}(c):=R(c)-R(C^*)=R(C)-\inf_C R(C)$$
+    \end{definition}
+    \begin{lemma}
+        \begin{enumerate}
+            \item $R(C^*)=E[\eta(X) \nand (1-\eta(X))]
+            \item For any classifier $C$, $$\mathcal{E}(C)=E[|2\eta(X)-1|1(C(x)\neq C(x^*))]$$
+        \end{enumerate}
+        \begin{proof}
+            \begin{enumerate}
+                \item We condition on $X=x$. For any $C$:
+                $$P(Y\neq C(x)|X=x)=P(Y=1|X=x)1(C(x)=0)+P(Y=0|X=x)1(C(x)=1)$$
+                $$\eta(x)1(C(x)=0)+(1-\eta(x))(1-1(C(x)=1))$$
+                $$1-\eta(x)(2\eta(x)-1)(1(C(x)=0))$$
+                for $C^*$, $1(C(x)=0)=1(2\eta(x)-1\le 0)$.
+                $\implies P(Y\neq C^*(x)|X=x)=\eta(x)\nand (1-\eta(x))$
+                \item $$P(Y\neq C(x)|X=x)-P(Y\neq C^*(x)|X=x)$$
+                $$=1-\eta(x)+(2\eta(x)-1)1(C(x)=0)-\eta(x)\nand (1-\eta(x))$$
+                $$=\begin{cases}
+                    0 &\text{if } C(x)=C^*(x)\\
+                    \eta(x)-(1-\eta(x)) &\text{if } C(x)=0, C^*(x)=1\\
+                    1-2\eta(x) &\text{if } C(x)=1, C^*(x)=0
+                \end{cases}
+                $$
+                $$=|2\eta(x)-1|1(C(x)\neq C^*(x))$$
+                Taking expectations completes the proof.
+            \end{enumerate}
+        \end{proof}
+    \end{lemma}
+    \begin{definition}{Plug-in Classifier}
+        If $\hat{\eta}(x)$ is an estimate of $\eta(x)$, then the plug-in classifier is defined as,
+        $$C(x)=1(2\hat{\eta}(x)-1>0)=1(\hat{\eta}(x)>1/2)$$
+    \end{definition}
+    The classification boundary is $$X_\hat{\eta}=\{x: \hat{\eta}(x)=1/2\}$$
+    \begin{theorem}{Error Bound for $C_\hat{\eta}$}
+        It holds that 
+        $$\mathcal{E}(C_\hat{\eta})= R(C_\hat{\eta})-R(C^*)\le E[|\hat{\eta}(X)-\eta(X)|1(|\hat{\eta}(X)-\eta(X)|\ge |\eta(X)-1/2|)]$$
+        $$\le 2 E[|\hat{\eta}(X)-\eta(X)|]$$
+    \end{theorem}
+    Suppose also $|\hat{\eta}(x)-\eta(x)|\le \delta$ for all $x\in X$. Then, 
+    $$\mathcal{E}(C_\hat{\eta})\le 2\delta P(|\eta(X)-1/2|\ge \delta)$$
+    and the oracle inequality, 
+    $$R(C_{\hat{\eta }})\le \frac{1+2\delta}{1-2\delta}R(C^*)$$
+    \begin{proof}
+        By the previous lemma, 
+        $$R(C_\hat{\eta})-R(C^*)= 2E[|\hat{\eta}(X)-1/2|1(C_\hat{\eta}(X)\neq C^*(X))]$$
+        Set $\delta(x)=|\hat{\eta}(x)-\eta(x)|$. If $\delta(x) <|\eta(x)-1/2|$, then $C_\hat{\eta}(x)=C^*(x)$.
+        \begin{align*}
+            \mathcal{E}(C_\hat{\eta})&\le 2E[|\hat{\eta}(X)-1/2|1(|\eta(X)-1/2|\le \delta(X))]\\
+            &\le 2E[\delta(X)1(|\eta(X)-1/2|\le \delta(X))]\\
+            &\le 2E[\delta(X)] \implies (1)
+        \end{align*}
+        for part 2, we estimate $\delta(x)\le \delta$ for all $x\in X$ to obtain,
+        $$\mathcal{E}(C_\hat{\eta})\le 2\delta P(|\eta(X)-1/2|\ge \delta)$$
+        $$=2\delta P(|\eta(X)-1/2|\ge \delta)$$
+        \par For the oracle, 
+        $$R(C^*)= E[\eta(X) \nand (1-\eta(X))]$$
+        $$\ge E[\eta(X) \nand (1-\eta(X))]1(|\eta(X)-1/2|\le \delta)$$
+        $$\ge \left(\frac{1}{2}-\delta\right)P(|\eta(X)-1/2|\le \delta)$$
+        $$R(C_\hat{\eta})=R(C^*)+ \mathcal{E}(C_\hat{\eta})$$
+        $$\le R(C^*)+2\delta P(|\eta(X)-1/2|\ge \delta)$$
+        $$\le R(C^*)[1+2\delta /(1-2\delta)]$$
+        $$\le R(C^*)[\frac{1+2\delta}{1-2\delta}].$$
+        This completes the proof.
+    \end{proof}
+    $$\eta (x)=P(Y=1|X=x) = \frac{\Pi_1 p_1(x)}{\Pi_0 p_0(x)+\Pi_1 p_1(x)}$$
+    Motivation: Given $(X_1,Y_1),\hdots, (X_n,Y_n)$, $Y_i\in \{0,1\}$, 
+    $$n_0=\sum_{i=1}^{n} 1(Y_i=0), n_1= n-n_0$$
+    $$\hat{\Pi}_k =\frac{n_k }{n}$$
+    More difficult, estimating $p_0, p_1$.
+    In LDA, $p_0, p_1$ are assumed to be normal with the same mean and covariance matrix $\Sigma$.
+    Linear discriminant analysis (LDA)
+    RA Fisher. Here, we make the assumption $X=\mathbb{R}^p$
+    $$p_k(x)= \frac{1}{(2\pi)^{p/2}|\Sigma|^{1/2}}\exp\left(-\frac{1}{2}(x-\mu_k)^T\Sigma^{-1}(x-\mu_k)\right)$$
+    with means $\mu_0, \mu_1 \in \mathbb{R}^p$ and covariance matrix $\Sigma \in \mathbb{R}^{p\times p}$.
+    Bayes classifier, maximizes $P(Y=k|X=x)$ $\iff$ maximizes $\pi_k p_k(x)$ over $k$ $\iff$ maximizes $\log \pi_k+\log p_k(x)$ over $k$ $\iff$ $$\log \pi_k+\mu_1^T \Sigma^{-1}x-\frac{1}{2}\mu_1^T\Sigma^{-1}\mu_1x$$
+    Bayes classifer =1 if and only If
+    $$\log (\pi_1/\pi_0)+(\mu_1-\mu_0)^T\Sigma^{-1}x-\frac{1}{2}(\mu_1+\mu_0)^T\Sigma^{-1}(\mu_1-\mu_0)>0$$
+    if $\bar{\mu}=\frac{\mu_1+\mu_0}{2}$,
+    and $\delta(x)= (x-\bar{\mu})^T\Sigma^{-1}(\mu_1-\mu_0)$,
+    then $$C^*(x)=1(\delta(x)>\log (\pi_1/\pi_0))$$
+    \begin{definition}{LDA}
+        Given $(X_1, Y_1)$, $i=1,\hdots, n$, let $\hat{\pi}_k=\frac{n_k}{n}$, $$\hat{\mu}_k=\frac{1}{n_k}\sum_{i=1}^{n} 1(Y_i=k)X_i$$ $\hat{\Sigma}=\frac{1}{n-2}\sum_{i=1}^{n} (X_i-\hat{\mu}_{Y_i})(X_i-\hat{\mu}_{Y_i})^T$
+        then LDA is $C(x)=1(\hat{\delta}(x)>\log (\hat{\pi}_1/\hat{\pi}_0))$
+    \end{definition}
+
 \end{document}
